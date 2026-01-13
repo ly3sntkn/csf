@@ -1,14 +1,7 @@
 import React from 'react';
 
 const PartnersSection = () => {
-  const partners = [
-    { name: 'Air Algérie', logo: '✈️' },
-    { name: 'La Poste', logo: '📮' },
-    { name: 'EMS Algérie', logo: '📦' },
-    { name: 'FAF', logo: '⚽' },
-    { name: 'STELLANTIS', logo: '🚗' },
-    { name: 'Équipe de France de Gastronomie', logo: '👨‍🍳' },
-  ];
+
 
   return (
     <section className="py-16 bg-white">
@@ -21,19 +14,21 @@ const PartnersSection = () => {
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-          {partners.map((partner, index) => (
-            <div
-              key={index}
-              className="group flex flex-col items-center justify-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-all duration-300 w-40 h-40 border border-gray-100"
-            >
-              <span className="text-4xl mb-3 grayscale group-hover:grayscale-0 transition-all duration-300">
-                {partner.logo}
-              </span>
-              <span className="text-sm font-semibold text-gray-700 text-center">
-                {partner.name}
-              </span>
-            </div>
-          ))}
+          <div className="w-32 h-32 md:w-40 md:h-40 p-4 bg-gray-50 rounded-xl flex items-center justify-center hover:shadow-lg transition-all duration-300 border border-gray-100 group">
+            <img src="/csf/logo-air-algerie.webp" alt="Air Algérie" className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
+          </div>
+          <div className="w-32 h-32 md:w-40 md:h-40 p-4 bg-gray-50 rounded-xl flex items-center justify-center hover:shadow-lg transition-all duration-300 border border-gray-100 group">
+            <img src="/csf/logo-la-poste.webp" alt="La Poste" className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
+          </div>
+          <div className="w-32 h-32 md:w-40 md:h-40 p-4 bg-gray-50 rounded-xl flex items-center justify-center hover:shadow-lg transition-all duration-300 border border-gray-100 group">
+            <img src="/csf/logo-ems.webp" alt="EMS Algérie" className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
+          </div>
+          <div className="w-32 h-32 md:w-40 md:h-40 p-4 bg-gray-50 rounded-xl flex items-center justify-center hover:shadow-lg transition-all duration-300 border border-gray-100 group">
+            <img src="/csf/logo-faf.webp" alt="FAF" className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
+          </div>
+          <div className="w-32 h-32 md:w-40 md:h-40 p-4 bg-gray-50 rounded-xl flex items-center justify-center hover:shadow-lg transition-all duration-300 border border-gray-100 group">
+            <img src="/csf/logo-stellantis.webp" alt="STELLANTIS" className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
+          </div>
         </div>
       </div>
     </section>
