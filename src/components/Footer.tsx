@@ -12,8 +12,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div>
-            <img 
-              src="https://stackblitz.com/storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCSjhSeFFFPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1ca25b592ed82c3acffdc539669e15365508ac88//logo-csf.png"
+            <img
+              src="/csf/logo-csf.webp"
               alt="CSF Logo"
               className="h-12 w-auto mb-4 brightness-0 invert"
             />
@@ -32,18 +32,18 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <button 
+            <button
               onClick={() => setShowServices(!showServices)}
               className="flex items-center justify-between w-full text-lg font-bold mb-4 hover:text-blue-400 transition-colors"
             >
               <span>Nos Services</span>
               {showServices ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </button>
-            
+
             {showServices && (
               <ul className="space-y-2">
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'envoi-colis' });
                       window.dispatchEvent(event);
@@ -54,7 +54,7 @@ const Footer = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'demenagement' });
                       window.dispatchEvent(event);
@@ -65,7 +65,7 @@ const Footer = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'achat-livraison' });
                       window.dispatchEvent(event);
@@ -81,14 +81,14 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <button 
+            <button
               onClick={() => setShowContact(!showContact)}
               className="flex items-center justify-between w-full text-lg font-bold mb-4 hover:text-blue-400 transition-colors"
             >
               <span>Contact</span>
               {showContact ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </button>
-            
+
             {showContact && (
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
@@ -120,18 +120,18 @@ const Footer = () => {
 
           {/* Legal */}
           <div>
-            <button 
+            <button
               onClick={() => setShowLegal(!showLegal)}
               className="flex items-center justify-between w-full text-lg font-bold mb-4 hover:text-blue-400 transition-colors"
             >
               <span>Informations Légales</span>
               {showLegal ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </button>
-            
+
             {showLegal && (
               <ul className="space-y-2">
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'contact' });
                       window.dispatchEvent(event);
@@ -142,7 +142,7 @@ const Footer = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'contact' });
                       window.dispatchEvent(event);
@@ -153,7 +153,7 @@ const Footer = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'contact' });
                       window.dispatchEvent(event);
@@ -164,7 +164,7 @@ const Footer = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'contact' });
                       window.dispatchEvent(event);
@@ -175,7 +175,7 @@ const Footer = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       const event = new CustomEvent('navigate', { detail: 'contact' });
                       window.dispatchEvent(event);

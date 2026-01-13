@@ -34,14 +34,14 @@ const AboutSection = () => {
             CSF : Votre Partenaire de Confiance
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-8 max-w-3xl mx-auto">
-            CSF facilite les échanges entre l'Europe et l'Afrique. 
-            Notre mission est de connecter les familles, les entreprises et les communautés à travers 
+            CSF facilite les échanges entre l'Europe et l'Afrique.
+            Notre mission est de connecter les familles, les entreprises et les communautés à travers
             un service de transport fiable, sécurisé et accessible.
           </p>
         </div>
-        
+
         <div className="grid lg:grid-cols-3 gap-12 items-center">
-          
+
           {/* LEFT SECTION - Values */}
           <div className="flex flex-col space-y-6">
             {values.map((value, index) => {
@@ -64,8 +64,8 @@ const AboutSection = () => {
           <div className="space-y-8">
             {/* Image */}
             <div className="rounded-2xl overflow-hidden shadow-lg h-64 flex items-center justify-center">
-              <img 
-                src="/livreurcontent.png"
+              <img
+                src="/csf/livreurcontent.webp"
                 alt="Service CSF"
                 className="w-full h-full object-cover object-center"
               />

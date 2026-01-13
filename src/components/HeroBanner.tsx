@@ -13,13 +13,13 @@ const HeroBanner = () => {
       <div className="absolute inset-0">
         {/* Desktop Image */}
         <img
-          src="https://stackblitz.com/storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCSjBSeFFFPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--b3a54e2e2617a407b9c53edc9cea97c33df8f205//hero-desktop.jpg"
+          src="/csf/hero-desktop.webp"
           alt="Transport CSF"
           className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-100"
         />
         {/* Mobile Image */}
         <img
-          src="https://stackblitz.com/storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCQzBNeFFFPSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--47ebd4a043d67dde1a4d2fbadb56ff7f9818c772//ChatGPT%20Image%2026%20aou%CC%82t%202025,%2019_01_34.png"
+          src="/csf/hero-mobile.webp"
           alt="Transport CSF Mobile"
           className="block md:hidden absolute inset-0 w-full h-full object-cover opacity-100"
         />
