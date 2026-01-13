@@ -178,15 +178,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     Déménagement
                   </button>
                   <button
-                    onClick={() => handleNavClick('contact')}
-                    className={`text-center font-bold text-xl transition-colors duration-300 py-3 uppercase tracking-wide ${currentPage === 'contact'
-                      ? 'text-blue-800'
-                      : 'text-blue-800 hover:text-blue-600'
-                      }`}
-                  >
-                    Contact
-                  </button>
-                  <button
                     onClick={() => handleNavClick('achat-livraison')}
                     className={`text-center font-bold text-xl transition-colors duration-300 py-3 uppercase tracking-wide ${currentPage === 'achat-livraison'
                       ? 'text-blue-800'
@@ -194,6 +185,15 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                       }`}
                   >
                     Achat & Export de Véhicules
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('contact')}
+                    className={`text-center font-bold text-xl transition-colors duration-300 py-3 uppercase tracking-wide ${currentPage === 'contact'
+                      ? 'text-blue-800'
+                      : 'text-blue-800 hover:text-blue-600'
+                      }`}
+                  >
+                    Contact
                   </button>
 
                   {/* Separator */}
