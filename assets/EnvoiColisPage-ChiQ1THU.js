@@ -1,4 +1,4 @@
-import{c as p,j as e,X as O,M as B}from"./index-D5dHse6Z.js";import{r as i}from"./react-vendor-B5ZO-m6Q.js";import{V as Q}from"./VideoPlaceholder-D7HBOPwn.js";import{A as b}from"./alert-triangle-kC7rJ2uE.js";import{P as U,A as Z}from"./package-BmuXgB-P.js";/**
+import{c as p,j as e,X as O,M as B}from"./index-BI1gb34P.js";import{r as i}from"./react-vendor-B5ZO-m6Q.js";import{V as Q}from"./VideoPlaceholder-BMzWuyMF.js";import{A as b}from"./alert-triangle-B8wCY5h4.js";import{P as U,A as Z}from"./package-7FefNA7I.js";/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
