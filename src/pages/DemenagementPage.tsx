@@ -3,34 +3,41 @@ import VideoPlaceholder from '../components/VideoPlaceholder';
 
 const DemenagementPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-            Vous souhaitez déménager vers l'Algérie ?
+    <div className="min-h-screen bg-gray-50 pt-24">
+      {/* Hero Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white mb-12">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Déménagement vers l'Algérie
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Regardez notre courte vidéo explicative ci-dessus pour en savoir plus.
+          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
+            Un accompagnement complet pour votre changement de vie
           </p>
-
-          <VideoPlaceholder className="max-w-3xl mx-auto mb-12" title="Tout savoir sur le déménagement" />
-
-          <div className="max-w-2xl mx-auto bg-amber-50 border-l-4 border-amber-500 p-4 text-left">
-            <p className="text-amber-800 font-medium">
-              ⚠️ Information importante : Les déménagements sont actuellement disponibles uniquement de France vers l'Algérie.
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">
+            <p className="text-sm">
+              ⚠️ <strong>Information importante :</strong> Service de déménagement disponible uniquement de la France vers l'Algérie
             </p>
           </div>
         </div>
+      </section>
 
-        {/* Placeholder content for contact/quote form if needed later */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Demander un devis déménagement</h2>
-          <p className="text-gray-600 mb-6">Contactez-nous directement pour une offre personnalisée.</p>
+      <div className="container mx-auto px-4 max-w-4xl pb-24">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Tout savoir sur le déménagement</h2>
+          <VideoPlaceholder className="max-w-3xl mx-auto mb-12" title="Tout savoir sur le déménagement" />
+        </div>
+
+        {/* Call to Action */}
+        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Prêt à déménager ?</h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Chaque déménagement est unique. Contactez nos experts pour obtenir un devis sur mesure adapté à votre volume et vos besoins.
+          </p>
           <a
             href="/contact"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-colors"
+            className="inline-block bg-blue-600 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            Contactez-nous
+            Demander mon devis gratuit
           </a>
         </div>
       </div>

@@ -35,15 +35,15 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-gray-50 pt-24">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Contactez-Nous
           </h1>
           <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
-            Notre équipe est à votre disposition pour répondre à toutes vos questions 
+            Notre équipe est à votre disposition pour répondre à toutes vos questions
             et vous accompagner dans vos projets de transport
           </p>
         </div>
@@ -225,11 +225,11 @@ const ContactPage = () => {
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">À Propos de CSF</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  CSF facilite les échanges entre l'Europe et l'Afrique. 
-                  Notre mission est de connecter les familles, les entreprises et les communautés 
+                  CSF facilite les échanges entre l'Europe et l'Afrique.
+                  Notre mission est de connecter les familles, les entreprises et les communautés
                   à travers un service de transport fiable, sécurisé et accessible.
                 </p>
-                
+
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Shield size={20} className="text-blue-600" />

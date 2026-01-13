@@ -512,15 +512,32 @@ const EnvoiColisPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4 max-w-3xl">
+    <div className="min-h-screen bg-gray-50 pt-24">
+      {/* Hero Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white mb-12">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Envoi de Colis vers l'Algérie
+          </h1>
+          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
+            Expédiez vos colis en toute simplicité et sécurité
+          </p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">
+            <p className="text-sm">
+              ⚠️ <strong>Information importante :</strong> Expéditions disponibles uniquement de la France vers l'Algérie
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 max-w-3xl pb-24">
         {step !== 'success' && (
           <div className="flex items-center justify-center mb-10 space-x-4">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all ${step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'}`}>1</div>
-            <div className={`w-12 h-1 rounded transition-all ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all ${step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'}`}>2</div>
-            <div className={`w-12 h-1 rounded transition-all ${step >= 3 ? 'bg-blue-600' : 'bg-gray-200'}`} />
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all ${step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'}`}>3</div>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 1 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>1</div>
+            <div className={`w-16 h-1 rounded transition-all ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 2 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>2</div>
+            <div className={`w-16 h-1 rounded transition-all ${step >= 3 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 3 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>3</div>
           </div>
         )}
 
