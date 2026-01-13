@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                 : 'text-black hover:text-gray-700'
                 }`}
             >
-              Achat & Livraison
+              Achat & Export de Véhicules
             </button>
             <button
               onClick={() => handleNavClick('contact')}
