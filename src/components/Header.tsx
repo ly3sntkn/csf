@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   return (
     <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${isScrolled
       ? 'fixed bg-white shadow-lg'
-      : 'absolute bg-transparent'
+      : `${currentPage === 'accueil' ? 'fixed' : 'absolute'} bg-transparent`
       }`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">

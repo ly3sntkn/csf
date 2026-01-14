@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Package, Play, X, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Play, X } from 'lucide-react';
 
 const ShippingForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -76,7 +76,7 @@ const ShippingForm = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: newValue
@@ -148,7 +148,7 @@ const ShippingForm = () => {
   const updateInventoryItem = (index: number, field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
-      inventory: prev.inventory.map((item, i) => 
+      inventory: prev.inventory.map((item, i) =>
         i === index ? { ...item, [field]: value } : item
       )
     }));
@@ -182,11 +182,40 @@ const ShippingForm = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async () => {
     if (allAttestationsChecked()) {
-      // Redirect to payment
-      console.log('Redirecting to payment...', formData);
-      alert('Redirection vers le paiement sécurisé...');
+      setStatus('loading');
+      try {
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'shipping',
+            data: {
+              ...formData,
+              price: calculatedPrice + (formData.insurance ? getInsurancePrice() : 0)
+            },
+          }),
+        });
+
+        if (response.ok) {
+          setStatus('success');
+          alert('Votre demande a bien été enregistrée ! Un email récapitulatif vous a été envoyé.');
+        } else {
+          setStatus('error');
+          alert("Une erreur est survenue lors de l'enregistrement de votre demande.");
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setStatus('error');
+        alert("Une erreur est survenue lors de l'enregistrement de votre demande.");
+      } finally {
+        setStatus('idle');
+      }
     }
   };
 
@@ -331,11 +360,10 @@ const ShippingForm = () => {
           <button
             onClick={nextStep}
             disabled={!calculatedPrice}
-            className={`w-full mt-6 py-4 rounded-lg font-bold text-lg transition-all duration-300 ${
-              calculatedPrice 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-            }`}
+            className={`w-full mt-6 py-4 rounded-lg font-bold text-lg transition-all duration-300 ${calculatedPrice
+              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+              }`}
           >
             Continuer avec ce devis
           </button>
@@ -674,7 +702,7 @@ const ShippingForm = () => {
           <h3 className="text-xl font-bold text-gray-800 mb-4">
             Optez pour la Garantie CSF (Facultative)
           </h3>
-          
+
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-4">
             <p className="text-yellow-800 mb-4">
               Souscrire à la garantie CSF vous permet de protéger vos colis contre la perte, le vol ou les dommages.
@@ -788,7 +816,7 @@ const ShippingForm = () => {
                     <X size={24} />
                   </button>
                 </div>
-                
+
                 <div className="space-y-4 mb-6">
                   <label className="flex items-start space-x-3">
                     <input
@@ -799,7 +827,6 @@ const ShippingForm = () => {
                     />
                     <span className="text-sm">Je déclare que le colis ne contient aucun produit interdit, illicite ou réglementé, selon la législation du pays d'exportation, du pays d'importation et de tout pays de transit, et que je suis seul responsable de la conformité du contenu du colis aux réglementations en vigueur.</span>
                   </label>
-
                   <label className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -807,9 +834,8 @@ const ShippingForm = () => {
                       onChange={(e) => handleAttestationChange('accurateInfo', e.target.checked)}
                       className="mt-1"
                     />
-                    <span className="text-sm">Je certifie que les informations fournies concernant le poids, les dimensions, le contenu et la valeur du colis sont exactes et complètes.</span>
+                    <span className="text-sm">Je certifie que les descriptions, valeurs et informations fournies concernant le contenu et les caractéristiques du colis sont exactes et complètes.</span>
                   </label>
-
                   <label className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -817,9 +843,8 @@ const ShippingForm = () => {
                       onChange={(e) => handleAttestationChange('falseDeclaration', e.target.checked)}
                       className="mt-1"
                     />
-                    <span className="text-sm">Je reconnais que toute fausse déclaration engage ma seule responsabilité, y compris en cas de contrôle, saisie, amende, retard ou poursuites par les autorités compétentes.</span>
+                    <span className="text-sm">Je comprends que toute fausse déclaration peut entraîner des sanctions, la saisie du colis par les autorités douanières, ainsi que des poursuites pénales ou civiles.</span>
                   </label>
-
                   <label className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -827,9 +852,8 @@ const ShippingForm = () => {
                       onChange={(e) => handleAttestationChange('additionalFees', e.target.checked)}
                       className="mt-1"
                     />
-                    <span className="text-sm">En cas d'écart constaté (poids, dimensions, contenu), j'accepte que des frais supplémentaires, des ajustements tarifaires ou le refus d'expédition puissent être appliqués sans possibilité de remboursement.</span>
+                    <span className="text-sm">J'accepte de prendre en charge tous les frais supplémentaires, y compris les frais de retour ou de destruction, en cas de non-conformité de mon envoi avec les réglementations en vigueur.</span>
                   </label>
-
                   <label className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -837,9 +861,8 @@ const ShippingForm = () => {
                       onChange={(e) => handleAttestationChange('deliveryDelays', e.target.checked)}
                       className="mt-1"
                     />
-                    <span className="text-sm">Je reconnais que les délais de livraison sont donnés à titre indicatif et peuvent être impactés par des facteurs indépendants de CSF (douanes, contrôles, grèves, météo, décisions administratives, sécurité aérienne).</span>
+                    <span className="text-sm">Je reconnais que CSF ne peut être tenue responsable des retards de livraison causés par les contrôles douaniers ou d'autres autorités compétentes.</span>
                   </label>
-
                   <label className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -847,9 +870,8 @@ const ShippingForm = () => {
                       onChange={(e) => handleAttestationChange('externalFactors', e.target.checked)}
                       className="mt-1"
                     />
-                    <span className="text-sm">Je reconnais que CSF ne pourra être tenu responsable des retards, saisies ou dommages résultant de ces facteurs externes.</span>
+                    <span className="text-sm">Je comprends que les délais de livraison sont donnés à titre indicatif et peuvent être affectés par des facteurs impondérables (ex: conditions météorologiques, grèves, situations de force majeure).</span>
                   </label>
-
                   <label className="flex items-start space-x-3">
                     <input
                       type="checkbox"
@@ -857,27 +879,23 @@ const ShippingForm = () => {
                       onChange={(e) => handleAttestationChange('termsAccepted', e.target.checked)}
                       className="mt-1"
                     />
-                    <span className="text-sm">J'ai pris connaissance et j'accepte les Conditions Générales de Vente.</span>
+                    <span className="text-sm font-bold">J'ai lu et j'accepte les conditions générales de vente et de transport de CSF.</span>
                   </label>
                 </div>
-                
+
                 <div className="flex justify-end space-x-4">
                   <button
                     onClick={() => setShowAttestation(false)}
-                    className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     Annuler
                   </button>
                   <button
                     onClick={handleSubmit}
-                    disabled={!allAttestationsChecked()}
-                    className={`px-6 py-3 rounded-lg font-bold transition-colors ${
-                      allAttestationsChecked()
-                        ? 'bg-green-600 text-white hover:bg-green-700'
-                        : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                    }`}
+                    disabled={!allAttestationsChecked() || status === 'loading'}
+                    className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${(!allAttestationsChecked() || status === 'loading') ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    Confirmer et payer
+                    {status === 'loading' ? 'Validation en cours...' : 'Valider et Payer'}
                   </button>
                 </div>
 

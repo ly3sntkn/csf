@@ -1,5 +1,6 @@
 import React from 'react';
-import { Phone, Mail, MapPin, Clock, Send, Paperclip, User, MessageSquare, Globe, Shield, Heart } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { Phone, Mail, MapPin, Clock, Send, Paperclip, MessageSquare } from 'lucide-react';
 
 const ContactPage = () => {
   const [formData, setFormData] = React.useState({
@@ -11,6 +12,8 @@ const ContactPage = () => {
     message: '',
     attachment: null as File | null
   });
+
+  const [openFaqIndex, setOpenFaqIndex] = React.useState<number | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -28,14 +31,56 @@ const ContactPage = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission logic here
+    setStatus('loading');
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'contact',
+          data: formData,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: '',
+          attachment: null
+        });
+        alert('Votre message a bien été envoyé !');
+      } else {
+        setStatus('error');
+        alert("Une erreur est survenue lors de l'envoi du message.");
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setStatus('error');
+      alert("Une erreur est survenue lors de l'envoi du message.");
+    } finally {
+      setStatus('idle');
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24">
+      <Helmet>
+        <title>Contactez CSF Transport - Devis & Renseignements</title>
+        <meta name="description" content="Contactez CSF Transport pour vos envois de colis, déménagements et export de véhicules vers l'Algérie. Devis gratuit et réponse sous 24h." />
+        <link rel="canonical" href="https://csf-transport.com/contact" />
+      </Helmet>
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
@@ -87,7 +132,7 @@ const ContactPage = () => {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto space-y-12">
             {/* Contact Form */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="flex items-center mb-6">
@@ -205,10 +250,11 @@ const ContactPage = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-bold text-lg flex items-center justify-center space-x-2 shadow-lg"
+                  disabled={status === 'loading'}
+                  className={`w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-bold text-lg flex items-center justify-center space-x-2 shadow-lg ${status === 'loading' ? 'opacity-70 cursor-wait' : ''}`}
                 >
                   <Send size={20} />
-                  <span>Envoyer le Message</span>
+                  <span>{status === 'loading' ? 'Envoi en cours...' : 'Envoyer le Message'}</span>
                 </button>
               </form>
 
@@ -219,62 +265,55 @@ const ContactPage = () => {
               </div>
             </div>
 
-            {/* Company Information */}
-            <div className="space-y-6">
-              {/* About CSF */}
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-6">À Propos de CSF</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  CSF facilite les échanges entre l'Europe et l'Afrique.
-                  Notre mission est de connecter les familles, les entreprises et les communautés
-                  à travers un service de transport fiable, sécurisé et accessible.
-                </p>
-
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Shield size={20} className="text-blue-600" />
-                    <span className="text-gray-700">Transport sécurisé et suivi</span>
+            {/* FAQ */}
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Questions Fréquentes</h3>
+              <div className="space-y-4">
+                {[
+                  {
+                    question: "Quels sont vos délais de livraison ?",
+                    answer: "En moyenne 7 jours pour l'Algérie, selon la destination finale."
+                  },
+                  {
+                    question: "Proposez-vous une assurance ?",
+                    answer: "Oui, nous proposons une assurance complète pour tous vos envois."
+                  },
+                  {
+                    question: "Comment suivre mon colis ?",
+                    answer: "Vous recevez un numéro de suivi pour tracer votre envoi en temps réel."
+                  }
+                ].map((faq, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                    <button
+                      className="w-full flex items-center justify-between p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
+                      onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                    >
+                      <span className="font-medium text-gray-800">{faq.question}</span>
+                      {openFaqIndex === index ? (
+                        <span className="text-blue-600 text-xl font-bold">-</span>
+                      ) : (
+                        <span className="text-gray-400 text-xl font-bold">+</span>
+                      )}
+                    </button>
+                    {openFaqIndex === index && (
+                      <div className="p-4 bg-white border-t border-gray-200">
+                        <p className="text-gray-600 text-sm">{faq.answer}</p>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <Globe size={20} className="text-green-600" />
-                    <span className="text-gray-700">Réseau étendu Europe-Afrique</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Heart size={20} className="text-red-600" />
-                    <span className="text-gray-700">Service client personnalisé</span>
-                  </div>
-                </div>
+                ))}
               </div>
+            </div>
 
-              {/* FAQ */}
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-6">Questions Fréquentes</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium text-gray-800 mb-2">Quels sont vos délais de livraison ?</h4>
-                    <p className="text-gray-600 text-sm">En moyenne 7 jours pour l'Algérie, selon la destination finale.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-800 mb-2">Proposez-vous une assurance ?</h4>
-                    <p className="text-gray-600 text-sm">Oui, nous proposons une assurance complète pour tous vos envois.</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-800 mb-2">Comment suivre mon colis ?</h4>
-                    <p className="text-gray-600 text-sm">Vous recevez un numéro de suivi pour tracer votre envoi en temps réel.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Emergency Contact */}
-              <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg p-8 text-white">
-                <h3 className="text-2xl font-bold mb-4">Contact d'Urgence</h3>
-                <p className="mb-4 text-red-100">
-                  Pour toute urgence concernant vos envois, notre équipe est disponible 7j/7.
-                </p>
-                <div className="space-y-2">
-                  <p className="font-medium">📞 +33 7 85 76 20 55</p>
-                  <p className="font-medium">✉️ urgence@csfgroupe.fr</p>
-                </div>
+            {/* Emergency Contact */}
+            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg p-8 text-white text-center">
+              <h3 className="text-2xl font-bold mb-4">Contact d'Urgence</h3>
+              <p className="mb-4 text-red-100">
+                Pour toute urgence concernant vos envois, notre équipe est disponible 7j/7.
+              </p>
+              <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-8">
+                <p className="font-medium flex items-center gap-2">📞 +33 7 85 76 20 55</p>
+                <p className="font-medium flex items-center gap-2">✉️ urgence@csfgroupe.fr</p>
               </div>
             </div>
           </div>

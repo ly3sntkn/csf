@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import {
   Package, Ruler, Scale, User, MapPin, Plus, Trash2,
   CreditCard, Check, AlertTriangle, ArrowRight, ArrowLeft, X
@@ -513,6 +514,11 @@ const EnvoiColisPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24">
+      <Helmet>
+        <title>Envoi de Colis France-Algérie - CSF Transport</title>
+        <meta name="description" content="Expédiez vos colis vers l'Algérie en toute sécurité. Devis immédiat pour effets personnels et pièces détachées. Transport rapide et fiable." />
+        <link rel="canonical" href="https://csf-transport.com/envoi-colis" />
+      </Helmet>
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white mb-12">
         <div className="container mx-auto px-4 text-center">

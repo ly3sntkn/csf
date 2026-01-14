@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Car, Search, FileCheck, Truck, CheckCircle, Globe, Shield, Clock, ArrowRight, Star, AlertTriangle, Phone, Mail } from 'lucide-react';
 
 const AchatLivraisonPage: React.FC = () => {
@@ -53,13 +54,6 @@ const AchatLivraisonPage: React.FC = () => {
     }
   ];
 
-  const vehicleTypes = [
-    { name: "Voitures de Tourisme", icon: "🚗", description: "Berlines, citadines, SUV, 4x4" },
-    { name: "Véhicules Utilitaires", icon: "🚐", description: "Fourgons, camionnettes, utilitaires" },
-    { name: "Véhicules de Luxe", icon: "🏎️", description: "Voitures haut de gamme et sportives" },
-    { name: "Motos & Scooters", icon: "🏍️", description: "Deux-roues de toutes cylindrées" }
-  ];
-
   const advantages = [
     {
       icon: Globe,
@@ -78,14 +72,13 @@ const AchatLivraisonPage: React.FC = () => {
     }
   ];
 
-  const ports = [
-    { name: "Marseille", destination: "Alger", duration: "24h", frequency: "Quotidien" },
-    { name: "Sète", destination: "Alger", duration: "20h", frequency: "3x/semaine" },
-    { name: "Toulon", destination: "Oran", duration: "18h", frequency: "2x/semaine" }
-  ];
-
   return (
     <div className="min-h-screen bg-white pt-24">
+      <Helmet>
+        <title>Achat & Export Véhicules Europe-Algérie - CSF Transport</title>
+        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Recherche, achat, transport et formalités douanières. Service clé en main sécurisé." />
+        <link rel="canonical" href="https://csf-transport.com/achat-livraison" />
+      </Helmet>
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
@@ -148,63 +141,6 @@ const AchatLivraisonPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Vehicle Types */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Types de Véhicules
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Nous pouvons importer tous types de véhicules selon vos besoins
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {vehicleTypes.map((type, index) => (
-              <div key={index} className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="text-5xl mb-4">{type.icon}</div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">{type.name}</h3>
-                <p className="text-gray-600 text-sm">{type.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Shipping Routes */}
-      <section className="py-16 bg-blue-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Nos Routes Maritime
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Liaisons régulières depuis les ports français vers l'Algérie
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {ports.map((port, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg p-6">
-                <div className="text-center">
-                  <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <Truck size={32} className="text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {port.name} → {port.destination}
-                  </h3>
-                  <div className="space-y-2 text-gray-600">
-                    <p><strong>Durée :</strong> {port.duration}</p>
-                    <p><strong>Fréquence :</strong> {port.frequency}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Advantages */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -235,43 +171,6 @@ const AchatLivraisonPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Pricing Info */}
-      <section className="py-16 bg-gradient-to-br from-green-500 to-green-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Tarification Transparente
-          </h2>
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-8 mb-8">
-              <div className="grid md:grid-cols-2 gap-8 text-left">
-                <div>
-                  <h3 className="text-xl font-bold mb-4">Services Inclus</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-center"><CheckCircle size={16} className="mr-2" /> Recherche personnalisée</li>
-                    <li className="flex items-center"><CheckCircle size={16} className="mr-2" /> Achat sécurisé</li>
-                    <li className="flex items-center"><CheckCircle size={16} className="mr-2" /> Formalités administratives</li>
-                    <li className="flex items-center"><CheckCircle size={16} className="mr-2" /> Transport au port</li>
-                    <li className="flex items-center"><CheckCircle size={16} className="mr-2" /> Export maritime</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-4">Tarifs Indicatifs</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-center"><Car size={16} className="mr-2" /> Voiture standard: À partir de 800€</li>
-                    <li className="flex items-center"><Car size={16} className="mr-2" /> SUV/4x4: À partir de 1200€</li>
-                    <li className="flex items-center"><Car size={16} className="mr-2" /> Utilitaire: À partir de 1000€</li>
-                    <li className="flex items-center"><Car size={16} className="mr-2" /> Moto: À partir de 400€</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <p className="text-green-100 mb-6">
-              *Tarifs hors prix d'achat du véhicule. Devis personnalisé selon le type de véhicule et destination.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Important Information */}
       <section className="py-16 bg-yellow-50">
         <div className="container mx-auto px-4">
@@ -281,12 +180,12 @@ const AchatLivraisonPage: React.FC = () => {
                 <AlertTriangle className="text-yellow-600 mr-4" size={32} />
                 <h2 className="text-2xl font-bold text-gray-800">Informations Importantes</h2>
               </div>
-              
+
               <div className="space-y-6">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <h3 className="font-bold text-blue-800 mb-2">Formalités Douanières</h3>
                   <p className="text-blue-700 text-sm">
-                    À l'arrivée en Algérie, vous devrez vous acquitter des droits de douane selon la réglementation algérienne en vigueur. 
+                    À l'arrivée en Algérie, vous devrez vous acquitter des droits de douane selon la réglementation algérienne en vigueur.
                     Nous vous assistons dans toutes les démarches.
                   </p>
                 </div>

@@ -29,7 +29,7 @@ const ContactSection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+
     // Handle form submission logic here
   };
 
@@ -50,7 +50,7 @@ const ContactSection = () => {
           <div className="space-y-8">
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h3 className="text-2xl font-bold text-gray-800 mb-6">Nos Coordonnées</h3>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-blue-100 p-3 rounded-full">
@@ -103,7 +103,7 @@ const ContactSection = () => {
             <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-8 text-white">
               <h3 className="text-2xl font-bold mb-4">Service Achat & Livraison</h3>
               <p className="mb-6 text-green-100">
-                Vous souhaitez acheter en Europe et faire livrer en Afrique ? 
+                Vous souhaitez acheter en Europe et faire livrer en Afrique ?
                 Notre service d'achat et livraison vous facilite la vie !
               </p>
               <div className="space-y-3">
