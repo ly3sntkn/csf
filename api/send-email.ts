@@ -12,13 +12,13 @@ export default async function handler(
     }
 
     const { type, data } = request.body;
-    const adminEmail = 'lyesntkn2005@gmail.com'; // Replace with actual admin email if different
+    const adminEmail = 'lyesntkn2005@gmail.com';
 
     try {
         if (type === 'contact') {
             // 1. Email to Admin (Contact Form)
             await resend.emails.send({
-                from: 'CSF Contact <onboarding@resend.dev>', // Use certified domain if available, otherwise testing domain
+                from: 'CSF Contact <onboarding@resend.dev>',
                 to: adminEmail,
                 subject: `Nouveau message de ${data.firstName} ${data.lastName} - ${data.subject}`,
                 html: `
@@ -31,20 +31,25 @@ export default async function handler(
         `,
             });
 
-            // 2. Email to Client (Acknowledgement)
-            await resend.emails.send({
-                from: 'CSF Transport <onboarding@resend.dev>',
-                to: data.email,
-                subject: 'Nous avons bien reçu votre message',
-                html: `
-          <h1>Bonjour ${data.firstName},</h1>
-          <p>Nous avons bien reçu votre message concernant "${data.subject}".</p>
-          <p>Notre équipe va le traiter dans les plus brefs délais (généralement sous 24h).</p>
-          <br>
-          <p>Cordialement,</p>
-          <p><strong>L'équipe CSF Transport</strong></p>
-        `,
-            });
+            // 2. Email to Client (Acknowledgement) - Best effort
+            try {
+                await resend.emails.send({
+                    from: 'CSF Transport <onboarding@resend.dev>',
+                    to: data.email,
+                    subject: 'Nous avons bien reçu votre message',
+                    html: `
+            <h1>Bonjour ${data.firstName},</h1>
+            <p>Nous avons bien reçu votre message concernant "${data.subject}".</p>
+            <p>Notre équipe va le traiter dans les plus brefs délais (généralement sous 24h).</p>
+            <br>
+            <p>Cordialement,</p>
+            <p><strong>L'équipe CSF Transport</strong></p>
+          `,
+                });
+            } catch (clientError) {
+                console.warn('Could not send client acknowledgement email (likely due to Resend testing limit):', clientError);
+            }
+
         } else if (type === 'shipping') {
             // 1. Email to Admin (Shipping Quote)
             await resend.emails.send({
@@ -73,33 +78,37 @@ export default async function handler(
         `,
             });
 
-            // 2. Email to Client (Recap)
-            await resend.emails.send({
-                from: 'CSF Transport <onboarding@resend.dev>',
-                to: data.senderEmail,
-                subject: 'Récapitulatif de votre demande d\'expédition',
-                html: `
-          <h1>Bonjour ${data.senderFirstName},</h1>
-          <p>Merci d'avoir choisi CSF Transport. Voici le récapitulatif de votre demande :</p>
-          
-          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px;">
-            <p><strong>Départ:</strong> ${data.senderCity}, France</p>
-            <p><strong>Arrivée:</strong> ${data.recipientCity}, Algérie</p>
-            <p><strong>Poids:</strong> ${data.weight} kg</p>
-            <p><strong>Tarif estimé:</strong> ${data.price} €</p>
-          </div>
+            // 2. Email to Client (Recap) - Best effort
+            try {
+                await resend.emails.send({
+                    from: 'CSF Transport <onboarding@resend.dev>',
+                    to: data.senderEmail,
+                    subject: 'Récapitulatif de votre demande d\'expédition',
+                    html: `
+            <h1>Bonjour ${data.senderFirstName},</h1>
+            <p>Merci d'avoir choisi CSF Transport. Voici le récapitulatif de votre demande :</p>
+            
+            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px;">
+              <p><strong>Départ:</strong> ${data.senderCity}, France</p>
+              <p><strong>Arrivée:</strong> ${data.recipientCity}, Algérie</p>
+              <p><strong>Poids:</strong> ${data.weight} kg</p>
+              <p><strong>Tarif estimé:</strong> ${data.price} €</p>
+            </div>
 
-          <p>Un membre de notre équipe va vérifier ces informations et vous contacter pour finaliser l'enlèvement.</p>
-          <br>
-          <p>Cordialement,</p>
-          <p><strong>L'équipe CSF Transport</strong></p>
-        `,
-            });
+            <p>Un membre de notre équipe va vérifier ces informations et vous contacter pour finaliser l'enlèvement.</p>
+            <br>
+            <p>Cordialement,</p>
+            <p><strong>L'équipe CSF Transport</strong></p>
+          `,
+                });
+            } catch (clientError) {
+                console.warn('Could not send client recap email (likely due to Resend testing limit):', clientError);
+            }
         }
 
         return response.status(200).json({ success: true });
     } catch (error) {
-        console.error('Resend Error:', error);
-        return response.status(500).json({ error: 'Error sending email' });
+        console.error('Resend Admin Error:', error);
+        return response.status(500).json({ error: 'Error sending email to admin' });
     }
 }
