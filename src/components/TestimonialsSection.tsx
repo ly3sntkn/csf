@@ -1,71 +1,126 @@
-import React from 'react';
-import { Star } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 
 const TestimonialsSection = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     const testimonials = [
         {
-            name: 'Sarah M.',
+            id: 1,
+            name: 'Ahmed Boumediene',
+            location: 'Toulouse → Tlemcen',
             rating: 5,
-            date: 'Il y a 2 semaines',
-            text: "Service impeccable ! Mon colis est arrivé à Alger en parfait état et dans les délais annoncés. Le suivi est très rassurant.",
-            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150'
-        },
-        {
-            name: 'Karim B.',
-            rating: 5,
-            date: 'Il y a 1 mois',
-            text: "J'ai déménagé tout mon appartement de Lyon vers Oran avec CSF. Une équipe pro, à l'écoute et très soigneuse. Je recommande !",
+            text: "Excellent service client et suivi personnalisé. CSF facilite vraiment les envois vers l'Algérie avec professionnalisme.",
             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150'
         },
         {
-            name: 'Amel L.',
+            id: 2,
+            name: 'Sofia K.',
+            location: 'Lyon → Alger',
             rating: 5,
-            date: 'Il y a 3 semaines',
-            text: "Première fois que j'envoie des pièces auto. Tout s'est bien passé, douane incluse. Merci pour le professionnalisme.",
-            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150'
+            text: "J'ai envoyé des cartons pour ma famille, tout est arrivé intact et rapidement. Je repasserai par vous sans hésitation.",
+            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150'
+        },
+        {
+            id: 3,
+            name: 'Yacine B.',
+            location: 'Marseille → Oran',
+            rating: 5,
+            text: "Déménagement complet réalisé avec succès. L'équipe a été très efficace et le tarif était compétitif. Merci !",
+            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150'
         }
     ];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentIndex((prevIndex) =>
+                prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 5000);
+
+        return () => clearInterval(timer);
+    }, [testimonials.length]);
+
+    const goToPrevious = () => {
+        setCurrentIndex(currentIndex === 0 ? testimonials.length - 1 : currentIndex - 1);
+    };
+
+    const goToNext = () => {
+        setCurrentIndex(currentIndex === testimonials.length - 1 ? 0 : currentIndex + 1);
+    };
 
     return (
         <section className="py-16 bg-gray-50">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">Ils nous ont fait confiance</h2>
-                    <p className="text-xl text-gray-600">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Ils nous ont fait confiance
+                    </h2>
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                         Ce que nos clients pensent de notre sérieux et notre fiabilité
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div className="flex items-center gap-4 mb-6">
-                                <img
-                                    src={testimonial.image}
-                                    alt={testimonial.name}
-                                    className="w-12 h-12 rounded-full object-cover"
-                                />
-                                <div>
-                                    <h3 className="font-bold text-gray-900">{testimonial.name}</h3>
-                                    <p className="text-sm text-gray-500">{testimonial.date}</p>
-                                </div>
-                            </div>
+                <div className="relative max-w-4xl mx-auto">
+                    <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+                        <div className="flex items-center justify-center mb-6">
+                            <Quote size={48} className="text-blue-200" />
+                        </div>
 
-                            <div className="flex gap-1 mb-4">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        size={20}
-                                        className={i < testimonial.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
-                                    />
+                        <div className="text-center">
+                            <div className="flex justify-center mb-4">
+                                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                                    <Star key={i} size={20} className="text-yellow-400 fill-yellow-400" />
                                 ))}
                             </div>
 
-                            <p className="text-gray-600 leading-relaxed">
-                                "{testimonial.text}"
+                            <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed italic">
+                                "{testimonials[currentIndex].text}"
                             </p>
+
+                            <div className="flex items-center justify-center space-x-4">
+                                <img
+                                    src={testimonials[currentIndex].image}
+                                    alt={testimonials[currentIndex].name}
+                                    className="w-16 h-16 rounded-full object-cover"
+                                />
+                                <div className="text-left">
+                                    <h4 className="font-bold text-gray-900">
+                                        {testimonials[currentIndex].name}
+                                    </h4>
+                                    <p className="text-gray-600 font-medium">
+                                        {testimonials[currentIndex].location}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Navigation buttons */}
+                    <button
+                        onClick={goToPrevious}
+                        className="absolute left-0 md:-left-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 hidden md:block"
+                    >
+                        <ChevronLeft size={24} className="text-gray-600" />
+                    </button>
+                    <button
+                        onClick={goToNext}
+                        className="absolute right-0 md:-right-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 hidden md:block"
+                    >
+                        <ChevronRight size={24} className="text-gray-600" />
+                    </button>
+
+                    {/* Dots indicator */}
+                    <div className="flex justify-center mt-8 space-x-2">
+                        {testimonials.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setCurrentIndex(index)}
+                                className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+                                    }`}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

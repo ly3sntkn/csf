@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Users, Package, Truck, Car } from 'lucide-react';
+import { Package, Ship, Car } from 'lucide-react';
 
 const KeyMetrics = () => {
   const [counters, setCounters] = useState({
-    satisfaction: 0,
     packages: 0,
     moving: 0,
     vehicles: 0
@@ -11,10 +10,9 @@ const KeyMetrics = () => {
 
   useEffect(() => {
     const targets = {
-      satisfaction: 98,
-      packages: 680,
-      moving: 250,
-      vehicles: 440
+      packages: 500,
+      moving: 300,
+      vehicles: 800
     };
 
     const duration = 2000; // 2 seconds
@@ -27,7 +25,6 @@ const KeyMetrics = () => {
       const progress = currentStep / steps;
 
       setCounters({
-        satisfaction: Math.floor(targets.satisfaction * progress),
         packages: Math.floor(targets.packages * progress),
         moving: Math.floor(targets.moving * progress),
         vehicles: Math.floor(targets.vehicles * progress)
@@ -44,25 +41,18 @@ const KeyMetrics = () => {
 
   const metrics = [
     {
-      icon: Users,
-      value: `${counters.satisfaction}%`,
-      label: 'de clients satisfait',
-      color: 'text-green-600',
-      bgColor: 'bg-green-100'
-    },
-    {
       icon: Package,
       value: `+${counters.packages}`,
       label: 'colis expédiés chaque semaine',
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100'
-    },
-    {
-      icon: Truck,
-      value: `+${counters.moving}`,
-      label: 'déménagements internationaux chaque année',
       color: 'text-red-600',
       bgColor: 'bg-red-100'
+    },
+    {
+      icon: Ship,
+      value: `+${counters.moving}`,
+      label: 'déménagements internationaux chaque année',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100'
     },
     {
       icon: Car,
@@ -85,21 +75,21 @@ const KeyMetrics = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {metrics.map((metric, index) => {
             const IconComponent = metric.icon;
             return (
               <div
                 key={index}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center"
+                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center transform hover:-translate-y-1"
               >
                 <div className={`inline-flex p-4 rounded-full ${metric.bgColor} mb-4`}>
                   <IconComponent size={32} className={metric.color} />
                 </div>
-                <div className="text-3xl font-bold text-gray-800 mb-2">
+                <div className="text-4xl font-bold text-gray-800 mb-2">
                   {metric.value}
                 </div>
-                <div className="text-gray-600 font-medium">
+                <div className="text-gray-600 font-medium text-lg">
                   {metric.label}
                 </div>
               </div>

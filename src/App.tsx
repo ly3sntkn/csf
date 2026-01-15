@@ -1,15 +1,15 @@
 import React, { useState, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CookieBanner from './components/CookieBanner';
-import WhatsAppButton from './components/WhatsAppButton';
-
 // Lazy load pages
 const AccueilPage = React.lazy(() => import('./pages/AccueilPage'));
 const EnvoiColisPage = React.lazy(() => import('./pages/EnvoiColisPage'));
 const DemenagementPage = React.lazy(() => import('./pages/DemenagementPage'));
 const AchatLivraisonPage = React.lazy(() => import('./pages/AchatLivraisonPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+
+// Lazy load global components
+const CookieBanner = React.lazy(() => import('./components/CookieBanner'));
 
 // Loading component
 const PageLoader = () => (
@@ -63,8 +63,9 @@ function App() {
         </Suspense>
       </main>
       <Footer />
-      <CookieBanner />
-      <WhatsAppButton />
+      <Suspense fallback={null}>
+        <CookieBanner />
+      </Suspense>
     </div>
   );
 }
