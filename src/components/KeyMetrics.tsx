@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Package, Ship, Car } from 'lucide-react';
+import { Package, Ship, Car, Users } from 'lucide-react';
 
 const KeyMetrics = () => {
   const [counters, setCounters] = useState({
@@ -60,6 +60,13 @@ const KeyMetrics = () => {
       label: 'véhicules transportés par an',
       color: 'text-purple-600',
       bgColor: 'bg-purple-100'
+    },
+    {
+      icon: Users,
+      value: "98%",
+      label: "satisfaction client",
+      color: "text-green-600",
+      bgColor: "bg-green-100"
     }
   ];
 
@@ -75,7 +82,7 @@ const KeyMetrics = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {metrics.map((metric, index) => {
             const IconComponent = metric.icon;
             return (
