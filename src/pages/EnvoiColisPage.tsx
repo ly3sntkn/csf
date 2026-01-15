@@ -275,8 +275,8 @@ const EnvoiColisPage = () => {
             <div>
               <span className="text-gray-500 text-sm">Votre Tarif</span>
               <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)} €</div>
-              <div className="text-sm text-blue-600 font-medium mt-1">
-                basé sur le poids volumétrique
+              <div className="text-sm text-blue-600 font-medium mt-1 italic">
+                Basé sur le poids volumétrique
               </div>
               {(quote.length * quote.width * quote.height) / 5000 > quote.weight && (
                 <span className="text-xs text-orange-600 block mt-1">
