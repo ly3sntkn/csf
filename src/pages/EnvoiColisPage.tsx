@@ -520,12 +520,12 @@ const EnvoiColisPage = () => {
         <link rel="canonical" href="https://csf-transport.com/envoi-colis" />
       </Helmet>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white mb-12">
+      <section className="pt-32 pb-16 bg-white text-gray-900 mb-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Envoi de Colis vers l'Algérie
           </h1>
-          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
             Expédiez vos colis en toute simplicité et sécurité
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">

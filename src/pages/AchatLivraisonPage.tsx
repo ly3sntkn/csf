@@ -80,12 +80,12 @@ const AchatLivraisonPage: React.FC = () => {
         <link rel="canonical" href="https://csf-transport.com/achat-livraison" />
       </Helmet>
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <section className="pt-32 pb-16 bg-white text-gray-900">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Achat & Export de Véhicules
           </h1>
-          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
             Trouvez et importez le véhicule de vos rêves depuis l'Europe vers l'Algérie
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 text-blue-800 max-w-2xl mx-auto">
