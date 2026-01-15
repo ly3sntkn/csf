@@ -41,6 +41,13 @@ const KeyMetrics = () => {
 
   const metrics = [
     {
+      icon: Users,
+      value: "98%",
+      label: "satisfaction client",
+      color: "text-green-600",
+      bgColor: "bg-green-100"
+    },
+    {
       icon: Package,
       value: `+${counters.packages}`,
       label: 'colis expédiés chaque semaine',
@@ -60,13 +67,6 @@ const KeyMetrics = () => {
       label: 'véhicules transportés par an',
       color: 'text-purple-600',
       bgColor: 'bg-purple-100'
-    },
-    {
-      icon: Users,
-      value: "98%",
-      label: "satisfaction client",
-      color: "text-green-600",
-      bgColor: "bg-green-100"
     }
   ];
 
