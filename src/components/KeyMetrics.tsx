@@ -96,7 +96,7 @@ const KeyMetrics = () => {
                 <div className="text-4xl font-bold text-gray-800 mb-2">
                   {metric.value}
                 </div>
-                <div className="text-gray-600 font-medium text-lg">
+                <div className="text-gray-600 uppercase text-sm tracking-wider">
                   {metric.label}
                 </div>
               </div>
