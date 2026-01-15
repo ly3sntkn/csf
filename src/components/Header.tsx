@@ -39,9 +39,12 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const isHomePage = currentPage === 'accueil';
+  const headerBgClass = isScrolled || !isHomePage ? 'bg-[#2f3192] shadow-md py-4' : 'bg-transparent py-6';
+  const textColorClass = 'text-white hover:text-red-500';
+
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-6'
-      }`}>
+    <header className={`fixed w-full z-50 transition-all duration-300 ${headerBgClass}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <div
@@ -61,10 +64,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`text-sm font-bold transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
-                ? 'text-red-600'
-                : isScrolled ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-500'
-                }`}
+              className={`text-sm font-bold transition-colors duration-300 uppercase tracking-wide ${textColorClass} ${currentPage === item.id ? 'underline decoration-2 underline-offset-4' : ''}`}
             >
               {item.label}
             </button>
@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
         {/* Mobile Menu Button */}
         <button
-          className={`xl:hidden ${isScrolled ? 'text-gray-800' : 'text-white'}`}
+          className="xl:hidden text-white"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
