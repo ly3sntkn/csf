@@ -1,6 +1,0 @@
-import{c as a,j as e}from"./index-C2PQrDrm.js";/**
- * @license lucide-react v0.344.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const i=a("Play",[["polygon",{points:"5 3 19 12 5 21 5 3",key:"191637"}]]),l=({title:t="Vidéo explicative",duration:r="1:30",className:s=""})=>e.jsxs("div",{className:`relative bg-gray-900 rounded-xl overflow-hidden aspect-video shadow-lg group cursor-pointer ${s}`,children:[e.jsx("div",{className:"absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 group-hover:scale-105 transition-transform duration-500"}),e.jsx("div",{className:"absolute inset-0 flex items-center justify-center",children:e.jsx("div",{className:"w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300",children:e.jsx(i,{fill:"white",className:"text-white ml-1",size:32})})}),e.jsxs("div",{className:"absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent",children:[e.jsx("p",{className:"text-white font-medium text-lg",children:t}),e.jsx("p",{className:"text-gray-300 text-sm",children:r})]})]});export{l as V};
