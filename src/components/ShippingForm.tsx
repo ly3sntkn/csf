@@ -246,11 +246,7 @@ const ShippingForm = () => {
           Remplissez le formulaire ci-dessous pour obtenir votre devis gratuit.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-blue-800 text-sm">
-            ⚠️ <strong>Information importante :</strong> pour le moment, les expéditions sont disponibles uniquement de la France vers l'Algérie.
-          </p>
-        </div>
+
 
         <div className="mb-8">
           <h3 className="text-xl font-bold text-gray-800 mb-4">
@@ -393,11 +389,7 @@ const ShippingForm = () => {
           </div>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-          <p className="text-blue-800 text-sm">
-            ⚠️ <strong>Information importante :</strong> pour le moment, les expéditions sont disponibles uniquement de la France vers l'Algérie.
-          </p>
-        </div>
+
 
         {/* Sender Information */}
         <div className="mb-8">

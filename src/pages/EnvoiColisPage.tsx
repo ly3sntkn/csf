@@ -177,11 +177,7 @@ const EnvoiColisPage = () => {
 
         <VideoPlaceholder className="mt-6 mb-8" title="Comment envoyer votre colis" />
 
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
-          <p className="text-sm text-blue-800">
-            ⚠️ Information importante : pour le moment, les expéditions sont disponibles uniquement de la France vers l'Algérie.
-          </p>
-        </div>
+
 
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Package className="text-blue-600" />
@@ -339,9 +335,7 @@ const EnvoiColisPage = () => {
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
             <User className="text-blue-600" /> Informations Expéditeur (France)
           </h3>
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-3 mb-4 text-sm text-blue-800">
-            ⚠️ Expéditions uniquement de France vers l'Algérie
-          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="text" placeholder="Prénom*" className="p-3 border rounded-lg" value={sender.firstName} onChange={e => setSender({ ...sender, firstName: e.target.value })} />
             <input type="text" placeholder="Nom*" className="p-3 border rounded-lg" value={sender.lastName} onChange={e => setSender({ ...sender, lastName: e.target.value })} />
@@ -528,11 +522,7 @@ const EnvoiColisPage = () => {
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
             Expédiez vos colis en toute simplicité et sécurité
           </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">
-            <p className="text-sm">
-              ⚠️ <strong>Information importante :</strong> Expéditions disponibles uniquement de la France vers l'Algérie
-            </p>
-          </div>
+
         </div>
       </section>
 

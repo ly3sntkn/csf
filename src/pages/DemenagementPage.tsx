@@ -19,11 +19,7 @@ const DemenagementPage = () => {
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
             Un accompagnement complet pour votre changement de vie
           </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">
-            <p className="text-sm">
-              ⚠️ <strong>Information importante :</strong> Service de déménagement disponible uniquement de la France vers l'Algérie
-            </p>
-          </div>
+
         </div>
       </section>
 
