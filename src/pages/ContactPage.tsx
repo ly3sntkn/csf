@@ -96,42 +96,7 @@ const ContactPage = () => {
       {/* Contact Information Cards */}
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-              <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Phone size={24} className="text-blue-600" />
-              </div>
-              <h3 className="font-bold text-gray-800 mb-2">Téléphones</h3>
-              <p className="text-gray-600 text-sm mb-2">Fixe: +33 1 49 75 30 01</p>
-              <p className="text-gray-600 text-sm">Mobile: +33 7 85 76 20 55</p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-              <div className="bg-red-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Mail size={24} className="text-red-600" />
-              </div>
-              <h3 className="font-bold text-gray-800 mb-2">Email</h3>
-              <p className="text-gray-600 text-sm">yanis.yataghene@csfgroupe.fr</p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-              <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <MapPin size={24} className="text-green-600" />
-              </div>
-              <h3 className="font-bold text-gray-800 mb-2">Adresse</h3>
-              <p className="text-gray-600 text-sm">123 Avenue de la République<br />75011 Paris, France</p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-              <div className="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Clock size={24} className="text-purple-600" />
-              </div>
-              <h3 className="font-bold text-gray-800 mb-2">Horaires</h3>
-              <p className="text-gray-600 text-sm">Lun-Ven: 9h-18h<br />Support 7j/7</p>
-            </div>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-12">
+          <div className="max-w-4xl mx-auto">
             {/* Contact Form */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="flex items-center mb-6">
@@ -261,18 +226,6 @@ const ContactPage = () => {
                 <p className="text-blue-800 text-sm text-center">
                   <strong>Réponse garantie sous 24h</strong> - Nous nous engageons à vous répondre rapidement
                 </p>
-              </div>
-            </div>
-
-            {/* Emergency Contact */}
-            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg p-8 text-white text-center">
-              <h3 className="text-2xl font-bold mb-4">Contact d'Urgence</h3>
-              <p className="mb-4 text-red-100">
-                Pour toute urgence concernant vos envois, notre équipe est disponible 7j/7.
-              </p>
-              <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-8">
-                <p className="font-medium flex items-center gap-2">📞 +33 7 85 76 20 55</p>
-                <p className="font-medium flex items-center gap-2">✉️ urgence@csfgroupe.fr</p>
               </div>
             </div>
           </div>
