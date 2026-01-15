@@ -5,6 +5,7 @@ import {
   CreditCard, Check, AlertTriangle, ArrowRight, ArrowLeft, X
 } from 'lucide-react';
 import VideoPlaceholder from '../components/VideoPlaceholder';
+import { wilayas } from '../data/wilayas';
 
 // Types
 type ShippingType = 'personal' | 'parts';
@@ -136,15 +137,71 @@ const EnvoiColisPage = () => {
   const totalValue = inventory.reduce((sum, item) => sum + (item.value * item.quantity), 0);
   const insuranceCost = totalValue * 0.10;
 
-  // Auto-fill City Logic (Simplistic mock)
-  const handleZipChange = (type: 'sender' | 'receiver', value: string) => {
+  // Suggestions State
+  const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
+  const [showSenderSuggestions, setShowSenderSuggestions] = useState(false);
+
+  // Auto-fill City Logic
+  const handleZipChange = async (type: 'sender' | 'receiver', value: string) => {
     if (type === 'sender') {
       setSender(prev => ({ ...prev, zip: value }));
-      if (value.startsWith('75')) setSender(prev => ({ ...prev, city: 'Paris' }));
+
+      // France Logic (Code Postal -> Ville)
+      if (value.length >= 2) {
+        try {
+          const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${value}&type=municipality&limit=5`);
+          const data = await response.json();
+
+          if (data.features && data.features.length > 0) {
+            const cities = data.features.map((f: any) => f.properties.city);
+            // Remove duplicates
+            const uniqueCities = [...new Set(cities)] as string[];
+
+            setSenderSuggestions(uniqueCities);
+            setShowSenderSuggestions(true);
+
+            // Auto-select if perfect match or only 1 result
+            if (uniqueCities.length === 1) {
+              // Optional: Don't auto-fill aggressively if user is typing, but for UX '75001' -> 'Paris' is good.
+              // Let's only suggest. Auto-fill might be annoying if typing specific code.
+              // However, user asked "Le champ ville se complète automatiquement".
+              // We can set the city if it's the only match for a complete zipcode (5 digits)
+              if (value.length === 5) {
+                setSender(prev => ({ ...prev, city: uniqueCities[0] }));
+                setShowSenderSuggestions(false);
+              }
+            }
+          } else {
+            setSenderSuggestions([]);
+            setShowSenderSuggestions(false);
+          }
+        } catch (error) {
+          console.error("Error fetching French cities:", error);
+        }
+      } else {
+        setSenderSuggestions([]);
+        setShowSenderSuggestions(false);
+      }
+
     } else {
+      // Algérie Logic (Code -> Wilaya)
       setReceiver(prev => ({ ...prev, zip: value }));
-      if (value.startsWith('16')) setReceiver(prev => ({ ...prev, city: 'Alger' }));
+
+      // Check first 2 digits for Wilaya
+      if (value.length >= 2) {
+        const wilayaCode = value.substring(0, 2);
+        const wilaya = wilayas.find(w => w.code === wilayaCode);
+
+        if (wilaya) {
+          setReceiver(prev => ({ ...prev, city: wilaya.name }));
+        }
+      }
     }
+  };
+
+  const selectCity = (city: string) => {
+    setSender(prev => ({ ...prev, city }));
+    setShowSenderSuggestions(false);
   };
 
   // Sworn Statement Logic
@@ -346,7 +403,22 @@ const EnvoiColisPage = () => {
             </div>
             <input type="text" placeholder="Adresse*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: e.target.value })} />
             <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={sender.complement} onChange={e => setSender({ ...sender, complement: e.target.value })} />
-            <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={sender.zip} onChange={e => handleZipChange('sender', e.target.value)} />
+            <div className="relative">
+              <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg w-full" value={sender.zip} onChange={e => handleZipChange('sender', e.target.value)} />
+              {showSenderSuggestions && senderSuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
+                  {senderSuggestions.map((city, idx) => (
+                    <li
+                      key={idx}
+                      className="p-2 hover:bg-blue-50 cursor-pointer text-sm text-gray-700"
+                      onClick={() => selectCity(city)}
+                    >
+                      {city}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <input type="text" placeholder="Ville" className="p-3 border rounded-lg" value={sender.city} onChange={e => setSender({ ...sender, city: e.target.value })} />
             <input type="text" value="France" disabled className="p-3 border rounded-lg bg-gray-100 text-gray-500" />
           </div>
