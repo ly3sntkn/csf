@@ -34,7 +34,7 @@ const HeroBanner = () => {
           TRANSPORT INTERNATIONAL<br />
           EUROPE - AFRIQUE
         </h1>
-        <p className="text-xl md:text-2xl font-light mb-16 max-w-3xl text-white">
+        <p className="text-xl md:text-2xl font-light mb-16 max-w-3xl text-white animate-fade-in-up opacity-0" style={{ animationDelay: '0.5s' }}>
           Ce qui compte pour vous, voyage avec nous
         </p>
 
