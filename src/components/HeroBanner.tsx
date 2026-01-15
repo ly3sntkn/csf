@@ -35,7 +35,7 @@ const HeroBanner = () => {
           EUROPE - AFRIQUE
         </h1>
         <div className="h-16 md:h-20 mb-12 flex items-center justify-center">
-          <p className="text-xl md:text-2xl font-light max-w-3xl text-white animate-blur-in opacity-0" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+          <p className="text-xl md:text-2xl font-light italic max-w-3xl text-white">
             Ce qui compte pour vous, voyage avec nous
           </p>
         </div>
