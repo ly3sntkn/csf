@@ -276,7 +276,7 @@ const EnvoiColisPage = () => {
               <span className="text-gray-500 text-sm">Votre Tarif</span>
               <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)} €</div>
               <div className="text-sm text-blue-600 font-medium mt-1">
-                Soit {((quote.price / Math.max(quote.weight, (quote.length * quote.width * quote.height) / 5000)) || 0).toFixed(2)} € / Kg
+                basé sur le poids volumétrique
               </div>
               {(quote.length * quote.width * quote.height) / 5000 > quote.weight && (
                 <span className="text-xs text-orange-600 block mt-1">
@@ -523,6 +523,11 @@ const EnvoiColisPage = () => {
             Expédiez vos colis en toute simplicité et sécurité
           </p>
 
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">
+            <p className="text-sm">
+              ⚠️ <strong>Information importante :</strong> Expéditions disponibles uniquement de la France vers l'Algérie
+            </p>
+          </div>
         </div>
       </section>
 
