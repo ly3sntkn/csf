@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white/95 backdrop-blur-md py-4'
+    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-6'
       }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
@@ -63,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
               onClick={() => onNavigate(item.id)}
               className={`text-sm font-bold transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
                 ? 'text-red-600'
-                : 'text-gray-800 hover:text-red-600'
+                : isScrolled ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-500'
                 }`}
             >
               {item.label}
@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
         {/* Mobile Menu Button */}
         <button
-          className="xl:hidden text-gray-800"
+          className={`xl:hidden ${isScrolled ? 'text-gray-800' : 'text-white'}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}

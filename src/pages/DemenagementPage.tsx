@@ -4,14 +4,14 @@ import VideoPlaceholder from '../components/VideoPlaceholder';
 
 const DemenagementPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
+    <div className="min-h-screen bg-gray-50 pt-0">
       <Helmet>
         <title>Déménagement France-Algérie - CSF Transport</title>
         <meta name="description" content="Service complet de déménagement entre la France et l'Algérie. Emballage, transport et livraison sécurisés. Demandez votre devis gratuit." />
         <link rel="canonical" href="https://csf-transport.com/demenagement" />
       </Helmet>
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white mb-12">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white mb-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Déménagement vers l'Algérie

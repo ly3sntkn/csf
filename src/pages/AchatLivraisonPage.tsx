@@ -73,14 +73,14 @@ const AchatLivraisonPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white pt-24">
+    <div className="min-h-screen bg-white pt-0">
       <Helmet>
         <title>Achat & Export Véhicules Europe-Algérie - CSF Transport</title>
         <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Recherche, achat, transport et formalités douanières. Service clé en main sécurisé." />
         <link rel="canonical" href="https://csf-transport.com/achat-livraison" />
       </Helmet>
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Achat & Export de Véhicules
@@ -97,7 +97,7 @@ const AchatLivraisonPage: React.FC = () => {
       </section>
 
       {/* How it Works */}
-      <section className="py-16 bg-gray-50">
+      <section className="pt-32 pb-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -142,7 +142,7 @@ const AchatLivraisonPage: React.FC = () => {
       </section>
 
       {/* Advantages */}
-      <section className="py-16 bg-white">
+      <section className="pt-32 pb-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -172,7 +172,7 @@ const AchatLivraisonPage: React.FC = () => {
       </section>
 
       {/* Important Information */}
-      <section className="py-16 bg-yellow-50">
+      <section className="pt-32 pb-16 bg-yellow-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -216,7 +216,7 @@ const AchatLivraisonPage: React.FC = () => {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Prêt à Importer Votre Véhicule ?

@@ -75,14 +75,14 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
+    <div className="min-h-screen bg-gray-50 pt-0">
       <Helmet>
         <title>Contactez CSF Transport - Devis & Renseignements</title>
         <meta name="description" content="Contactez CSF Transport pour vos envois de colis, déménagements et export de véhicules vers l'Algérie. Devis gratuit et réponse sous 24h." />
         <link rel="canonical" href="https://csf-transport.com/contact" />
       </Helmet>
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Contactez-Nous
@@ -95,7 +95,7 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Information Cards */}
-      <section className="py-16">
+      <section className="pt-32 pb-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             <div className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
