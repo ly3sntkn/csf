@@ -43,7 +43,7 @@ const KeyMetrics = () => {
     {
       icon: Users,
       value: "98%",
-      label: "satisfaction client",
+      label: "taux de satisfaction",
       color: "text-green-600",
       bgColor: "bg-green-100"
     },
