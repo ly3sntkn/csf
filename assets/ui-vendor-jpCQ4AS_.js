@@ -8,7 +8,7 @@ import{r as h}from"./react-vendor-CDm0wjNF.js";/**
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const M=e=>e.replace(/([a-z0-9])([A-Z])/g,"$1-$2").toLowerCase().trim(),a=(e,r)=>{const y=h.forwardRef(({color:k="currentColor",size:t=24,strokeWidth:s=2,absoluteStrokeWidth:o,className:l="",children:c,...n},p)=>h.createElement("svg",{ref:p,...v,width:t,height:t,stroke:k,strokeWidth:o?Number(s)*24/Number(t):s,className:["lucide",`lucide-${M(e)}`,l].join(" "),...n},[...r.map(([d,i])=>h.createElement(d,i)),...Array.isArray(c)?c:[c]]));return y.displayName=`${e}`,y};/**
+ */const M=e=>e.replace(/([a-z0-9])([A-Z])/g,"$1-$2").toLowerCase().trim(),a=(e,r)=>{const y=h.forwardRef(({color:k="currentColor",size:t=24,strokeWidth:s=2,absoluteStrokeWidth:o,className:n="",children:c,...l},p)=>h.createElement("svg",{ref:p,...v,width:t,height:t,stroke:k,strokeWidth:o?Number(s)*24/Number(t):s,className:["lucide",`lucide-${M(e)}`,n].join(" "),...l},[...r.map(([d,i])=>h.createElement(d,i)),...Array.isArray(c)?c:[c]]));return y.displayName=`${e}`,y};/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
@@ -83,12 +83,12 @@ import{r as h}from"./react-vendor-CDm0wjNF.js";/**
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const P=a("Instagram",[["rect",{width:"20",height:"20",x:"2",y:"2",rx:"5",ry:"5",key:"2e1cvw"}],["path",{d:"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",key:"9exkf1"}],["line",{x1:"17.5",x2:"17.51",y1:"6.5",y2:"6.5",key:"r4j83e"}]]);/**
+ */const H=a("Instagram",[["rect",{width:"20",height:"20",x:"2",y:"2",rx:"5",ry:"5",key:"2e1cvw"}],["path",{d:"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",key:"9exkf1"}],["line",{x1:"17.5",x2:"17.51",y1:"6.5",y2:"6.5",key:"r4j83e"}]]);/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const H=a("Linkedin",[["path",{d:"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",key:"c2jq9f"}],["rect",{width:"4",height:"12",x:"2",y:"9",key:"mk3on5"}],["circle",{cx:"4",cy:"4",r:"2",key:"bt5ra8"}]]);/**
+ */const P=a("Linkedin",[["path",{d:"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",key:"c2jq9f"}],["rect",{width:"4",height:"12",x:"2",y:"9",key:"mk3on5"}],["circle",{cx:"4",cy:"4",r:"2",key:"bt5ra8"}]]);/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
@@ -103,17 +103,17 @@ import{r as h}from"./react-vendor-CDm0wjNF.js";/**
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const F=a("Menu",[["line",{x1:"4",x2:"20",y1:"12",y2:"12",key:"1e0a9i"}],["line",{x1:"4",x2:"20",y1:"6",y2:"6",key:"1owob3"}],["line",{x1:"4",x2:"20",y1:"18",y2:"18",key:"yk5zj1"}]]);/**
+ */const U=a("Menu",[["line",{x1:"4",x2:"20",y1:"12",y2:"12",key:"1e0a9i"}],["line",{x1:"4",x2:"20",y1:"6",y2:"6",key:"1owob3"}],["line",{x1:"4",x2:"20",y1:"18",y2:"18",key:"yk5zj1"}]]);/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const R=a("MessageSquare",[["path",{d:"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",key:"1lielz"}]]);/**
+ */const F=a("MessageSquare",[["path",{d:"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",key:"1lielz"}]]);/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const U=a("Package",[["path",{d:"m7.5 4.27 9 5.15",key:"1c824w"}],["path",{d:"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z",key:"hh9hay"}],["path",{d:"m3.3 7 8.7 5 8.7-5",key:"g66t2b"}],["path",{d:"M12 22V12",key:"d0xqtd"}]]);/**
+ */const R=a("Package",[["path",{d:"m7.5 4.27 9 5.15",key:"1c824w"}],["path",{d:"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z",key:"hh9hay"}],["path",{d:"m3.3 7 8.7 5 8.7-5",key:"g66t2b"}],["path",{d:"M12 22V12",key:"d0xqtd"}]]);/**
  * @license lucide-react v0.344.0 - ISC
  *
  * This source code is licensed under the ISC license.
@@ -193,4 +193,9 @@ import{r as h}from"./react-vendor-CDm0wjNF.js";/**
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const a1=a("X",[["path",{d:"M18 6 6 18",key:"1bl5f8"}],["path",{d:"m6 6 12 12",key:"d8bk6v"}]]);export{u as A,z as C,V as F,j as G,P as I,H as L,F as M,$ as P,N as Q,W as S,O as T,_ as U,a1 as X,q as a,Z as b,T as c,S as d,U as e,w as f,J as g,b as h,A as i,g as j,Q as k,f as l,G as m,m as n,E as o,C as p,D as q,L as r,Y as s,K as t,R as u,I as v,X as w,B as x};
+ */const a1=a("Users",[["path",{d:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",key:"1yyitq"}],["circle",{cx:"9",cy:"7",r:"4",key:"nufk8"}],["path",{d:"M22 21v-2a4 4 0 0 0-3-3.87",key:"kshegd"}],["path",{d:"M16 3.13a4 4 0 0 1 0 7.75",key:"1da9ce"}]]);/**
+ * @license lucide-react v0.344.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const e1=a("X",[["path",{d:"M18 6 6 18",key:"1bl5f8"}],["path",{d:"m6 6 12 12",key:"d8bk6v"}]]);export{u as A,z as C,V as F,j as G,H as I,P as L,U as M,$ as P,N as Q,W as S,O as T,a1 as U,e1 as X,q as a,Z as b,T as c,S as d,R as e,w as f,J as g,b as h,A as i,g as j,Q as k,f as l,_ as m,G as n,m as o,E as p,C as q,D as r,L as s,Y as t,K as u,F as v,I as w,X as x,B as y};
