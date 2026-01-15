@@ -267,7 +267,7 @@ const EnvoiColisPage = () => {
         {quote.type === 'parts' && (
           <p className="text-amber-600 text-sm mb-6 flex items-center gap-2">
             <AlertTriangle size={16} />
-            Seules les pièces pour voitures sont acceptées
+            Seules les pièces pour voitures sont acceptées (Pneus interdits)
           </p>
         )}
 
