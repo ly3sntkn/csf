@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-md py-4' : 'bg-transparent py-6'
+    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white/95 backdrop-blur-md py-4'
       }`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
@@ -61,9 +61,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`text-sm font-medium transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
-                  ? 'text-red-600'
-                  : 'text-white hover:text-red-500'
+              className={`text-sm font-bold transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
+                ? 'text-red-600'
+                : 'text-gray-800 hover:text-red-600'
                 }`}
             >
               {item.label}
@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
         {/* Mobile Menu Button */}
         <button
-          className="xl:hidden text-white"
+          className="xl:hidden text-gray-800"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -82,14 +82,14 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 w-full bg-black/95 backdrop-blur-lg border-t border-white/10 xl:hidden flex flex-col items-center py-8 space-y-6 h-screen">
+        <div className="absolute top-full left-0 w-full bg-white border-t border-gray-100 xl:hidden flex flex-col items-center py-8 space-y-6 h-screen shadow-xl">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`text-lg font-medium transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
-                  ? 'text-red-600'
-                  : 'text-white hover:text-red-500'
+              className={`text-lg font-bold transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
+                ? 'text-red-600'
+                : 'text-gray-800 hover:text-red-600'
                 }`}
             >
               {item.label}
