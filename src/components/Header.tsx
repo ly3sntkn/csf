@@ -30,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
     { id: 'envoi-colis', label: 'Envoyer un colis' },
     { id: 'demenagement', label: 'Déménagement international' },
     { id: 'achat-livraison', label: 'Achat & Export de Véhicules' },
+    { id: 'faq', label: 'FAQ' },
     { id: 'contact', label: 'Contact' },
   ];
 

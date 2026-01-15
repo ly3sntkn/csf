@@ -13,8 +13,7 @@ const ContactPage = () => {
     attachment: null as File | null
   });
 
-  const [openFaqIndex, setOpenFaqIndex] = React.useState<number | null>(null);
-
+  // remove openFaqIndex state
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -262,46 +261,6 @@ const ContactPage = () => {
                 <p className="text-blue-800 text-sm text-center">
                   <strong>Réponse garantie sous 24h</strong> - Nous nous engageons à vous répondre rapidement
                 </p>
-              </div>
-            </div>
-
-            {/* FAQ */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Questions Fréquentes</h3>
-              <div className="space-y-4">
-                {[
-                  {
-                    question: "Quels sont vos délais de livraison ?",
-                    answer: "En moyenne 7 jours pour l'Algérie, selon la destination finale."
-                  },
-                  {
-                    question: "Proposez-vous une assurance ?",
-                    answer: "Oui, nous proposons une assurance complète pour tous vos envois."
-                  },
-                  {
-                    question: "Comment suivre mon colis ?",
-                    answer: "Vous recevez un numéro de suivi pour tracer votre envoi en temps réel."
-                  }
-                ].map((faq, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                    <button
-                      className="w-full flex items-center justify-between p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
-                      onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
-                    >
-                      <span className="font-medium text-gray-800">{faq.question}</span>
-                      {openFaqIndex === index ? (
-                        <span className="text-blue-600 text-xl font-bold">-</span>
-                      ) : (
-                        <span className="text-gray-400 text-xl font-bold">+</span>
-                      )}
-                    </button>
-                    {openFaqIndex === index && (
-                      <div className="p-4 bg-white border-t border-gray-200">
-                        <p className="text-gray-600 text-sm">{faq.answer}</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
               </div>
             </div>
 

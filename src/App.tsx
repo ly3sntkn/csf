@@ -7,6 +7,7 @@ const EnvoiColisPage = React.lazy(() => import('./pages/EnvoiColisPage'));
 const DemenagementPage = React.lazy(() => import('./pages/DemenagementPage'));
 const AchatLivraisonPage = React.lazy(() => import('./pages/AchatLivraisonPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const FAQPage = React.lazy(() => import('./pages/FAQPage'));
 
 // Lazy load global components
 const CookieBanner = React.lazy(() => import('./components/CookieBanner'));
@@ -49,6 +50,8 @@ function App() {
         return <AchatLivraisonPage />;
       case 'contact':
         return <ContactPage />;
+      case 'faq':
+        return <FAQPage />;
       default:
         return <AccueilPage />;
     }
