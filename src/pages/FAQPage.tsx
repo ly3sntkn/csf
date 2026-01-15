@@ -6,16 +6,64 @@ const FAQPage = () => {
 
     const faqs = [
         {
-            question: "Quels sont vos délais de livraison ?",
-            answer: "En moyenne 7 jours pour l'Algérie, selon la destination finale."
+            category: "Envoi de Colis",
+            items: [
+                {
+                    question: "Quels sont vos délais de livraison ?",
+                    answer: "En moyenne, nos délais de livraison sont de 7 à 10 jours ouvrés pour l'Algérie, selon la ville de destination. Pour l'Île-de-France, les enlèvements se font sous 48h."
+                },
+                {
+                    question: "Proposez-vous une assurance ?",
+                    answer: "Oui, nous proposons une assurance optionnelle CSF Garantie qui couvre la perte, le vol ou les dommages à hauteur de 70% de la valeur déclarée. Le coût est de 10% de la valeur déclarée."
+                },
+                {
+                    question: "Quels sont les produits interdits ?",
+                    answer: "Sont strictement interdits : armes, munitions, stupéfiants, contrefaçons, produits inflammables ou explosifs, animaux vivants, or, argent et devises. Les appareils électroniques neufs en quantité commerciale sont également réglementés."
+                },
+                {
+                    question: "Proposez-vous l'enlèvement à domicile ?",
+                    answer: "Oui, nous proposons un service d'enlèvement à domicile gratuit en Île-de-France pour tout envoi. Pour les autres régions, contactez-nous pour connaître les conditions."
+                }
+            ]
         },
         {
-            question: "Proposez-vous une assurance ?",
-            answer: "Oui, nous proposons une assurance complète pour tous vos envois."
+            category: "Déménagement",
+            items: [
+                {
+                    question: "Fournissez-vous les cartons et emballages ?",
+                    answer: "Oui, nous proposons une gamme complète de matériel d'emballage professionnel (cartons, bulles, adhésifs) que vous pouvez commander lors de votre devis."
+                },
+                {
+                    question: "Vous occupez-vous des démarches douanières ?",
+                    answer: "Nous vous accompagnons dans toutes les formalités administratives et douanières pour votre déménagement en tant que CCR (Certificat de Changement de Résidence)."
+                }
+            ]
         },
         {
-            question: "Comment suivre mon colis ?",
-            answer: "Vous recevez un numéro de suivi pour tracer votre envoi en temps réel."
+            category: "Véhicules",
+            items: [
+                {
+                    question: "Quels documents pour exporter un véhicule ?",
+                    answer: "Pour l'exportation, vous aurez besoin de la carte grise originale, d'un certificat de non-gage récent, d'une copie de votre pièce d'identité et du certificat de cession si le véhicule vient d'être acheté."
+                },
+                {
+                    question: "Le véhicule doit-il être vide ?",
+                    answer: "Les véhicules doivent être vides d'effets personnels pour le transport maritime, sauf accord spécifique pour le transport en conteneur sécurisé."
+                }
+            ]
+        },
+        {
+            category: "Paiement & Divers",
+            items: [
+                {
+                    question: "Quels sont les moyens de paiement acceptés ?",
+                    answer: "Nous acceptons les paiements par carte bancaire (en ligne ou TPE), virement bancaire et espèces (dans la limite légale)."
+                },
+                {
+                    question: "Comment suivre mon colis ?",
+                    answer: "Dès la prise en charge de votre envoi, vous recevez un numéro de suivi unique vous permettant de suivre l'acheminement en temps réel sur notre site."
+                }
+            ]
         }
     ];
 
@@ -42,25 +90,38 @@ const FAQPage = () => {
             <section className="py-16">
                 <div className="container mx-auto px-4 max-w-3xl">
                     <div className="bg-white rounded-2xl shadow-lg p-8">
-                        <div className="space-y-4">
-                            {faqs.map((faq, index) => (
-                                <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                                    <button
-                                        className="w-full flex items-center justify-between p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
-                                        onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
-                                    >
-                                        <span className="font-medium text-gray-800">{faq.question}</span>
-                                        {openFaqIndex === index ? (
-                                            <span className="text-blue-600 text-xl font-bold">-</span>
-                                        ) : (
-                                            <span className="text-gray-400 text-xl font-bold">+</span>
-                                        )}
-                                    </button>
-                                    {openFaqIndex === index && (
-                                        <div className="p-4 bg-white border-t border-gray-200">
-                                            <p className="text-gray-600 text-sm">{faq.answer}</p>
-                                        </div>
-                                    )}
+                        <div className="space-y-8">
+                            {faqs.map((category, catIndex) => (
+                                <div key={catIndex}>
+                                    <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        <div className="w-2 h-8 bg-blue-600 rounded"></div>
+                                        {category.category}
+                                    </h2>
+                                    <div className="space-y-4">
+                                        {category.items.map((faq, itemIndex) => {
+                                            const globalIndex = catIndex * 100 + itemIndex; // detailed index unique
+                                            return (
+                                                <div key={itemIndex} className="border border-gray-200 rounded-lg overflow-hidden hover:border-blue-200 transition-colors">
+                                                    <button
+                                                        className="w-full flex items-center justify-between p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
+                                                        onClick={() => setOpenFaqIndex(openFaqIndex === globalIndex ? null : globalIndex)}
+                                                    >
+                                                        <span className="font-medium text-gray-800 pr-4">{faq.question}</span>
+                                                        {openFaqIndex === globalIndex ? (
+                                                            <span className="text-blue-600 text-xl font-bold flex-shrink-0">-</span>
+                                                        ) : (
+                                                            <span className="text-gray-400 text-xl font-bold flex-shrink-0">+</span>
+                                                        )}
+                                                    </button>
+                                                    {openFaqIndex === globalIndex && (
+                                                        <div className="p-4 bg-white border-t border-gray-200 animate-fade-in">
+                                                            <p className="text-gray-600 text-sm leading-relaxed">{faq.answer}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                             ))}
                         </div>
