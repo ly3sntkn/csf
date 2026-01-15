@@ -28,7 +28,7 @@ const PartnersSection = () => {
               <img
                 src={partner.logo}
                 alt={partner.name}
-                className={`max-w-full max-h-full object-contain transition-all duration-300 grayscale group-hover:grayscale-0 ${partner.className || ''}`}
+                className={`max-w-full max-h-full object-contain transition-all duration-300 ${partner.className || ''}`}
               />
             </div>
           ))}
