@@ -58,10 +58,6 @@ const FAQPage = () => {
                 {
                     question: "Quels sont les moyens de paiement acceptés ?",
                     answer: "Nous acceptons les paiements par carte bancaire (en ligne ou TPE), virement bancaire et espèces (dans la limite légale)."
-                },
-                {
-                    question: "Comment suivre mon colis ?",
-                    answer: "Dès la prise en charge de votre envoi, vous recevez un numéro de suivi unique vous permettant de suivre l'acheminement en temps réel sur notre site."
                 }
             ]
         }
