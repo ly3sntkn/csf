@@ -1,4 +1,3 @@
-import React from 'react';
 import { Package, Ship, Car, ArrowRight } from 'lucide-react';
 
 const HeroBanner = () => {
@@ -6,22 +5,6 @@ const HeroBanner = () => {
     const event = new CustomEvent('navigate', { detail: service });
     window.dispatchEvent(event);
   };
-
-  const [text, setText] = React.useState('');
-  const fullText = "Ce qui compte pour vous, voyage avec nous";
-
-  React.useEffect(() => {
-    let index = 0;
-    const timer = setInterval(() => {
-      setText(fullText.slice(0, index + 1));
-      index++;
-      if (index > fullText.length) {
-        clearInterval(timer);
-      }
-    }, 50);
-
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <section className="relative text-white py-24 overflow-hidden min-h-[90vh] flex flex-col justify-center">
@@ -52,9 +35,8 @@ const HeroBanner = () => {
           EUROPE - AFRIQUE
         </h1>
         <div className="h-16 md:h-20 mb-12 flex items-center justify-center">
-          <p className="text-xl md:text-2xl font-light max-w-3xl text-white">
-            {text}
-            <span className="animate-pulse">|</span>
+          <p className="text-xl md:text-2xl font-light max-w-3xl text-white animate-blur-in opacity-0" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
+            Ce qui compte pour vous, voyage avec nous
           </p>
         </div>
 
