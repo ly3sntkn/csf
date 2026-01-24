@@ -3,7 +3,7 @@ import React from 'react';
 const PartnersSection = () => {
   const partners = [
     { name: 'Air Algérie', logo: '/csf/logo-air-algerie.webp' },
-    { name: 'Fédération Algérienne de Football', logo: '/csf/logo-faf.webp' },
+    { name: 'Fédération Algérienne de Football', logo: '/csf/logo-faf.webp', className: 'scale-75' },
     { name: 'La Poste', logo: '/csf/logo-la-poste.webp' },
     { name: 'EMS Algérie', logo: '/csf/logo-ems.webp', className: 'mix-blend-multiply' },
     { name: 'STELLANTIS', logo: '/csf/logo-stellantis.webp' },

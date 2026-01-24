@@ -7,27 +7,43 @@ const TestimonialsSection = () => {
     const testimonials = [
         {
             id: 1,
-            name: 'Ahmed Boumediene',
-            location: 'Toulouse → Tlemcen',
+            name: 'Fatima L.',
+            location: 'Paris → Alger',
             rating: 5,
-            text: "Excellent service client et suivi personnalisé. CSF facilite vraiment les envois vers l'Algérie avec professionnalisme.",
-            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150'
+            text: "J'appréhendais un peu pour envoyer le fauteuil roulant électrique de mon père, mais l'équipe a été super rassurante. Ils m'ont tenu au courant de tout, du départ jusqu'à l'arrivée à Alger. C'est rare de voir un tel sérieux, et en plus c'était gratuit pour le matériel médical. Merci infiniment !",
+            image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150'
         },
         {
             id: 2,
-            name: 'Sofia K.',
-            location: 'Lyon → Alger',
+            name: 'Mohamed D.',
+            location: 'Lyon → Oran',
             rating: 5,
-            text: "J'ai envoyé des cartons pour ma famille, tout est arrivé intact et rapidement. Je repasserai par vous sans hésitation.",
-            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150'
+            text: "Pièces auto reçues à Oran en parfait état. Je pensais que ça allait galérer avec la douane comme d'habitude, mais là rien à dire, c'est passé crème. Efficacité redoutable, je repasserai par vous pour le prochain envoi.",
+            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150'
         },
         {
             id: 3,
-            name: 'Yacine B.',
-            location: 'Marseille → Oran',
+            name: 'Laura S.',
+            location: 'Marseille → Annaba',
             rating: 5,
-            text: "Déménagement complet réalisé avec succès. L'équipe a été très efficace et le tarif était compétitif. Merci !",
-            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150'
+            text: "Une équipe très pro, un grand merci à Yacine pour sa patience au téléphone. J'avais beaucoup de questions pour mon déménagement et il a pris le temps de tout m'expliquer. Tout est arrivé intact à Annaba. Je recommande les yeux fermés.",
+            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150'
+        },
+        {
+            id: 4,
+            name: 'Karim B.',
+            location: 'Lille → Tizi Ouzou',
+            rating: 5,
+            text: "Service au top ! Colis livré directement devant la porte de ma famille à Tizi. Franchement, le suivi est transparent, on sait où est le colis. C'est carré, merci à toute l'équipe CSF.",
+            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150'
+        },
+        {
+            id: 5,
+            name: 'Samia Ben.',
+            location: 'Bordeaux → Constantine',
+            rating: 5,
+            text: "Première expérience réussie avec CSF. J'ai envoyé des vêtements et des cadeaux pour l'Aïd, délai respecté et livreur très poli. Ça change des autres transporteurs que j'ai pu tester. À bientôt !",
+            image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150'
         }
     ];
 

@@ -106,20 +106,48 @@ const EnvoiColisPage = () => {
       // If weight exceeds 30kg (largest tier), price is 0 (or handle as error/custom quote)
       // For now, if it exceeds, we fallback to the highest tier or 0.
       // But the UI shows an error if > 30kg anyway.
-      const finalPrice = tier ? tier.price : 0;
-
-      setQuote(prev => ({ ...prev, price: finalPrice }));
+      // Enforce 0.5kg Minimum
+      if (chargeableWeight < 0.5) {
+        setQuote(prev => ({ ...prev, price: 0 }));
+      } else {
+        const finalPrice = tier ? tier.price : 0;
+        setQuote(prev => ({ ...prev, price: finalPrice }));
+      }
     } else {
       setQuote(prev => ({ ...prev, price: 0 }));
     }
   }, [quote.weight, quote.length, quote.width, quote.height, quote.type]);
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuote({ ...quote, weight: parseFloat(e.target.value) || 0 });
+    let valStr = e.target.value.replace(',', '.');
+    // If user clears input, set to 0 to avoid NaN
+    if (valStr === '') {
+      setQuote({ ...quote, weight: 0 });
+      return;
+    }
+    const val = parseFloat(valStr);
+    if (!isNaN(val) && val >= 0) {
+      setQuote({ ...quote, weight: val });
+    }
   };
 
+  const updateDimension = (field: keyof QuoteData, value: string) => {
+    let valStr = value.replace(',', '.');
+    if (valStr === '') {
+      setQuote(prev => ({ ...prev, [field]: 0 }));
+      return;
+    }
+    const val = parseFloat(valStr);
+    if (!isNaN(val) && val >= 0) {
+      setQuote(prev => ({ ...prev, [field]: val }));
+    }
+  };
+
+
+
   const isOverweight = quote.weight > MAX_WEIGHT;
-  const isQuoteValid = quote.weight > 0 && quote.weight <= MAX_WEIGHT && quote.length > 0 && quote.width > 0 && quote.height > 0;
+  const isUnderweight = quote.weight > 0 && quote.weight < 0.5;
+  const isQuoteValid = quote.weight >= 0.5 && quote.weight <= MAX_WEIGHT && quote.length > 0 && quote.width > 0 && quote.height > 0;
 
   // Inventory Management
   const addInventoryItem = () => {
@@ -229,7 +257,7 @@ const EnvoiColisPage = () => {
   const renderStep1 = () => (
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à envoyer votre colis ?</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à envoyer votre colis&nbsp;?</h2>
         <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessus pour en savoir plus.</p>
 
         <VideoPlaceholder className="mt-6 mb-8" title="Comment envoyer votre colis" />
@@ -267,7 +295,7 @@ const EnvoiColisPage = () => {
         {quote.type === 'parts' && (
           <p className="text-amber-600 text-sm mb-6 flex items-center gap-2">
             <AlertTriangle size={16} />
-            Seules les pièces pour voitures sont acceptées (Pneus interdits)
+            Seules les pièces pour voitures sont acceptées (pneus interdits)
           </p>
         )}
 
@@ -279,15 +307,22 @@ const EnvoiColisPage = () => {
               <Scale className="absolute left-3 top-3 text-gray-400" size={20} />
               <input
                 type="number"
-                value={quote.weight || ''}
+                value={quote.weight}
                 onChange={handleWeightChange}
                 className={`w-full pl-10 pr-4 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isOverweight ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                 placeholder="Ex: 5"
+                min="0"
+                step="0.0001"
               />
             </div>
             {isOverweight && (
               <div className="text-red-600 text-sm mt-2 p-2 bg-red-50 rounded border border-red-200">
-                ⚠️ Le poids réel ou volumétrique ne doit pas dépasser 30 kg. Surcoût applicable.
+                ⚠️ Le poids volumétrique indiqué dépasse la limite de 30 kg, nous vous conseillons de réduire la taille de votre carton.
+              </div>
+            )}
+            {isUnderweight && (
+              <div className="text-red-600 text-sm mt-2 p-2 bg-red-50 rounded border border-red-200">
+                ⚠️ Le poids minimum pour un envoi est de 0.5 kg.
               </div>
             )}
           </div>
@@ -298,9 +333,11 @@ const EnvoiColisPage = () => {
               <input
                 type="number"
                 value={quote.length || ''}
-                onChange={(e) => setQuote({ ...quote, length: parseFloat(e.target.value) })}
+                onChange={(e) => updateDimension('length', e.target.value)}
                 className="w-full px-3 py-3 border-2 border-gray-200 rounded-lg outline-none focus:border-blue-500"
                 placeholder="L"
+                min="0"
+                step="0.01"
               />
             </div>
             <div>
@@ -308,9 +345,11 @@ const EnvoiColisPage = () => {
               <input
                 type="number"
                 value={quote.width || ''}
-                onChange={(e) => setQuote({ ...quote, width: parseFloat(e.target.value) })}
+                onChange={(e) => updateDimension('width', e.target.value)}
                 className="w-full px-3 py-3 border-2 border-gray-200 rounded-lg outline-none focus:border-blue-500"
                 placeholder="l"
+                min="0"
+                step="0.01"
               />
             </div>
             <div>
@@ -318,25 +357,25 @@ const EnvoiColisPage = () => {
               <input
                 type="number"
                 value={quote.height || ''}
-                onChange={(e) => setQuote({ ...quote, height: parseFloat(e.target.value) })}
+                onChange={(e) => updateDimension('height', e.target.value)}
                 className="w-full px-3 py-3 border-2 border-gray-200 rounded-lg outline-none focus:border-blue-500"
                 placeholder="H"
+                min="0"
+                step="0.01"
               />
             </div>
           </div>
         </div>
 
         {/* Pricing Display */}
-        {isQuoteValid && !isOverweight && (
+        {isQuoteValid && !isOverweight && !isUnderweight && quote.price > 0 && (
           <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8 flex justify-between items-center animate-fade-in">
             <div>
               <span className="text-gray-500 text-sm">Votre Tarif</span>
               <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)} €</div>
-              <div className="text-sm text-blue-600 font-medium mt-1 italic">
-                Basé sur le poids volumétrique
-              </div>
+              {/* Text removed if Weight > Volume */}
               {(quote.length * quote.width * quote.height) / 5000 > quote.weight && (
-                <span className="text-xs text-orange-600 block mt-1">
+                <span className="text-xs text-blue-600 block mt-1">
                   Basé sur le poids volumétrique ({((quote.length * quote.width * quote.height) / 5000).toFixed(2)} Kg)
                 </span>
               )}
@@ -442,13 +481,13 @@ const EnvoiColisPage = () => {
             <input type="text" placeholder="Ville" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: e.target.value })} />
             <input type="text" value="Algérie" disabled className="p-3 border rounded-lg bg-gray-100 text-gray-500" />
           </div>
-          <p className="text-xs text-gray-500 mt-2">⚠️ Si nous ne parvenons pas à joindre le destinataire, le colis sera déposé au point relais le plus proche.</p>
+
         </section>
 
         {/* Inventory */}
         <section>
           <h3 className="text-xl font-bold text-gray-800 mb-4">Inventaire du colis</h3>
-          <p className="text-sm text-gray-600 mb-2">Déclarez précisément le contenu. Les objets de valeur (consoles, or, argent...) sont interdits.</p>
+          <p className="text-sm text-gray-600 mb-2">Déclarez précisément le contenu. Les envois commerciaux (produits similaires en grande quantité..) ainsi que les produits à usage professionnel ne sont pas autorisés. Veuillez consulter la liste complète des articles interdits ci-dessous afin d’éviter tout risque.</p>
 
           <button
             onClick={() => setShowProhibitedPopup(true)}
@@ -462,7 +501,7 @@ const EnvoiColisPage = () => {
               <div key={item.id} className="grid grid-cols-12 gap-2 items-center">
                 <input
                   type="text"
-                  placeholder={idx === 0 ? "Ex: Pantalon femme" : "Description"}
+                  placeholder={idx === 0 ? "Ex: Pantalon" : "Description"}
                   className="col-span-6 p-2 border rounded"
                   value={item.description}
                   onChange={e => updateInventoryItem(item.id, 'description', e.target.value)}
@@ -498,45 +537,56 @@ const EnvoiColisPage = () => {
             </button>
           </div>
 
-          <div className="mt-4 p-4 border border-blue-100 rounded-xl bg-blue-50">
-            <div className="flex items-start gap-3">
-              <div className="mt-1"><AlertTriangle size={18} className="text-blue-500" /></div>
-              <div className="text-sm text-blue-800">
-                <p className="font-bold">Information douanière :</p>
-                <p>Dans de rares situations, la douane algérienne peut demander au destinataire de récupérer le colis à Alger et régler une taxe éventuelle.</p>
+          {totalValue > 350 && (
+            <div className="mt-4 p-4 border border-blue-100 rounded-xl bg-blue-50">
+              <div className="flex items-start gap-3">
+                <div className="mt-1"><AlertTriangle size={18} className="text-blue-500" /></div>
+                <div className="text-sm text-blue-800">
+                  <p className="font-bold">Information douanière :</p>
+                  <p>Dans de rares situations, la douane algérienne peut demander au destinataire de récupérer le colis à Alger et régler une taxe éventuelle.</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
 
         {/* Insurance */}
-        <section className="border rounded-xl p-6 hover:border-blue-300 transition-colors cursor-pointer" onClick={() => setInsurance(!insurance)}>
-          <div className="flex items-start gap-3">
-            <div className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center flex-shrink-0 ${insurance ? 'bg-blue-600 border-blue-600' : 'border-gray-300'}`}>
-              {insurance && <Check size={16} className="text-white" />}
-            </div>
+        <section className={`border rounded-xl p-6 transition-colors ${!insurance ? 'bg-red-50 border-red-200' : 'bg-blue-50 border-blue-200'}`}>
+          <div className="flex flex-col gap-4">
             <div>
-              <h4 className="font-bold text-gray-800">Optez pour la Garantie CSF (Facultative)</h4>
+              <h4 className="font-bold text-gray-800">Garantie CSF</h4>
               <p className="text-gray-600 text-sm mt-1">Protégez vos colis contre la perte, le vol ou les dommages.</p>
               <div className="mt-3 text-sm text-gray-500">
-                <p>• Coût : 10% de la valeur déclarée ({insuranceCost.toFixed(2)} €)</p>
+                <p>• Coût : 10% de la valeur déclarée ({(totalValue * 0.10).toFixed(2)} €)</p>
                 <p>• Remboursement max : 70% de la valeur.</p>
               </div>
+            </div>
+
+            <div className="mt-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Souhaitez-vous souscrire à l'assurance ? *</label>
+              <select
+                value={insurance ? "oui" : "non"}
+                onChange={(e) => setInsurance(e.target.value === "oui")}
+                className="w-full p-3 border rounded-lg bg-white"
+              >
+                <option value="non">Non, je ne souhaite pas assurer mon colis</option>
+                <option value="oui">Oui, je souhaite assurer mon colis</option>
+              </select>
             </div>
           </div>
         </section>
 
-        <div className="flex items-center justify-between pt-6 border-t">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4 pt-6 border-t">
           <button
             onClick={() => { window.scrollTo(0, 0); setStep(1); }}
-            className="text-gray-500 font-medium flex items-center gap-2 hover:text-gray-800"
+            className="w-full md:w-auto py-3 text-gray-500 font-medium flex items-center justify-center gap-2 hover:text-gray-800"
           >
             <ArrowLeft size={18} /> Retour
           </button>
 
           <button
             onClick={() => setShowSwornStatement(true)}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold custom-shadow transition-all"
+            className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold custom-shadow transition-all whitespace-normal h-auto min-h-[48px]"
           >
             Procéder au paiement
           </button>
@@ -597,7 +647,7 @@ const EnvoiColisPage = () => {
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-blue-800 max-w-2xl mx-auto">
             <p className="text-sm">
-              ⚠️ <strong>Information importante :</strong> Service disponible uniquement de la France vers l'Algérie
+              ⚠️ <strong>Information importante :</strong> pour le moment, les expéditions sont disponibles uniquement de la France vers l'Algérie
             </p>
           </div>
         </div>
@@ -655,7 +705,7 @@ const EnvoiColisPage = () => {
         {showSwornStatement && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl animate-scale-in">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Attestation sur l'honneur – Obligatoire</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Attestation sur l'honneur</h3>
 
               <div className="space-y-4 mb-8">
                 {swornStatements.map((statement, idx) => (
@@ -671,7 +721,7 @@ const EnvoiColisPage = () => {
                 ))}
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col-reverse md:flex-row gap-4">
                 <button
                   onClick={() => setShowSwornStatement(false)}
                   className="flex-1 py-3 text-gray-600 font-medium hover:bg-gray-100 rounded-xl transition-colors"
@@ -681,7 +731,7 @@ const EnvoiColisPage = () => {
                 <button
                   onClick={handlePayment}
                   disabled={!allSwornChecked}
-                  className={`flex-1 py-3 rounded-xl font-bold text-white transition-all ${allSwornChecked ? 'bg-green-600 hover:bg-green-700 shadow-lg' : 'bg-gray-300 cursor-not-allowed'}`}
+                  className={`flex-1 py-3 rounded-xl font-bold text-white transition-all whitespace-normal h-auto min-h-[48px] ${allSwornChecked ? 'bg-green-600 hover:bg-green-700 shadow-lg' : 'bg-gray-300 cursor-not-allowed'}`}
                 >
                   Confirmer et payer
                 </button>

@@ -40,8 +40,8 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   };
 
   const isHomePage = currentPage === 'accueil';
-  const headerBgClass = isScrolled || !isHomePage ? 'bg-[#2f3192] shadow-md py-4' : 'bg-transparent py-6';
-  const textColorClass = 'text-white hover:text-red-500';
+  const headerBgClass = isHomePage && !isScrolled ? 'bg-transparent py-6' : 'bg-white shadow-md py-4';
+  const textColorClass = isHomePage && !isScrolled ? 'text-white hover:text-red-500' : 'text-gray-800 hover:text-red-600';
 
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${headerBgClass}`}>
@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
         {/* Mobile Menu Button */}
         <button
-          className="xl:hidden text-white"
+          className={`xl:hidden ${isHomePage && !isScrolled ? 'text-white' : 'text-gray-800'}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}

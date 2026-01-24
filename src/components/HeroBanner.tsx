@@ -7,7 +7,7 @@ const HeroBanner = () => {
   };
 
   return (
-    <section className="relative text-white py-24 overflow-hidden min-h-[90vh] flex flex-col justify-center">
+    <section className="relative text-white py-24 overflow-hidden min-h-screen flex flex-col justify-center">
       {/* Background Image */}
       <div className="absolute inset-0">
         {/* Desktop Image */}
@@ -31,11 +31,10 @@ const HeroBanner = () => {
 
       <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center text-white pt-10">
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight drop-shadow-2xl text-white">
-          TRANSPORT INTERNATIONAL<br />
-          EUROPE - AFRIQUE
+          TRANSPORT INTERNATIONAL
         </h1>
         <div className="h-16 md:h-20 mb-12 flex items-center justify-center">
-          <p className="text-xl md:text-2xl font-light italic max-w-3xl text-white">
+          <p className="text-xl md:text-2xl font-light max-w-3xl text-white">
             Ce qui compte pour vous, voyage avec nous
           </p>
         </div>
