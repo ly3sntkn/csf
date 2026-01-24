@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Package, Ship, Car, Users } from 'lucide-react';
+import { Package, Ship, Car, Award } from 'lucide-react';
 
 const KeyMetrics = () => {
   const [counters, setCounters] = useState({
@@ -41,30 +41,30 @@ const KeyMetrics = () => {
 
   const metrics = [
     {
-      icon: Users,
+      icon: Award,
       value: "98%",
-      label: "taux de satisfaction",
+      label: "Taux de Satisfaction",
       color: "text-green-600",
       bgColor: "bg-green-100"
     },
     {
       icon: Package,
       value: `+${counters.packages}`,
-      label: 'colis expédiés chaque semaine',
+      label: 'Colis Expédiés Chaque Semaine',
       color: 'text-red-600',
       bgColor: 'bg-red-100'
     },
     {
       icon: Ship,
       value: `+${counters.moving}`,
-      label: 'déménagements internationaux chaque année',
+      label: 'Déménagements Internationaux Chaque Année',
       color: 'text-blue-600',
       bgColor: 'bg-blue-100'
     },
     {
       icon: Car,
       value: `+${counters.vehicles}`,
-      label: 'véhicules transportés par an',
+      label: 'Véhicules Transportés Par An',
       color: 'text-purple-600',
       bgColor: 'bg-purple-100'
     }
@@ -77,8 +77,8 @@ const KeyMetrics = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Nos Chiffres Clés
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Des performances qui prouvent que vous pouvez nous faire confiance
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+            Des résultats qui témoignent de notre engagement envers l'excellence
           </p>
         </div>
 
@@ -96,7 +96,7 @@ const KeyMetrics = () => {
                 <div className="text-4xl font-bold text-gray-800 mb-2">
                   {metric.value}
                 </div>
-                <div className="text-gray-600 font-bold text-sm tracking-wider first-letter:uppercase">
+                <div className="text-gray-700 text-sm tracking-wider first-letter:uppercase">
                   {metric.label}
                 </div>
               </div>

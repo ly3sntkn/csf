@@ -28,6 +28,7 @@ interface QuoteData {
 
 const EnvoiColisPage = () => {
   const [step, setStep] = useState<1 | 2 | 3 | 'success'>(1);
+  const [weightInputValue, setWeightInputValue] = useState('0');
   const [showSwornStatement, setShowSwornStatement] = useState(false);
   const [showProhibitedPopup, setShowProhibitedPopup] = useState(false);
 
@@ -119,13 +120,16 @@ const EnvoiColisPage = () => {
   }, [quote.weight, quote.length, quote.width, quote.height, quote.type]);
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let valStr = e.target.value.replace(',', '.');
+    const valStr = e.target.value;
+    setWeightInputValue(valStr);
+
+    let normalized = valStr.replace(',', '.');
     // If user clears input, set to 0 to avoid NaN
-    if (valStr === '') {
+    if (normalized === '') {
       setQuote({ ...quote, weight: 0 });
       return;
     }
-    const val = parseFloat(valStr);
+    const val = parseFloat(normalized);
     if (!isNaN(val) && val >= 0) {
       setQuote({ ...quote, weight: val });
     }
@@ -307,7 +311,7 @@ const EnvoiColisPage = () => {
               <Scale className="absolute left-3 top-3 text-gray-400" size={20} />
               <input
                 type="number"
-                value={quote.weight}
+                value={weightInputValue}
                 onChange={handleWeightChange}
                 className={`w-full pl-10 pr-4 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isOverweight ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                 placeholder="Ex: 5"
@@ -618,7 +622,8 @@ const EnvoiColisPage = () => {
       <button
         onClick={() => {
           setStep(1);
-          setQuote({ ...quote, weight: 0 }); // Reset logic could be fuller
+          setQuote({ ...quote, weight: 0 });
+          setWeightInputValue('0');
           window.scrollTo(0, 0);
         }}
         className="text-blue-600 font-medium hover:underline"

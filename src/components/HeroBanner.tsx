@@ -50,7 +50,7 @@ const HeroBanner = () => {
               <p className="text-blue-100 text-sm text-center mb-4 flex-grow">
                 Envoyez vos colis en un clic
               </p>
-              <div className="flex items-center space-x-2 text-white border-2 border-blue-600 px-4 py-2 rounded-lg group-hover:bg-blue-600 group-hover:border-blue-600 transition-all mt-auto">
+              <div className="flex items-center space-x-2 text-white border-2 border-blue-600 px-4 py-2 rounded-lg transition-all mt-auto">
                 <span className="text-sm font-medium">Découvrir</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </div>
@@ -66,7 +66,7 @@ const HeroBanner = () => {
               <p className="text-blue-100 text-sm text-center mb-4 flex-grow">
                 Déménager vers un autre pays n'a jamais été aussi simple
               </p>
-              <div className="flex items-center space-x-2 text-white border-2 border-blue-600 px-4 py-2 rounded-lg group-hover:bg-blue-600 group-hover:border-blue-600 transition-all mt-auto">
+              <div className="flex items-center space-x-2 text-white border-2 border-blue-600 px-4 py-2 rounded-lg transition-all mt-auto">
                 <span className="text-sm font-medium">Découvrir</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </div>
@@ -82,7 +82,7 @@ const HeroBanner = () => {
               <p className="text-blue-100 text-sm text-center mb-4 flex-grow">
                 Achetez ou expédiez votre véhicule en toute tranquillité
               </p>
-              <div className="flex items-center space-x-2 text-white border-2 border-blue-600 px-4 py-2 rounded-lg group-hover:bg-blue-600 group-hover:border-blue-600 transition-all mt-auto">
+              <div className="flex items-center space-x-2 text-white border-2 border-blue-600 px-4 py-2 rounded-lg transition-all mt-auto">
                 <span className="text-sm font-medium">Découvrir</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </div>
