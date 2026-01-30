@@ -314,7 +314,7 @@ const EnvoiColisPage = () => {
                 onChange={handleWeightChange}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full pl-10 pr-4 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isRealWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="10"
+                placeholder="ex : 10"
                 min="0"
                 step="0.1"
               />
@@ -335,7 +335,7 @@ const EnvoiColisPage = () => {
                 onChange={(e) => updateDimension('length', e.target.value)}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full px-3 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isVolumetricWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="50"
+                placeholder="ex : 50"
                 min="0"
                 step="0.1"
               />
@@ -348,7 +348,7 @@ const EnvoiColisPage = () => {
                 onChange={(e) => updateDimension('width', e.target.value)}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full px-3 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isVolumetricWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="30"
+                placeholder="ex : 30"
                 min="0"
                 step="0.1"
               />
@@ -361,7 +361,7 @@ const EnvoiColisPage = () => {
                 onChange={(e) => updateDimension('height', e.target.value)}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full px-3 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isVolumetricWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="20"
+                placeholder="ex : 20"
                 min="0"
                 step="0.1"
               />
