@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import VideoPlaceholder from '../components/VideoPlaceholder';
 import { wilayas } from '../data/wilayas';
-import bannerColis from '../assets/banner-colis.jpg';
+import bannerColis from '../assets/banner-colis-v2.jpg';
 
 // Types
 type ShippingType = 'personal' | 'parts';
