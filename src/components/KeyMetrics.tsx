@@ -43,28 +43,28 @@ const KeyMetrics = () => {
     {
       icon: Award,
       value: "98%",
-      label: "Taux de Satisfaction",
+      label: "Taux de satisfaction",
       color: "text-green-600",
       bgColor: "bg-green-100"
     },
     {
       icon: Package,
       value: `+${counters.packages}`,
-      label: 'Colis Expédiés Chaque Semaine',
+      label: 'Colis expédiés chaque semaine',
       color: 'text-red-600',
       bgColor: 'bg-red-100'
     },
     {
       icon: Ship,
       value: `+${counters.moving}`,
-      label: 'Déménagements Internationaux Chaque Année',
+      label: 'Déménagements internationaux chaque année',
       color: 'text-blue-600',
       bgColor: 'bg-blue-100'
     },
     {
       icon: Car,
       value: `+${counters.vehicles}`,
-      label: 'Véhicules Transportés Par An',
+      label: 'Véhicules transportés par an',
       color: 'text-purple-600',
       bgColor: 'bg-purple-100'
     }
@@ -75,7 +75,7 @@ const KeyMetrics = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Nos Chiffres Clés
+            Nos chiffres clés
           </h2>
           <p className="text-xl text-gray-700 max-w-2xl mx-auto">
             Des résultats qui témoignent de notre engagement envers l'excellence
