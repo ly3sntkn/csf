@@ -114,7 +114,7 @@ const AchatLivraisonPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 pt-0">
       <Helmet>
         <title>Achat & Export Véhicules Europe-Algérie - CSF Transport</title>
-        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Catalogue 2026 bientôt disponible. Contactez-nous." />
+        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Catalogue 2026 bientôt disponible. Nous acceptons toutes vos demandes personnalisées." />
         <link rel="canonical" href="https://csf-transport.com/achat-livraison" />
       </Helmet>
 
@@ -128,6 +128,21 @@ const AchatLivraisonPage: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-4 max-w-3xl py-12">
+        {/* Catalog Coming Soon Banner - Gray */}
+        <div className="bg-gray-200 rounded-xl p-8 mb-10 text-center animate-fade-in text-gray-800">
+          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <Info size={32} className="text-gray-600" />
+          </div>
+          <h3 className="text-2xl font-bold mb-2">Note Importante</h3>
+          <p className="text-gray-600 text-lg">
+            Le catalogue <strong>2026</strong> sera bientôt disponible.
+            <br className="mb-2" />
+            <strong>Nous acceptons dès maintenant toutes les demandes personnalisées.</strong>
+            <br />
+            Utilisez le formulaire ci-dessous pour nous transmettre votre besoin, quelle que soit votre recherche.
+          </p>
+        </div>
+
         {step === 1 ? (
           <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
             <div className="text-center mb-8">
@@ -180,9 +195,9 @@ const AchatLivraisonPage: React.FC = () => {
                 </div>
               </section>
 
-              {/* Receiver Information (Destination) - Simplified for purely contact/project context */}
+              {/* Receiver Information (Destination) - Simplified to just Country */}
               <section>
-                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4 border-b pb-2">Pays de destination du véhicule</h3>
+                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4 border-b pb-2">Pays de destination</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
                     <select
@@ -195,8 +210,6 @@ const AchatLivraisonPage: React.FC = () => {
                       ))}
                     </select>
                   </div>
-
-                  <input type="text" placeholder="Ville de destination (ex: Alger)*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
                 </div>
               </section>
 
@@ -209,8 +222,8 @@ const AchatLivraisonPage: React.FC = () => {
 
               <button
                 onClick={handleSubmit}
-                disabled={!isSenderValid || !receiver.city}
-                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all shadow-lg flex items-center justify-center gap-2 ${!isSenderValid || !receiver.city
+                disabled={!isSenderValid}
+                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all shadow-lg flex items-center justify-center gap-2 ${!isSenderValid
                   ? 'bg-gray-300 cursor-not-allowed'
                   : 'bg-blue-900 hover:bg-blue-800'
                   }`}
