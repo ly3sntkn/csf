@@ -7,43 +7,52 @@ const TestimonialsSection = () => {
     const testimonials = [
         {
             id: 1,
-            name: 'Fatima L.',
-            location: 'Paris → Alger',
+            name: 'Sofiane Cherifi',
+            time: 'il y a 2 semaines',
             rating: 5,
-            text: "J'appréhendais un peu pour envoyer le fauteuil roulant électrique de mon père, mais l'équipe a été super rassurante. Ils m'ont tenu au courant de tout, du départ jusqu'à l'arrivée à Alger. C'est rare de voir un tel sérieux, et en plus c'était gratuit pour le matériel médical. Merci infiniment !",
-            image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150'
+            text: "Je remercie l'équipe CSF GROUPE pour leur professionnalisme et leur serieux et savoir faire, j'ai envoyé un fauteuil roulant électrique et franchement j'ai beaucoup apprécié leur présence en vous tien au courant du suivi de france jusqu'à Alger, rapidité transparente et serieux avec YANIS et toute l'équipe.\nBonne continuation et je précise les fauteuils roulant pour les personnes a mobilités réduites cest GRATUIT à recommander.\nSofiane."
         },
         {
             id: 2,
-            name: 'Mohamed D.',
-            location: 'Lyon → Oran',
+            name: 'Wafa Bouchouata',
+            time: 'il y a 2 mois',
             rating: 5,
-            text: "Pièces auto reçues à Oran en parfait état. Je pensais que ça allait galérer avec la douane comme d'habitude, mais là rien à dire, c'est passé crème. Efficacité redoutable, je repasserai par vous pour le prochain envoi.",
-            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150'
+            text: "Service plus que parfait, je remercie toute l’équipe pour leur professionnalisme, ponctualité parfaite, et leur disponibilité, j’ai déposé mon colis à la poste le 12 novembre et ma sœur à reçu le colis aujourd’hui livraison à domicile, je vous dis juste à très bientôt"
         },
         {
             id: 3,
-            name: 'Laura S.',
-            location: 'Marseille → Annaba',
+            name: 'souad layaida',
+            time: 'il y a 3 mois',
             rating: 5,
-            text: "Une équipe très pro, un grand merci à Yacine pour sa patience au téléphone. J'avais beaucoup de questions pour mon déménagement et il a pris le temps de tout m'expliquer. Tout est arrivé intact à Annaba. Je recommande les yeux fermés.",
-            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150'
+            text: "Très bon service, j’ai envoyé un colis vers l’Algérie qui est arrivé en 10 jours. Ils sont à l’écoute, répondent aux questions, suivi au top. Je vous le recommande les yeux fermés"
         },
         {
             id: 4,
-            name: 'Karim B.',
-            location: 'Lille → Tizi Ouzou',
+            name: 'Nadjia Kolla',
+            time: 'il y a 2 mois',
             rating: 5,
-            text: "Service au top ! Colis livré directement devant la porte de ma famille à Tizi. Franchement, le suivi est transparent, on sait où est le colis. C'est carré, merci à toute l'équipe CSF.",
-            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150'
+            text: "Je remercie chaleureusement l’équipe CSF . Un personnel professionnel , compétent et reste à l’écoute pour n’importe quelle question. Deux envois déjà partis et arrivés sans aucun problème. 👏👏"
         },
         {
             id: 5,
-            name: 'Samia Ben.',
-            location: 'Bordeaux → Constantine',
+            name: 'Glovel',
+            time: 'il y a 8 mois',
             rating: 5,
-            text: "Première expérience réussie avec CSF. J'ai envoyé des vêtements et des cadeaux pour l'Aïd, délai respecté et livreur très poli. Ça change des autres transporteurs que j'ai pu tester. À bientôt !",
-            image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150'
+            text: "Explications claires et nettes. Service rapide Franchement, j’ai apprécié\nÇa fait plaisir de voir une entreprise algérienne sérieuse et fiable.\nIl faut soutenir ce genre d’initiatives 💪\nJe repasserais par vous sans hésitation ! 🇩🇿"
+        },
+        {
+            id: 6,
+            name: 'Sana P',
+            time: 'il y a 6 mois',
+            rating: 5,
+            text: "Bonne expérience, colis arrivé rapidement chez ma famille, je recommande."
+        },
+        {
+            id: 7,
+            name: 'Lyes Nait Ikene',
+            time: 'Récemment',
+            rating: 5,
+            text: "Je recommande, communication claire. J'éspère bientot réutiliser le service"
         }
     ];
 
@@ -52,7 +61,7 @@ const TestimonialsSection = () => {
             setCurrentIndex((prevIndex) =>
                 prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
             );
-        }, 5000);
+        }, 6000); // 6 seconds for slightly longer text reading
 
         return () => clearInterval(timer);
     }, [testimonials.length]);
@@ -72,13 +81,13 @@ const TestimonialsSection = () => {
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                         Ils nous ont fait confiance
                     </h2>
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto font-bold">
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto font-normal">
                         Ce que nos clients pensent de notre sérieux et notre fiabilité
                     </p>
                 </div>
 
                 <div className="relative max-w-4xl mx-auto">
-                    <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+                    <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 min-h-[300px] flex flex-col justify-center">
                         <div className="flex items-center justify-center mb-6">
                             <Quote size={48} className="text-blue-200" />
                         </div>
@@ -90,50 +99,46 @@ const TestimonialsSection = () => {
                                 ))}
                             </div>
 
-                            <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed italic">
+                            <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed italic whitespace-pre-line">
                                 "{testimonials[currentIndex].text}"
                             </p>
 
-                            <div className="flex items-center justify-center space-x-4">
-                                <img
-                                    src={testimonials[currentIndex].image}
-                                    alt={testimonials[currentIndex].name}
-                                    className="w-16 h-16 rounded-full object-cover"
-                                />
-                                <div className="text-left">
-                                    <h4 className="font-bold text-gray-900">
-                                        {testimonials[currentIndex].name}
-                                    </h4>
-                                    <p className="text-gray-600 font-medium">
-                                        {testimonials[currentIndex].location}
-                                    </p>
-                                </div>
+                            <div className="flex flex-col items-center justify-center">
+                                <h4 className="font-bold text-gray-900 text-lg">
+                                    {testimonials[currentIndex].name}
+                                </h4>
+                                <p className="text-gray-500 font-medium text-sm mt-1">
+                                    {testimonials[currentIndex].time}
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    {/* Navigation buttons */}
+                    {/* Navigation buttons - Visible on Mobile now */}
                     <button
                         onClick={goToPrevious}
-                        className="absolute left-0 md:-left-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 hidden md:block"
+                        className="absolute -left-2 md:-left-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 z-10"
+                        aria-label="Previous testimonial"
                     >
                         <ChevronLeft size={24} className="text-gray-600" />
                     </button>
                     <button
                         onClick={goToNext}
-                        className="absolute right-0 md:-right-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 hidden md:block"
+                        className="absolute -right-2 md:-right-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-100 z-10"
+                        aria-label="Next testimonial"
                     >
                         <ChevronRight size={24} className="text-gray-600" />
                     </button>
 
                     {/* Dots indicator */}
-                    <div className="flex justify-center mt-8 space-x-2">
+                    <div className="flex justify-center mt-8 space-x-2 overflow-x-auto py-2">
                         {testimonials.map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => setCurrentIndex(index)}
-                                className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+                                className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-colors flex-shrink-0 ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
                                     }`}
+                                aria-label={`Go to testimonial ${index + 1}`}
                             />
                         ))}
                     </div>
