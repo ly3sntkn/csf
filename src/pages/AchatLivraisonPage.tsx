@@ -1,80 +1,55 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { MapPin, User, ArrowRight, CheckCircle, AlertCircle, Info } from 'lucide-react';
-import { wilayas } from '../data/wilayas';
 
 const AchatLivraisonPage: React.FC = () => {
   const [step, setStep] = useState<number>(1); // Keep simplified step logic if we want a success state later
 
   // Detailed Address State
   const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', zip: '', city: '', country: 'France' });
-  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', zip: '', city: '', country: 'Algérie' });
 
   // Suggestions State
   const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
   const [showSenderSuggestions, setShowSenderSuggestions] = useState(false);
 
-  // Common countries for dropdown
-  const commonCountries = [
-    "Algérie", "Maroc", "Tunisie", "Espagne", "Italie", "Belgique", "Allemagne", "Canada", "États-Unis", "Autre"
-  ];
-
   // Utility to sanitize text inputs
   const sanitize = (val: string) => val.replace(/[<>]/g, '');
 
   // Auto-fill City Logic
-  const handleZipChange = async (type: 'sender' | 'receiver', value: string) => {
-    if (type === 'sender') {
-      setSender(prev => ({ ...prev, zip: value }));
+  const handleZipChange = async (value: string) => {
+    setSender(prev => ({ ...prev, zip: value }));
 
-      // France Logic (Code Postal -> Ville)
-      if (value.length >= 2) {
-        try {
-          const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${value}&type=municipality&limit=5`);
-          const data = await response.json();
+    // France Logic (Code Postal -> Ville)
+    if (value.length >= 2) {
+      try {
+        const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${value}&type=municipality&limit=5`);
+        const data = await response.json();
 
-          if (data.features && data.features.length > 0) {
-            const cities = data.features.map((f: any) => f.properties.city);
-            // Remove duplicates
-            const uniqueCities = [...new Set(cities)] as string[];
+        if (data.features && data.features.length > 0) {
+          const cities = data.features.map((f: any) => f.properties.city);
+          // Remove duplicates
+          const uniqueCities = [...new Set(cities)] as string[];
 
-            setSenderSuggestions(uniqueCities);
-            setShowSenderSuggestions(true);
+          setSenderSuggestions(uniqueCities);
+          setShowSenderSuggestions(true);
 
-            // Auto-select if perfect match
-            if (uniqueCities.length === 1) {
-              if (value.length === 5) {
-                setSender(prev => ({ ...prev, city: uniqueCities[0] }));
-                setShowSenderSuggestions(false);
-              }
+          // Auto-select if perfect match
+          if (uniqueCities.length === 1) {
+            if (value.length === 5) {
+              setSender(prev => ({ ...prev, city: uniqueCities[0] }));
+              setShowSenderSuggestions(false);
             }
-          } else {
-            setSenderSuggestions([]);
-            setShowSenderSuggestions(false);
           }
-        } catch (error) {
-          // Failure suppressed
+        } else {
+          setSenderSuggestions([]);
+          setShowSenderSuggestions(false);
         }
-      } else {
-        setSenderSuggestions([]);
-        setShowSenderSuggestions(false);
+      } catch (error) {
+        // Failure suppressed
       }
-
     } else {
-      setReceiver(prev => ({ ...prev, zip: value }));
-
-      // Only attempt auto-fill for Algérie
-      if (receiver.country === 'Algérie') {
-        // Check first 2 digits for Wilaya
-        if (value.length >= 2) {
-          const wilayaCode = value.substring(0, 2);
-          const wilaya = wilayas.find(w => w.code === wilayaCode);
-
-          if (wilaya) {
-            setReceiver(prev => ({ ...prev, city: wilaya.name }));
-          }
-        }
-      }
+      setSenderSuggestions([]);
+      setShowSenderSuggestions(false);
     }
   };
 
@@ -172,7 +147,7 @@ const AchatLivraisonPage: React.FC = () => {
                   <input type="text" placeholder="Adresse complète*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: sanitize(e.target.value) })} />
 
                   <div className="relative">
-                    <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg w-full" value={sender.zip} onChange={e => handleZipChange('sender', sanitize(e.target.value))} />
+                    <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg w-full" value={sender.zip} onChange={e => handleZipChange(sanitize(e.target.value))} />
                     {showSenderSuggestions && senderSuggestions.length > 0 && (
                       <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
                         {senderSuggestions.map((city, idx) => (
@@ -191,24 +166,6 @@ const AchatLivraisonPage: React.FC = () => {
                   <div className="flex items-center bg-gray-100 border border-gray-300 rounded-lg p-3 text-gray-500 cursor-not-allowed">
                     <MapPin size={18} className="mr-2" />
                     France
-                  </div>
-                </div>
-              </section>
-
-              {/* Receiver Information (Destination) - Simplified to just Country */}
-              <section>
-                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4 border-b pb-2">Pays de destination</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <select
-                      value={receiver.country}
-                      onChange={(e) => setReceiver({ ...receiver, country: e.target.value })}
-                      className="w-full p-3 border rounded-lg bg-white"
-                    >
-                      {commonCountries.map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
                   </div>
                 </div>
               </section>
