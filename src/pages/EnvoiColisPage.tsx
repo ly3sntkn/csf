@@ -328,7 +328,7 @@ const EnvoiColisPage = () => {
 
           <div className="grid grid-cols-3 gap-2 relative">
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Long. (cm)</label>
+              <label className="block text-gray-700 font-medium mb-2">L (cm)</label>
               <input
                 type="number"
                 value={quote.length || ''}
@@ -341,7 +341,7 @@ const EnvoiColisPage = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Larg. (cm)</label>
+              <label className="block text-gray-700 font-medium mb-2">l (cm)</label>
               <input
                 type="number"
                 value={quote.width || ''}
@@ -354,7 +354,7 @@ const EnvoiColisPage = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Haut. (cm)</label>
+              <label className="block text-gray-700 font-medium mb-2">H (cm)</label>
               <input
                 type="number"
                 value={quote.height || ''}
