@@ -126,7 +126,7 @@ const DemenagementPage = () => {
         {/* Question 1 */}
         <div>
           <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
-            <Calendar className="text-blue-600" size={20} />
+            <Calendar className="text-blue-600" size={24} />
             Souhaitez-vous déménager cette année ?
           </label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -149,7 +149,7 @@ const DemenagementPage = () => {
         {formData.moveThisYear === 'Oui' && (
           <div className="animate-fade-in">
             <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
-              <Box className="text-blue-600" size={20} />
+              <Box className="text-blue-600" size={24} />
               Connaissez-vous approximativement le volume total ?
             </label>
             <div className="space-y-4">
