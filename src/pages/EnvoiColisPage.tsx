@@ -705,7 +705,7 @@ const EnvoiColisPage = () => {
           <img
             src={bannerColis}
             alt="Avion Cargo"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center blur-sm scale-105"
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>

@@ -349,7 +349,7 @@ const DemenagementPage = () => {
           <img
             src={bannerDemenagement}
             alt="Déménagement Cargo"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center blur-sm scale-105"
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
