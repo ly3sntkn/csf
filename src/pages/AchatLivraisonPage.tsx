@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Car, MapPin, User, ArrowRight, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { MapPin, User, ArrowRight, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { wilayas } from '../data/wilayas';
 
 const AchatLivraisonPage: React.FC = () => {
@@ -89,7 +89,6 @@ const AchatLivraisonPage: React.FC = () => {
   };
 
   const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
-  const isReceiverValid = receiver.address && receiver.zip && receiver.city && receiver.country;
 
   const renderSuccess = () => (
     <div className="bg-white rounded-2xl shadow-xl p-12 text-center animate-scale-in">
@@ -115,46 +114,34 @@ const AchatLivraisonPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 pt-0">
       <Helmet>
         <title>Achat & Export Véhicules Europe-Algérie - CSF Transport</title>
-        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Catalogue bientôt disponible. Contactez-nous pour un devis." />
+        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Catalogue 2026 bientôt disponible. Contactez-nous." />
         <link rel="canonical" href="https://csf-transport.com/achat-livraison" />
       </Helmet>
 
-      {/* Hero Section Simplified */}
-      <section className="bg-blue-900 text-white pt-32 pb-16">
+      {/* Hero Section */}
+      <section className="bg-blue-900 text-white pt-32 pb-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Achat & Export de Véhicules
           </h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            L'excellence de l'import automobile
-          </p>
         </div>
       </section>
 
       <div className="container mx-auto px-4 max-w-3xl py-12">
-        {/* Catalog Coming Soon Banner */}
-        <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl p-6 mb-10 shadow-lg text-white flex items-center gap-4 animate-fade-in">
-          <div className="bg-white/20 p-3 rounded-full">
-            <Info size={32} />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold">Catalogue en ligne bientôt disponible</h3>
-            <p className="text-amber-50">
-              Nous finalisons actuellement notre catalogue de véhicules. En attendant, utilisez le formulaire ci-dessous pour une recherche personnalisée ou une demande de transport.
-            </p>
-          </div>
-        </div>
-
         {step === 1 ? (
           <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
-            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-              <Car className="text-blue-600" /> Vos Coordonnées & Projet
-            </h2>
+            <div className="text-center mb-8">
+              <h2 className="text-xl font-bold text-gray-800 mb-2">
+                Laissez vos coordonnées
+              </h2>
+              <p className="text-gray-600">
+                Remplissez ce formulaire et un expert vous recontactera rapidement pour discuter de votre projet.
+              </p>
+            </div>
 
             <div className="space-y-8">
               {/* Sender Form (Departure / Client Info) */}
               <section>
-                <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Vos informations (Départ)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="relative">
                     <span className="absolute left-3 top-3 text-gray-400"><User size={18} /></span>
@@ -193,12 +180,11 @@ const AchatLivraisonPage: React.FC = () => {
                 </div>
               </section>
 
-              {/* Receiver Form (Destination) */}
+              {/* Receiver Information (Destination) - Simplified for purely contact/project context */}
               <section>
-                <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Pays de destination</h3>
+                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4 border-b pb-2">Pays de destination du véhicule</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Pays de destination</label>
                     <select
                       value={receiver.country}
                       onChange={(e) => setReceiver({ ...receiver, country: e.target.value })}
@@ -210,29 +196,26 @@ const AchatLivraisonPage: React.FC = () => {
                     </select>
                   </div>
 
-                  <input type="text" placeholder="Adresse destination*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
-
-                  <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={receiver.zip} onChange={e => handleZipChange('receiver', sanitize(e.target.value))} />
-                  <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
+                  <input type="text" placeholder="Ville de destination (ex: Alger)*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
                 </div>
               </section>
 
-              <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-start gap-3">
-                <AlertCircle className="text-blue-600 flex-shrink-0 mt-1" size={20} />
-                <p className="text-sm text-blue-800">
-                  Vous serez recontacté(e) pour préciser le type de véhicule (Marque, Modèle, Année) ou les détails de votre projet d'export.
+              <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg flex items-start gap-3">
+                <AlertCircle className="text-gray-600 flex-shrink-0 mt-1" size={20} />
+                <p className="text-sm text-gray-700">
+                  En envoyant ce formulaire, vous acceptez d'être recontacté(e) par notre équipe pour affiner votre projet.
                 </p>
               </div>
 
               <button
                 onClick={handleSubmit}
-                disabled={!isSenderValid || !isReceiverValid}
-                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all shadow-lg flex items-center justify-center gap-2 ${!isSenderValid || !isReceiverValid
+                disabled={!isSenderValid || !receiver.city}
+                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all shadow-lg flex items-center justify-center gap-2 ${!isSenderValid || !receiver.city
                   ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                  : 'bg-blue-900 hover:bg-blue-800'
                   }`}
               >
-                <span>Envoyer ma demande</span>
+                <span>Être recontacté</span>
                 <ArrowRight size={20} />
               </button>
             </div>
