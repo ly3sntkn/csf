@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Ship, Calendar, Box, MapPin, User, Check, ArrowRight, ArrowLeft } from 'lucide-react';
 import VideoPlaceholder from '../components/VideoPlaceholder';
-import bannerDemenagement from '../assets/banner-demenagement-v5.png';
+import bannerDemenagement from '../assets/banner-demenagement-final.png';
 import { wilayas } from '../data/wilayas';
 
 const DemenagementPage = () => {
