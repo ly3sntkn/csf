@@ -1,246 +1,246 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Car, Search, FileCheck, Truck, CheckCircle, Globe, Shield, Clock, ArrowRight, Star, AlertTriangle, Phone, Mail } from 'lucide-react';
+import { Car, MapPin, User, ArrowRight, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { wilayas } from '../data/wilayas';
 
 const AchatLivraisonPage: React.FC = () => {
-  const steps = [
-    {
-      icon: Search,
-      title: "1. Recherche & Sélection",
-      description: "Nous trouvons le véhicule de vos rêves selon vos critères et budget",
-      color: "bg-blue-100 text-blue-600",
-      details: [
-        "Recherche personnalisée selon vos critères",
-        "Vérification de l'historique du véhicule",
-        "Négociation du meilleur prix",
-        "Photos et rapport détaillé"
-      ]
-    },
-    {
-      icon: FileCheck,
-      title: "2. Achat & Paperasse",
-      description: "Nous nous occupons de tout l'achat et des formalités administratives",
-      color: "bg-green-100 text-green-600",
-      details: [
-        "Achat sécurisé du véhicule",
-        "Gestion de tous les documents",
-        "Contrôle technique si nécessaire",
-        "Préparation des papiers d'export"
-      ]
-    },
-    {
-      icon: Truck,
-      title: "3. Transport & Export",
-      description: "Expédition sécurisée de votre véhicule vers l'Algérie",
-      color: "bg-red-100 text-red-600",
-      details: [
-        "Transport vers le port d'embarquement",
-        "Formalités douanières d'export",
-        "Chargement sécurisé sur le navire",
-        "Suivi en temps réel"
-      ]
-    },
-    {
-      icon: CheckCircle,
-      title: "4. Réception en Algérie",
-      description: "Récupérez votre véhicule au port d'Alger",
-      color: "bg-purple-100 text-purple-600",
-      details: [
-        "Arrivée au port d'Alger",
-        "Assistance pour les formalités",
-        "Contrôle de l'état du véhicule",
-        "Remise des clés et documents"
-      ]
-    }
+  const [step, setStep] = useState<number>(1); // Keep simplified step logic if we want a success state later
+
+  // Detailed Address State
+  const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', zip: '', city: '', country: 'France' });
+  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', zip: '', city: '', country: 'Algérie' });
+
+  // Suggestions State
+  const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
+  const [showSenderSuggestions, setShowSenderSuggestions] = useState(false);
+
+  // Common countries for dropdown
+  const commonCountries = [
+    "Algérie", "Maroc", "Tunisie", "Espagne", "Italie", "Belgique", "Allemagne", "Canada", "États-Unis", "Autre"
   ];
 
-  const advantages = [
-    {
-      icon: Globe,
-      title: "Réseau Européen",
-      description: "Accès à tous les marchés automobiles européens"
-    },
-    {
-      icon: Shield,
-      title: "Achat Sécurisé",
-      description: "Vérifications complètes et garanties incluses"
-    },
-    {
-      icon: Clock,
-      title: "Service Clé en Main",
-      description: "De la recherche à la livraison, nous gérons tout"
+  // Utility to sanitize text inputs
+  const sanitize = (val: string) => val.replace(/[<>]/g, '');
+
+  // Auto-fill City Logic
+  const handleZipChange = async (type: 'sender' | 'receiver', value: string) => {
+    if (type === 'sender') {
+      setSender(prev => ({ ...prev, zip: value }));
+
+      // France Logic (Code Postal -> Ville)
+      if (value.length >= 2) {
+        try {
+          const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${value}&type=municipality&limit=5`);
+          const data = await response.json();
+
+          if (data.features && data.features.length > 0) {
+            const cities = data.features.map((f: any) => f.properties.city);
+            // Remove duplicates
+            const uniqueCities = [...new Set(cities)] as string[];
+
+            setSenderSuggestions(uniqueCities);
+            setShowSenderSuggestions(true);
+
+            // Auto-select if perfect match
+            if (uniqueCities.length === 1) {
+              if (value.length === 5) {
+                setSender(prev => ({ ...prev, city: uniqueCities[0] }));
+                setShowSenderSuggestions(false);
+              }
+            }
+          } else {
+            setSenderSuggestions([]);
+            setShowSenderSuggestions(false);
+          }
+        } catch (error) {
+          // Failure suppressed
+        }
+      } else {
+        setSenderSuggestions([]);
+        setShowSenderSuggestions(false);
+      }
+
+    } else {
+      setReceiver(prev => ({ ...prev, zip: value }));
+
+      // Only attempt auto-fill for Algérie
+      if (receiver.country === 'Algérie') {
+        // Check first 2 digits for Wilaya
+        if (value.length >= 2) {
+          const wilayaCode = value.substring(0, 2);
+          const wilaya = wilayas.find(w => w.code === wilayaCode);
+
+          if (wilaya) {
+            setReceiver(prev => ({ ...prev, city: wilaya.name }));
+          }
+        }
+      }
     }
-  ];
+  };
+
+  const selectSenderCity = (city: string) => {
+    setSender(prev => ({ ...prev, city }));
+    setShowSenderSuggestions(false);
+  };
+
+  const handleSubmit = () => {
+    window.scrollTo(0, 0);
+    setStep(2); // Success state
+  };
+
+  const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
+  const isReceiverValid = receiver.address && receiver.zip && receiver.city && receiver.country;
+
+  const renderSuccess = () => (
+    <div className="bg-white rounded-2xl shadow-xl p-12 text-center animate-scale-in">
+      <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <CheckCircle className="text-green-600" size={48} />
+      </div>
+      <h2 className="text-3xl font-bold text-gray-800 mb-4">Demande reçue !</h2>
+      <p className="text-xl text-gray-600 mb-8">
+        Merci {sender.firstName}. Notre équipe spécialisée dans l'export de véhicules a bien reçu votre demande.
+        <br />
+        Vous recevrez une estimation sous 24h.
+      </p>
+      <button
+        onClick={() => window.location.reload()}
+        className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
+      >
+        Nouvelle demande
+      </button>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-white pt-0">
+    <div className="min-h-screen bg-gray-50 pt-0">
       <Helmet>
         <title>Achat & Export Véhicules Europe-Algérie - CSF Transport</title>
-        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Recherche, achat, transport et formalités douanières. Service clé en main sécurisé." />
+        <meta name="description" content="Importation de véhicules depuis l'Europe vers l'Algérie. Catalogue bientôt disponible. Contactez-nous pour un devis." />
         <link rel="canonical" href="https://csf-transport.com/achat-livraison" />
       </Helmet>
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-white text-gray-900">
+
+      {/* Hero Section Simplified */}
+      <section className="bg-blue-900 text-white pt-32 pb-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Achat & Export de Véhicules
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Trouvez et importez le véhicule de vos rêves depuis l'Europe vers l'Algérie
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            L'excellence de l'import automobile
           </p>
-
         </div>
       </section>
 
-      {/* How it Works */}
-      <section className="pt-32 pb-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Comment ça Marche ?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Un processus simple en 4 étapes pour importer votre véhicule
+      <div className="container mx-auto px-4 max-w-3xl py-12">
+        {/* Catalog Coming Soon Banner */}
+        <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl p-6 mb-10 shadow-lg text-white flex items-center gap-4 animate-fade-in">
+          <div className="bg-white/20 p-3 rounded-full">
+            <Info size={32} />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold">Catalogue en ligne bientôt disponible</h3>
+            <p className="text-amber-50">
+              Nous finalisons actuellement notre catalogue de véhicules. En attendant, utilisez le formulaire ci-dessous pour une recherche personnalisée ou une demande de transport.
             </p>
           </div>
+        </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            {steps.map((step, index) => {
-              const IconComponent = step.icon;
-              return (
-                <div key={index} className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
-                  <div className="flex items-start space-x-4">
-                    <div className={`flex-shrink-0 p-4 rounded-full ${step.color}`}>
-                      <IconComponent size={32} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">
-                        {step.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {step.description}
-                      </p>
-                      <ul className="space-y-2">
-                        {step.details.map((detail, detailIndex) => (
-                          <li key={detailIndex} className="flex items-center text-sm text-gray-600">
-                            <CheckCircle size={16} className="text-green-500 mr-2 flex-shrink-0" />
-                            {detail}
+        {step === 1 ? (
+          <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <Car className="text-blue-600" /> Vos Coordonnées & Projet
+            </h2>
+
+            <div className="space-y-8">
+              {/* Sender Form (Departure / Client Info) */}
+              <section>
+                <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Vos informations (Départ)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <span className="absolute left-3 top-3 text-gray-400"><User size={18} /></span>
+                    <input type="text" placeholder="Prénom*" className="pl-10 p-3 border rounded-lg w-full" value={sender.firstName} onChange={e => setSender({ ...sender, firstName: sanitize(e.target.value) })} />
+                  </div>
+                  <div className="relative">
+                    <span className="absolute left-3 top-3 text-gray-400"><User size={18} /></span>
+                    <input type="text" placeholder="Nom*" className="pl-10 p-3 border rounded-lg w-full" value={sender.lastName} onChange={e => setSender({ ...sender, lastName: sanitize(e.target.value) })} />
+                  </div>
+                  <input type="email" placeholder="Email*" className="p-3 border rounded-lg" value={sender.email} onChange={e => setSender({ ...sender, email: sanitize(e.target.value) })} />
+                  <input type="tel" placeholder="Téléphone (+33)*" className="p-3 border rounded-lg" value={sender.phone} onChange={e => setSender({ ...sender, phone: sanitize(e.target.value) })} />
+
+                  <input type="text" placeholder="Adresse complète*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: sanitize(e.target.value) })} />
+
+                  <div className="relative">
+                    <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg w-full" value={sender.zip} onChange={e => handleZipChange('sender', sanitize(e.target.value))} />
+                    {showSenderSuggestions && senderSuggestions.length > 0 && (
+                      <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
+                        {senderSuggestions.map((city, idx) => (
+                          <li
+                            key={idx}
+                            className="p-2 hover:bg-blue-50 cursor-pointer text-sm text-gray-700"
+                            onClick={() => selectSenderCity(city)}
+                          >
+                            {city}
                           </li>
                         ))}
                       </ul>
-                    </div>
+                    )}
+                  </div>
+                  <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={sender.city} onChange={e => setSender({ ...sender, city: sanitize(e.target.value) })} />
+                  <div className="flex items-center bg-gray-100 border border-gray-300 rounded-lg p-3 text-gray-500 cursor-not-allowed">
+                    <MapPin size={18} className="mr-2" />
+                    France
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+              </section>
 
-      {/* Advantages */}
-      <section className="pt-32 pb-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Pourquoi Choisir CSF ?
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {advantages.map((advantage, index) => {
-              const IconComponent = advantage.icon;
-              return (
-                <div key={index} className="bg-gray-50 rounded-xl shadow-lg p-8 text-center">
-                  <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <IconComponent size={32} className="text-blue-600" />
+              {/* Receiver Form (Destination) */}
+              <section>
+                <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Pays de destination</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Pays de destination</label>
+                    <select
+                      value={receiver.country}
+                      onChange={(e) => setReceiver({ ...receiver, country: e.target.value })}
+                      className="w-full p-3 border rounded-lg bg-white"
+                    >
+                      {commonCountries.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {advantage.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {advantage.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
-      {/* Important Information */}
-      <section className="pt-32 pb-16 bg-yellow-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center mb-6">
-                <AlertTriangle className="text-yellow-600 mr-4" size={32} />
-                <h2 className="text-2xl font-bold text-gray-800">Informations Importantes</h2>
+                  <input type="text" placeholder="Adresse destination*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
+
+                  <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={receiver.zip} onChange={e => handleZipChange('receiver', sanitize(e.target.value))} />
+                  <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
+                </div>
+              </section>
+
+              <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex items-start gap-3">
+                <AlertCircle className="text-blue-600 flex-shrink-0 mt-1" size={20} />
+                <p className="text-sm text-blue-800">
+                  Vous serez recontacté(e) pour préciser le type de véhicule (Marque, Modèle, Année) ou les détails de votre projet d'export.
+                </p>
               </div>
 
-              <div className="space-y-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h3 className="font-bold text-blue-800 mb-2">Formalités Douanières</h3>
-                  <p className="text-blue-700 text-sm">
-                    À l'arrivée en Algérie, vous devrez vous acquitter des droits de douane selon la réglementation algérienne en vigueur.
-                    Nous vous assistons dans toutes les démarches.
-                  </p>
-                </div>
-
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <h3 className="font-bold text-green-800 mb-2">Documents Requis</h3>
-                  <ul className="text-green-700 text-sm space-y-1">
-                    <li>• Passeport algérien ou carte consulaire</li>
-                    <li>• Justificatif de résidence en Europe</li>
-                    <li>• Permis de conduire valide</li>
-                    <li>• Attestation d'assurance</li>
-                  </ul>
-                </div>
-
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <h3 className="font-bold text-red-800 mb-2">Délais Moyens</h3>
-                  <ul className="text-red-700 text-sm space-y-1">
-                    <li>• Recherche et achat: 7-15 jours</li>
-                    <li>• Préparation export: 3-5 jours</li>
-                    <li>• Transport maritime: 1-3 jours</li>
-                    <li>• Formalités douanières: 2-7 jours</li>
-                  </ul>
-                </div>
-              </div>
+              <button
+                onClick={handleSubmit}
+                disabled={!isSenderValid || !isReceiverValid}
+                className={`w-full py-4 rounded-xl font-bold text-white text-lg transition-all shadow-lg flex items-center justify-center gap-2 ${!isSenderValid || !isReceiverValid
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
+              >
+                <span>Envoyer ma demande</span>
+                <ArrowRight size={20} />
+              </button>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Prêt à Importer Votre Véhicule ?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Contactez nos experts pour un devis personnalisé et commencer votre projet d'import
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <a
-              href="tel:+33149753001"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors flex items-center justify-center space-x-2"
-            >
-              <Phone size={20} />
-              <span>+33 1 49 75 30 01</span>
-            </a>
-            <a
-              href="mailto:yanis.yataghene@csfgroupe.fr"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors flex items-center justify-center space-x-2"
-            >
-              <Mail size={20} />
-              <span>Demander un Devis</span>
-            </a>
-          </div>
-          <p className="text-blue-200 text-sm">
-            Réponse garantie sous 24h • Devis gratuit et sans engagement
-          </p>
-        </div>
-      </section>
+        ) : (
+          renderSuccess()
+        )}
+      </div>
     </div>
   );
 };
