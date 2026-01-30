@@ -88,8 +88,8 @@ const DemenagementPage = () => {
 
   // Common countries for dropdown
   const commonCountries = [
-    "Algérie", "Maroc", "Tunisie", "Espagne", "Italie", "Belgique", "Allemagne", "Canada", "États-Unis", "Autre"
-  ];
+    "Algérie", "Maroc", "Tunisie", "France", "Espagne", "Italie", "Belgique", "Allemagne", "Canada", "États-Unis", "Royaume-Uni", "Portugal", "Pays-Bas", "Suisse", "Turquie", "Émirats Arabes Unis", "Chine", "Japon", "Australie", "Brésil", "Russie", "Inde", "Afrique du Sud", "Sénégal", "Côte d'Ivoire", "Cameroun", "Mali", "Autre"
+  ].sort();
 
   const nextStep = () => {
     window.scrollTo(0, 0);
