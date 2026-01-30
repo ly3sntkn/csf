@@ -23,6 +23,7 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   build: {
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
