@@ -170,12 +170,6 @@ const AchatLivraisonPage: React.FC = () => {
                 </div>
               </section>
 
-              <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg flex items-start gap-3">
-                <AlertCircle className="text-gray-600 flex-shrink-0 mt-1" size={20} />
-                <p className="text-sm text-gray-700">
-                  En envoyant ce formulaire, vous acceptez d'être recontacté(e) par notre équipe pour affiner votre projet.
-                </p>
-              </div>
 
               <button
                 onClick={handleSubmit}
