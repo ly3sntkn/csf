@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import {
   Package, Scale, User, MapPin, Plus, Trash2,
   Check, AlertTriangle, ArrowRight, ArrowLeft, X,
-  ChevronDown, ChevronUp, ShieldCheck
+  ChevronDown, ChevronUp, ShieldCheck, Info
 } from 'lucide-react';
 import VideoPlaceholder from '../components/VideoPlaceholder';
 import { wilayas } from '../data/wilayas';
@@ -314,7 +314,7 @@ const EnvoiColisPage = () => {
                 onChange={handleWeightChange}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full pl-10 pr-4 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isRealWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="ex : 9,37"
+                placeholder="ex : 12,7"
                 min="0"
                 step="0.01"
               />
@@ -655,6 +655,39 @@ const EnvoiColisPage = () => {
     );
   };
 
+  const renderAdviceSection = () => (
+    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mt-8 animate-fade-in shadow-sm">
+      <div className="flex items-center justify-center gap-2 mb-6 text-blue-800">
+        <Info size={24} className="text-blue-600" />
+        <h3 className="text-xl font-bold">Nos conseils</h3>
+      </div>
+
+      <div className="space-y-4">
+        {[
+          { range: "25 - 30", dim: "80 × 40 × 40 cm", vol: "25,6 kg vol" },
+          { range: "20 - 25", dim: "70 × 40 × 40 cm", vol: "22,4 kg vol" },
+          { range: "15 - 20", dim: "60 × 40 × 40 cm", vol: "19,2 kg vol" },
+          { range: "10 - 15", dim: "60 × 40 × 30 cm", vol: "14,4 kg vol" },
+          { range: "5 - 10", dim: "40 × 30 × 30 cm", vol: "7,2 kg vol" },
+        ].map((item, idx) => (
+          <div key={idx} className="bg-white p-5 rounded-xl border border-blue-50 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md">
+            <p className="text-gray-700 font-medium mb-3">
+              Pour vos colis entre <span className="font-bold text-gray-900">{item.range} kg</span>, optez pour ces dimensions :
+            </p>
+
+            <div className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2 font-mono tracking-tight">
+              {item.dim}
+            </div>
+
+            <div className="text-xs sm:text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+              ({item.vol})
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const renderSuccess = () => (
     <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-fade-in text-center">
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -738,7 +771,12 @@ const EnvoiColisPage = () => {
           </div>
         )}
 
-        {step === 1 && renderStep1()}
+        {step === 1 && (
+          <>
+            {renderStep1()}
+            {renderAdviceSection()}
+          </>
+        )}
         {step === 2 && renderStep2()}
         {step === 'success' && renderSuccess()}
 
