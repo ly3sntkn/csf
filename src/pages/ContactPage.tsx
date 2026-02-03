@@ -222,10 +222,15 @@ const ContactPage = () => {
                 </button>
               </form>
 
-              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-blue-800 text-sm text-center">
-                  <strong>Réponse garantie sous 24h</strong> - Nous nous engageons à vous répondre rapidement
-                </p>
+              <div className="mt-6 p-4 border border-blue-100 rounded-xl bg-blue-50">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0">
+                    <Clock size={24} className="text-blue-600" />
+                  </div>
+                  <p className="text-blue-800 text-sm">
+                    <strong>Réponse garantie</strong> - Nous nous engageons à vous répondre rapidement
+                  </p>
+                </div>
               </div>
             </div>
           </div>

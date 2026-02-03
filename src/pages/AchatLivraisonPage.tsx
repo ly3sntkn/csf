@@ -104,18 +104,23 @@ const AchatLivraisonPage: React.FC = () => {
 
       <div className="container mx-auto px-4 max-w-3xl py-12">
         {/* Catalog Coming Soon Banner - Gray */}
-        <div className="bg-gray-200 rounded-xl p-8 mb-10 text-center animate-fade-in text-gray-800">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-            <Info size={32} className="text-gray-600" />
+        <div className="max-w-2xl mx-auto mb-10 animate-fade-in">
+          <div className="p-4 border border-blue-100 rounded-xl bg-blue-50">
+            <div className="flex items-start gap-3">
+              <div className="mt-1 flex-shrink-0">
+                <Info size={24} className="text-blue-600" />
+              </div>
+              <div className="text-sm text-blue-800 text-left">
+                <p className="font-bold text-lg mb-2">Note Importante :</p>
+                <p className="mb-2">
+                  Le catalogue <strong>2026</strong> sera bientôt disponible.
+                </p>
+                <p>
+                  <strong>Nous acceptons dès maintenant toutes les demandes personnalisées.</strong> Utilisez le formulaire ci-dessous pour nous transmettre votre besoin, quelle que soit votre recherche.
+                </p>
+              </div>
+            </div>
           </div>
-          <h3 className="text-2xl font-bold mb-2">Note Importante</h3>
-          <p className="text-gray-600 text-lg">
-            Le catalogue <strong>2026</strong> sera bientôt disponible.
-            <br className="mb-2" />
-            <strong>Nous acceptons dès maintenant toutes les demandes personnalisées.</strong>
-            <br />
-            Utilisez le formulaire ci-dessous pour nous transmettre votre besoin, quelle que soit votre recherche.
-          </p>
         </div>
 
         {step === 1 ? (

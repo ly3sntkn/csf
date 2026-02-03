@@ -14,8 +14,8 @@ const DemenagementPage = () => {
   });
 
   // Detailed Address State
-  const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', zip: '', city: '', country: 'France' });
-  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', zip: '', city: '', country: 'Algérie' });
+  const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
+  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '', country: '' });
 
   // Suggestions State
   const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
@@ -86,10 +86,7 @@ const DemenagementPage = () => {
     setShowSenderSuggestions(false);
   };
 
-  // Common countries for dropdown
-  const commonCountries = [
-    "Algérie", "Maroc", "Tunisie", "France", "Espagne", "Italie", "Belgique", "Allemagne", "Canada", "États-Unis", "Royaume-Uni", "Portugal", "Pays-Bas", "Suisse", "Turquie", "Émirats Arabes Unis", "Chine", "Japon", "Australie", "Brésil", "Russie", "Inde", "Afrique du Sud", "Sénégal", "Côte d'Ivoire", "Cameroun", "Mali", "Autre"
-  ].sort();
+
 
   const nextStep = () => {
     window.scrollTo(0, 0);
@@ -117,8 +114,10 @@ const DemenagementPage = () => {
 
         <VideoPlaceholder className="mt-6 mb-8" title="Tout savoir sur le déménagement" />
 
-        <div className="flex items-center gap-2">
-          <Ship className="text-blue-600" size={24} />
+        <div className="flex items-center gap-3 mb-8">
+          <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+            <Ship className="text-blue-600" size={24} />
+          </div>
           <h3 className="text-xl font-bold text-gray-800">Informations Déménagement</h3>
         </div>
       </div>
@@ -126,9 +125,11 @@ const DemenagementPage = () => {
       <div className="space-y-8">
         {/* Question 1 */}
         <div>
-          <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
-            <Calendar className="text-blue-600" size={24} />
-            Souhaitez-vous déménager cette année ?
+          <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-3">
+            <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+              <Calendar className="text-blue-600" size={24} />
+            </div>
+            <span>Souhaitez-vous déménager cette année ?</span>
           </label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {['Oui', 'Non, juste me renseigner', 'Je ne sais pas encore'].map((option) => (
@@ -182,7 +183,7 @@ const DemenagementPage = () => {
                     type="number"
                     value={formData.volume}
                     onChange={(e) => handleInputChange('volume', e.target.value)}
-                    placeholder="ex : 20 m3"
+                    placeholder="ex : 20"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
@@ -207,33 +208,31 @@ const DemenagementPage = () => {
   );
 
   const renderStep2 = () => {
+    // Validation for Step 2
     const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
-    const isReceiverValid = receiver.address && receiver.zip && receiver.city && receiver.country;
+    const isReceiverValid = receiver.country && receiver.address && receiver.zip && receiver.city;
 
     return (
       <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
-        <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <User className="text-blue-600" /> Vos Coordonnées
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Validez votre demande de devis</h2>
+        <p className="text-gray-600 mb-8">Remplissez le formulaire ci-dessous pour finaliser votre demande</p>
 
         <div className="space-y-8">
-          {/* Sender Form (Departure) */}
+          {/* Sender Form */}
           <section>
-            <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Pays de départ</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <User className="text-blue-600" /> Informations Départ (France)
+            </h3>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative">
-                <span className="absolute left-3 top-3 text-gray-400"><User size={18} /></span>
-                <input type="text" placeholder="Prénom*" className="pl-10 p-3 border rounded-lg w-full" value={sender.firstName} onChange={e => setSender({ ...sender, firstName: sanitize(e.target.value) })} />
-              </div>
-              <div className="relative">
-                <span className="absolute left-3 top-3 text-gray-400"><User size={18} /></span>
-                <input type="text" placeholder="Nom*" className="pl-10 p-3 border rounded-lg w-full" value={sender.lastName} onChange={e => setSender({ ...sender, lastName: sanitize(e.target.value) })} />
-              </div>
+              <input type="text" placeholder="Prénom*" className="p-3 border rounded-lg" value={sender.firstName} onChange={e => setSender({ ...sender, firstName: sanitize(e.target.value) })} />
+              <input type="text" placeholder="Nom*" className="p-3 border rounded-lg" value={sender.lastName} onChange={e => setSender({ ...sender, lastName: sanitize(e.target.value) })} />
               <input type="email" placeholder="Email*" className="p-3 border rounded-lg" value={sender.email} onChange={e => setSender({ ...sender, email: sanitize(e.target.value) })} />
-              <input type="tel" placeholder="Téléphone (+33)*" className="p-3 border rounded-lg" value={sender.phone} onChange={e => setSender({ ...sender, phone: sanitize(e.target.value) })} />
-
-              <input type="text" placeholder="Adresse complète*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: sanitize(e.target.value) })} />
-
+              <div className="relative">
+                <input type="tel" placeholder="Téléphone (+33)*" className="p-3 border rounded-lg w-full" value={sender.phone} onChange={e => setSender({ ...sender, phone: sanitize(e.target.value) })} />
+              </div>
+              <input type="text" placeholder="Adresse*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: sanitize(e.target.value) })} />
+              <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={sender.complement} onChange={e => setSender({ ...sender, complement: sanitize(e.target.value) })} />
               <div className="relative">
                 <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg w-full" value={sender.zip} onChange={e => handleZipChange('sender', sanitize(e.target.value))} />
                 {showSenderSuggestions && senderSuggestions.length > 0 && (
@@ -250,55 +249,47 @@ const DemenagementPage = () => {
                   </ul>
                 )}
               </div>
-              <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={sender.city} onChange={e => setSender({ ...sender, city: sanitize(e.target.value) })} />
-              <div className="flex items-center bg-gray-100 border border-gray-300 rounded-lg p-3 text-gray-500 cursor-not-allowed">
-                <MapPin size={18} className="mr-2" />
-                France
-              </div>
+              <input type="text" placeholder="Ville" className="p-3 border rounded-lg" value={sender.city} onChange={e => setSender({ ...sender, city: sanitize(e.target.value) })} />
+              <input type="text" value="France" disabled className="p-3 border rounded-lg bg-gray-100 text-gray-500" />
             </div>
           </section>
 
-          {/* Receiver Form (Destination) */}
+          {/* Receiver Form */}
           <section>
-            <h3 className="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Pays de destination</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <MapPin className="text-blue-600" /> Informations Arrivée (Destination)
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Optional Recipient Name fields if needed, but keeping it simple as per request to just focus on address mostly, but usually you need a contact there too. 
-                  Start with address as requested. */}
-
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Pays de destination</label>
-                <select
+                <input
+                  type="text"
+                  placeholder="Entrez le pays de destination"
+                  className="w-full p-3 border rounded-lg"
                   value={receiver.country}
-                  onChange={(e) => setReceiver({ ...receiver, country: e.target.value })}
-                  className="w-full p-3 border rounded-lg bg-white"
-                >
-                  {commonCountries.map(c => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+                  onChange={(e) => setReceiver({ ...receiver, country: sanitize(e.target.value) })}
+                />
               </div>
 
               <input type="text" placeholder="Adresse destination*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
-
+              <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={receiver.complement} onChange={e => setReceiver({ ...receiver, complement: sanitize(e.target.value) })} />
               <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={receiver.zip} onChange={e => handleZipChange('receiver', sanitize(e.target.value))} />
               <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
             </div>
           </section>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4 pt-6 border-t">
             <button
               onClick={prevStep}
-              className="px-6 py-3 rounded-xl border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 flex items-center gap-2"
+              className="w-full md:w-auto py-3 text-gray-500 font-medium flex items-center justify-center gap-2 hover:text-gray-800"
             >
               <ArrowLeft size={18} /> Retour
             </button>
+
             <button
               onClick={handleSubmit}
               disabled={!isSenderValid || !isReceiverValid}
-              className={`flex-1 py-3 rounded-xl font-bold text-white transition-all shadow-lg ${!isSenderValid || !isReceiverValid
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-green-600 hover:bg-green-700'
-                }`}
+              className={`w-full md:w-auto px-8 py-3 rounded-xl font-bold custom-shadow transition-all whitespace-normal h-auto min-h-[48px] ${isSenderValid && isReceiverValid ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 cursor-not-allowed text-gray-500'}`}
             >
               Confirmer ma demande
             </button>
