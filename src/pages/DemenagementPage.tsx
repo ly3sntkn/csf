@@ -112,7 +112,8 @@ const DemenagementPage = () => {
   const renderStep1 = () => (
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
       <div className="mb-8 border-b pb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Tout savoir sur le déménagement international</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à déménager&nbsp;?</h2>
+        <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessus pour en savoir plus.</p>
 
         <VideoPlaceholder className="mt-6 mb-8" title="Tout savoir sur le déménagement" />
 

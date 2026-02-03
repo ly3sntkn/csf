@@ -7,52 +7,31 @@ const TestimonialsSection = () => {
     const testimonials = [
         {
             id: 1,
-            name: 'Sofiane Cherifi',
-            time: 'il y a 2 semaines',
+            name: 'Ykrzorl',
+            time: 'il y a une heure',
             rating: 5,
-            text: "Je remercie l'équipe CSF GROUPE pour leur professionnalisme et leur serieux et savoir faire, j'ai envoyé un fauteuil roulant électrique et franchement j'ai beaucoup apprécié leur présence en vous tien au courant du suivi de france jusqu'à Alger, rapidité transparente et serieux avec YANIS et toute l'équipe.\nBonne continuation et je précise les fauteuils roulant pour les personnes a mobilités réduites cest GRATUIT à recommander.\nSofiane."
+            text: "J'ai fais appel à cette entreprise après être tombé sur leur vidéos sur tiktok pour envoyer un colis à ma famille, donc j'ai décidé de tester leur service et jai absolument rien a dire a part bravo, ça fait plaisir d'avoir un service comme ça vers l'Algerie. Le colis est arrivé au domicile de mes proches à Oran en moins d'une semaine, merci à vous, désormais tout mes envoi passeront par vous 🙏"
         },
         {
             id: 2,
-            name: 'Wafa Bouchouata',
-            time: 'il y a 2 mois',
+            name: 'Le Consigliere',
+            time: 'il y a 3 jours',
             rating: 5,
-            text: "Service plus que parfait, je remercie toute l’équipe pour leur professionnalisme, ponctualité parfaite, et leur disponibilité, j’ai déposé mon colis à la poste le 12 novembre et ma sœur à reçu le colis aujourd’hui livraison à domicile, je vous dis juste à très bientôt"
+            text: "Je tiens à remercier chaleureusement l'équipe CSF pour m'avoir accompagné durant mon déménagement de Toulouse à Tlemcen, ils se sont occupé de tout, ils ont su répondre à toutes mes questions et ont été professionnel du début à la fin, mes effets sont bien arrivé jusqu'à mon domicile en Algérie très rapidement, merci Yanis et l'équipe pour ce que vous faites pour la communauté, heureusement qu'il y a des entreprise comme la vôtre en qui ont peu avec pleinement confiance, je vous recommande 🙏🙏"
         },
         {
             id: 3,
-            name: 'souad layaida',
-            time: 'il y a 3 mois',
+            name: 'lounis benakli',
+            time: 'il y a 5 mois',
             rating: 5,
-            text: "Très bon service, j’ai envoyé un colis vers l’Algérie qui est arrivé en 10 jours. Ils sont à l’écoute, répondent aux questions, suivi au top. Je vous le recommande les yeux fermés"
+            text: "Service très professionnel et rapide ! Mon colis envoyé de France vers l'Algérie est arrivé sans problème et dans les délais. Je recommande vivement cette agence pour leur sérieux et leur efficacité."
         },
         {
             id: 4,
-            name: 'Nadjia Kolla',
-            time: 'il y a 2 mois',
+            name: 'J D',
+            time: 'il y a 11 mois',
             rating: 5,
-            text: "Je remercie chaleureusement l’équipe CSF . Un personnel professionnel , compétent et reste à l’écoute pour n’importe quelle question. Deux envois déjà partis et arrivés sans aucun problème. 👏👏"
-        },
-        {
-            id: 5,
-            name: 'Glovel',
-            time: 'il y a 8 mois',
-            rating: 5,
-            text: "Explications claires et nettes. Service rapide Franchement, j’ai apprécié\nÇa fait plaisir de voir une entreprise algérienne sérieuse et fiable.\nIl faut soutenir ce genre d’initiatives 💪\nJe repasserais par vous sans hésitation ! 🇩🇿"
-        },
-        {
-            id: 6,
-            name: 'Sana P',
-            time: 'il y a 6 mois',
-            rating: 5,
-            text: "Bonne expérience, colis arrivé rapidement chez ma famille, je recommande."
-        },
-        {
-            id: 7,
-            name: 'Lyes Nait Ikene',
-            time: 'Récemment',
-            rating: 5,
-            text: "Je recommande, communication claire. J'éspère bientot réutiliser le service"
+            text: "Je me permet de mettre cet avis pour dire que je conseil fortement cet entreprise tres sérieuse. N'hesitez pas. je les recommande fortement c'est le number 1."
         }
     ];
 

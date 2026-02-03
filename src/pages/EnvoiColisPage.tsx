@@ -321,47 +321,47 @@ const EnvoiColisPage = () => {
             </div>
             {isRealWeightOver && (
               <div className="text-red-600 text-sm mt-2 p-2 bg-red-50 rounded border border-red-200">
-                ⚠️ Le poids réel dépasse la limite de 30 kg, nous vous conseillons de réduire le poids de votre colis.
+                ⚠️ Le poids réel dépasse la limite de 30 kg, veuillez réduire le poids de votre colis.
               </div>
             )}
           </div>
 
           <div className="grid grid-cols-3 gap-2 relative">
             <div>
-              <label className="block text-gray-700 font-medium mb-2">L (cm)</label>
+              <label className="block text-gray-700 font-medium mb-2">Long. (cm)</label>
               <input
                 type="number"
                 value={quote.length || ''}
                 onChange={(e) => updateDimension('length', e.target.value)}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full px-3 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isVolumetricWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="ex : 50"
+                placeholder="L"
                 min="0"
                 step="0.1"
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">l (cm)</label>
+              <label className="block text-gray-700 font-medium mb-2">Larg. (cm)</label>
               <input
                 type="number"
                 value={quote.width || ''}
                 onChange={(e) => updateDimension('width', e.target.value)}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full px-3 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isVolumetricWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="ex : 30"
+                placeholder="l"
                 min="0"
                 step="0.1"
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">H (cm)</label>
+              <label className="block text-gray-700 font-medium mb-2">Haut. (cm)</label>
               <input
                 type="number"
                 value={quote.height || ''}
                 onChange={(e) => updateDimension('height', e.target.value)}
                 onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                 className={`w-full px-3 py-3 border-2 rounded-lg outline-none focus:border-blue-500 transition-colors ${isVolumetricWeightOver ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                placeholder="ex : 20"
+                placeholder="H"
                 min="0"
                 step="0.1"
               />
@@ -370,7 +370,7 @@ const EnvoiColisPage = () => {
             {/* Dynamic Overweight Alert for Volumetric Weight */}
             {!isRealWeightOver && isVolumetricWeightOver && (
               <div className="col-span-3 text-red-600 text-sm mt-2 p-2 bg-red-50 rounded border border-red-200 animate-fade-in">
-                ⚠️ Le poids volumétrique dépasse la limite de 30 kg, nous vous conseillons de réduire la taille de votre colis.
+                ⚠️ Le poids volumétrique dépasse la limite de 30 kg, veuillez réduire la taille de votre colis.
               </div>
             )}
           </div>
@@ -569,10 +569,10 @@ const EnvoiColisPage = () => {
           </section>
 
           {/* Insurance */}
-          <section className={`transition-colors ${!insurance ? 'bg-white' : 'bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm'}`}>
+          <section className="bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col items-center text-center gap-4">
-                <ShieldCheck className={`w-12 h-12 mb-2 ${insurance ? 'text-blue-600' : 'text-gray-400'}`} />
+                <ShieldCheck className="w-12 h-12 mb-2 text-blue-600" />
                 <div className="flex-1 w-full">
                   <h4 className="font-bold text-gray-900 text-lg">Optez pour la Garantie CSF (Facultative)</h4>
                   <p className="text-gray-600 text-sm mt-1">
@@ -622,7 +622,7 @@ const EnvoiColisPage = () => {
                   className="w-full p-3 border rounded-lg bg-gray-50 focus:bg-white focus:border-blue-500 transition-colors"
                 >
                   <option value="non">Non, je ne souhaite pas souscrire</option>
-                  <option value="oui">Oui, je souhaite souscrire (10% de la valeur déclarée)</option>
+                  <option value="oui">Oui, je souhaite souscrire</option>
                 </select>
 
                 {insurance && (
