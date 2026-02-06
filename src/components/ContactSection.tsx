@@ -101,10 +101,10 @@ const ContactSection = () => {
 
             {/* Service Achat & Livraison */}
             <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-8 text-white">
-              <h3 className="text-2xl font-bold mb-4">Service Achat & Livraison</h3>
+              <h3 className="text-2xl font-bold mb-4">Service Achat & Export Véhicule</h3>
               <p className="mb-6 text-green-100">
                 Vous souhaitez acheter en Europe et faire livrer en Afrique ?
-                Notre service d'achat et livraison vous facilite la vie !
+                Notre service d'achat et export de véhicule vous facilite la vie !
               </p>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
@@ -187,7 +187,7 @@ const ContactSection = () => {
                   <option value="">Sélectionner un objet</option>
                   <option value="envoi-colis">Envoi de Colis</option>
                   <option value="demenagement">Déménagement</option>
-                  <option value="achat-livraison">Achat & Livraison</option>
+                  <option value="achat-livraison">Achat & Export Véhicule</option>
                   <option value="suivi-colis">Suivi de Colis</option>
                   <option value="reclamation">Réclamation</option>
                   <option value="autre">Autre</option>

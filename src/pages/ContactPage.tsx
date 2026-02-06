@@ -81,12 +81,13 @@ const ContactPage = () => {
         <link rel="canonical" href="https://csf-transport.com/contact" />
       </Helmet>
       {/* Hero Section */}
-      <section className="pt-32 pb-6 bg-white text-gray-900">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="relative pt-32 pb-20 mb-12 flex items-center justify-center min-h-[400px] lg:min-h-[450px] bg-blue-900 overflow-hidden">
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white drop-shadow-md">
             Contactez-Nous
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto drop-shadow-sm">
             Notre équipe est à votre disposition pour répondre à toutes vos questions
             et vous accompagner dans vos projets de transport
           </p>
@@ -166,7 +167,7 @@ const ContactPage = () => {
                     <option value="">Sélectionner un objet</option>
                     <option value="envoi-colis">Envoi de Colis</option>
                     <option value="demenagement">Déménagement</option>
-                    <option value="achat-livraison">Achat & Livraison</option>
+                    <option value="achat-livraison">Achat & Export Véhicule</option>
                     <option value="suivi-colis">Suivi de Colis</option>
                     <option value="reclamation">Réclamation</option>
                     <option value="partenariat">Partenariat</option>

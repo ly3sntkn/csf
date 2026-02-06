@@ -6,7 +6,6 @@ const PartnersSection = () => {
     { name: 'Fédération Algérienne de Football', logo: '/csf/logo-faf.webp', className: 'scale-75' },
     { name: 'La Poste', logo: '/csf/logo-la-poste.webp' },
     { name: 'EMS Algérie', logo: '/csf/logo-ems.webp', className: 'mix-blend-multiply' },
-    { name: 'STELLANTIS', logo: '/csf/logo-stellantis.webp' },
   ];
 
   return (

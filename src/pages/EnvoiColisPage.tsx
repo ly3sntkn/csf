@@ -34,6 +34,7 @@ const EnvoiColisPage = () => {
   const [showSwornStatement, setShowSwornStatement] = useState(false);
   const [showProhibitedPopup, setShowProhibitedPopup] = useState(false);
   const [showGuaranteeDetails, setShowGuaranteeDetails] = useState(false);
+  const [showAdvice, setShowAdvice] = useState(false);
 
   // Quote State
   const [quote, setQuote] = useState<QuoteData>({
@@ -296,7 +297,7 @@ const EnvoiColisPage = () => {
         </div>
 
         {quote.type === 'parts' && (
-          <p className="text-amber-600 text-sm mb-6 flex items-center gap-2">
+          <p className="text-red-600 text-sm mb-6 flex items-center gap-2">
             <AlertTriangle size={16} />
             Seules les pièces pour voitures & motos sont acceptées (pneus interdits)
           </p>
@@ -405,39 +406,20 @@ const EnvoiColisPage = () => {
 
   const renderStep2 = () => {
     // Validation for Step 2
-    const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.address && sender.zip && sender.city;
-    const isReceiverValid = receiver.firstName && receiver.lastName && receiver.address && receiver.zip && receiver.city;
-    const isStep2Valid = isSenderValid && isReceiverValid;
+    const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
+    const isReceiverValid = receiver.firstName && receiver.lastName && receiver.phone && receiver.address && receiver.zip && receiver.city;
+    const isInventoryValid = inventory.length > 0 && inventory.every(item => item.description.trim() !== '' && item.quantity > 0);
+    const isStep2Valid = isSenderValid && isReceiverValid && isInventoryValid;
+
+    const insuranceCost = insurance ? totalValue * 0.10 : 0;
+    const finalTotal = quote.price + insuranceCost;
 
     return (
       <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Validez votre devis</h2>
         <p className="text-gray-600 mb-8">Remplissez le formulaire ci-dessous pour finaliser l'expédition</p>
 
-        {/* Recap */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
-          <h3 className="font-bold text-green-800 mb-4 flex items-center gap-2">
-            <Check size={20} /> Récapitulatif
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div>
-              <span className="block text-green-600">Type</span>
-              <span className="font-medium text-green-900">{quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'}</span>
-            </div>
-            <div>
-              <span className="block text-green-600">Poids</span>
-              <span className="font-medium text-green-900">{quote.weight} kg</span>
-            </div>
-            <div>
-              <span className="block text-green-600">Dimensions</span>
-              <span className="font-medium text-green-900">{quote.length}x{quote.width}x{quote.height} cm</span>
-            </div>
-            <div>
-              <span className="block text-green-600">Prix</span>
-              <span className="font-bold text-green-900 text-lg">{quote.price.toFixed(2)} €</span>
-            </div>
-          </div>
-        </div>
+
 
         <div className="space-y-8">
           {/* Sender Form */}
@@ -503,12 +485,14 @@ const EnvoiColisPage = () => {
             <h3 className="text-xl font-bold text-gray-800 mb-4">Inventaire du colis</h3>
             <p className="text-sm text-gray-600 mb-2">Déclarez précisément le contenu de votre colis. Les envois à caractère commercial (produits similaires en grande quantité) ainsi que les produits destinés à un usage professionnel ne sont pas autorisés. Veuillez consulter la liste complète des articles interdits ci-dessous afin d’éviter tout risque.</p>
 
-            <button
-              onClick={() => setShowProhibitedPopup(true)}
-              className="text-red-600 text-sm font-medium hover:underline mb-4 flex items-center gap-1 bg-red-50 p-2 rounded"
-            >
-              <AlertTriangle size={16} /> Voir la liste des produits interdits
-            </button>
+            <div className="flex justify-center mb-4">
+              <button
+                onClick={() => setShowProhibitedPopup(true)}
+                className="text-red-600 text-sm font-medium hover:underline flex items-center gap-1 bg-red-50 p-2 rounded"
+              >
+                <AlertTriangle size={16} /> Voir la liste des produits interdits
+              </button>
+            </div>
 
             <div className="bg-gray-50 p-4 rounded-xl space-y-3">
               {inventory.map((item, idx) => (
@@ -634,6 +618,29 @@ const EnvoiColisPage = () => {
             </div>
           </section>
 
+          {/* Recap Button */}
+          <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
+            <h3 className="font-bold text-green-800 mb-4 flex items-center gap-2">
+              <Check size={20} /> Récapitulatif de la commande
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Transport ({quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'} - {quote.weight} kg)</span>
+                <span className="font-medium text-gray-900">{quote.price.toFixed(2)} €</span>
+              </div>
+              {insurance && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Garantie CSF (10% de {totalValue} €)</span>
+                  <span className="font-medium text-gray-900">{insuranceCost.toFixed(2)} €</span>
+                </div>
+              )}
+              <div className="border-t border-green-200 pt-3 flex justify-between items-center mt-3">
+                <span className="font-bold text-green-900 text-lg">Total à payer</span>
+                <span className="font-bold text-green-900 text-xl">{finalTotal.toFixed(2)} €</span>
+              </div>
+            </div>
+          </div>
+
           <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4 pt-6 border-t">
             <button
               onClick={() => { window.scrollTo(0, 0); setStep(1); }}
@@ -656,35 +663,45 @@ const EnvoiColisPage = () => {
   };
 
   const renderAdviceSection = () => (
-    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mt-8 animate-fade-in shadow-sm">
-      <div className="flex items-center justify-center gap-2 mb-6 text-blue-800">
-        <Info size={24} className="text-blue-600" />
-        <h3 className="text-xl font-bold">Nos conseils</h3>
-      </div>
+    <div className="bg-blue-50 border border-blue-100 rounded-2xl overflow-hidden mt-8 animate-fade-in shadow-sm">
+      <button
+        onClick={() => setShowAdvice(!showAdvice)}
+        className="w-full flex items-center justify-between p-6 bg-blue-50 hover:bg-blue-100/50 transition-colors text-blue-800 focus:outline-none"
+      >
+        <div className="flex items-center gap-2">
+          <Info size={24} className="text-blue-600" />
+          <h3 className="text-xl font-bold">Besoin d'aide ?</h3>
+        </div>
+        {showAdvice ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+      </button>
 
-      <div className="space-y-4">
-        {[
-          { range: "25 - 30", dim: "80 × 40 × 40 cm", vol: "25,6 kg vol" },
-          { range: "20 - 25", dim: "70 × 40 × 40 cm", vol: "22,4 kg vol" },
-          { range: "15 - 20", dim: "60 × 40 × 40 cm", vol: "19,2 kg vol" },
-          { range: "10 - 15", dim: "60 × 40 × 30 cm", vol: "14,4 kg vol" },
-          { range: "5 - 10", dim: "40 × 30 × 30 cm", vol: "7,2 kg vol" },
-        ].map((item, idx) => (
-          <div key={idx} className="bg-white p-5 rounded-xl border border-blue-50 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md">
-            <p className="text-gray-700 font-medium mb-3">
-              Pour vos colis entre <span className="font-bold text-gray-900">{item.range} kg</span>, optez pour ces dimensions :
-            </p>
+      {showAdvice && (
+        <div className="p-6 pt-0 space-y-4 border-t border-blue-100/50 animate-fade-in">
+          <div className="mt-4 space-y-4">
+            {[
+              { range: "25 - 30", dim: "80 × 40 × 40 cm", vol: "25,6 kg vol" },
+              { range: "20 - 25", dim: "70 × 40 × 40 cm", vol: "22,4 kg vol" },
+              { range: "15 - 20", dim: "60 × 40 × 40 cm", vol: "19,2 kg vol" },
+              { range: "10 - 15", dim: "60 × 40 × 30 cm", vol: "14,4 kg vol" },
+              { range: "5 - 10", dim: "40 × 30 × 30 cm", vol: "7,2 kg vol" },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-5 rounded-xl border border-blue-50 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md">
+                <p className="text-gray-700 font-medium mb-3">
+                  Pour vos colis entre <span className="font-bold text-gray-900">{item.range} kg</span>, optez pour ces dimensions :
+                </p>
 
-            <div className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2 font-mono tracking-tight">
-              {item.dim}
-            </div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2 font-mono tracking-tight">
+                  {item.dim}
+                </div>
 
-            <div className="text-xs sm:text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-              ({item.vol})
-            </div>
+                <div className="text-xs sm:text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                  ({item.vol})
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 
@@ -696,15 +713,21 @@ const EnvoiColisPage = () => {
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Confirmation de votre expédition</h2>
       <p className="text-gray-500 mb-8">N° de dossier : CSF-2026-0001</p>
 
-      <div className="bg-gray-50 rounded-xl p-6 text-left mb-8 space-y-4">
+      <div className="bg-gray-50 rounded-xl p-6 text-left mb-4 space-y-4">
         <p className="font-medium text-gray-800">Bonjour {sender.firstName},</p>
         <p className="text-gray-600">Merci pour votre confiance !</p>
         <p className="text-gray-600">
           Vos documents d'expédition (bordereau d'expédition et documents douaniers) vous seront envoyés par email sous <strong>24 à 48h</strong>.
         </p>
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-          <p className="text-blue-800 text-sm font-medium mb-1">⚠️ Message important :</p>
-          <p className="text-blue-800 text-sm">Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.</p>
+      </div>
+
+      <div className="p-4 border border-blue-100 rounded-xl bg-blue-50 text-left mb-8">
+        <div className="flex items-start gap-3">
+          <div className="mt-1"><AlertTriangle size={18} className="text-blue-500" /></div>
+          <div className="text-sm text-blue-800">
+            <p className="font-bold">Message important :</p>
+            <p>Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.</p>
+          </div>
         </div>
       </div>
 
@@ -852,6 +875,20 @@ const EnvoiColisPage = () => {
           </div>
         )}
       </div>
+      {/* WhatsApp Button - Step 2 Only */}
+      {step === 2 && (
+        <a
+          href="https://wa.me/33650683832"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 flex items-center justify-center"
+          title="Contactez-nous sur WhatsApp"
+        >
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+        </a>
+      )}
     </div>
   );
 };
