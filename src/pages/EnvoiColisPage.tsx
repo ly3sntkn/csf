@@ -15,8 +15,8 @@ type ShippingType = 'personal' | 'parts';
 interface InventoryItem {
   id: string;
   description: string;
-  quantity: number;
-  value: number;
+  quantity: number | string;
+  value: number | string;
 }
 
 interface QuoteData {
@@ -49,7 +49,7 @@ const EnvoiColisPage = () => {
   // Details State
   const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
   const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '', country: 'Algérie' });
-  const [inventory, setInventory] = useState<InventoryItem[]>([{ id: '1', description: '', quantity: 1, value: 0 }]);
+  const [inventory, setInventory] = useState<InventoryItem[]>([{ id: '1', description: '', quantity: '1', value: '' }]);
   const [insurance, setInsurance] = useState(false);
   const [swornChecks, setSwornChecks] = useState<Record<string, boolean>>({});
 
@@ -160,7 +160,7 @@ const EnvoiColisPage = () => {
 
   // Inventory Management
   const addInventoryItem = () => {
-    setInventory([...inventory, { id: Math.random().toString(), description: '', quantity: 1, value: 0 }]);
+    setInventory([...inventory, { id: Math.random().toString(), description: '', quantity: '1', value: '' }]);
   };
 
   const removeInventoryItem = (id: string) => {
@@ -171,7 +171,7 @@ const EnvoiColisPage = () => {
     setInventory(inventory.map(item => item.id === id ? { ...item, [field]: value } : item));
   };
 
-  const totalValue = inventory.reduce((sum, item) => sum + (item.value * item.quantity), 0);
+  const totalValue = inventory.reduce((sum, item) => sum + (Number(item.value) || 0), 0);
 
   // Suggestions State
   const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
@@ -382,7 +382,7 @@ const EnvoiColisPage = () => {
           <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8 flex justify-between items-center animate-fade-in">
             <div>
               <span className="text-gray-500 text-sm">Votre Tarif</span>
-              <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)} €</div>
+              <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)}</div>
               {(quote.length * quote.width * quote.height) / 5000 > quote.weight && (
                 <span className="text-xs text-blue-600 block mt-1">
                   Basé sur le poids volumétrique ({((quote.length * quote.width * quote.height) / 5000).toFixed(2)} Kg)
@@ -408,7 +408,7 @@ const EnvoiColisPage = () => {
     // Validation for Step 2
     const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
     const isReceiverValid = receiver.firstName && receiver.lastName && receiver.phone && receiver.address && receiver.zip && receiver.city;
-    const isInventoryValid = inventory.length > 0 && inventory.every(item => item.description.trim() !== '' && item.quantity > 0);
+    const isInventoryValid = inventory.length > 0 && inventory.every(item => item.description.trim() !== '' && Number(item.quantity) > 0);
     const isStep2Valid = isSenderValid && isReceiverValid && isInventoryValid;
 
     const insuranceCost = insurance ? totalValue * 0.10 : 0;
@@ -496,20 +496,20 @@ const EnvoiColisPage = () => {
 
             <div className="bg-gray-50 p-4 rounded-xl space-y-3">
               {inventory.map((item, idx) => (
-                <div key={item.id} className="grid grid-cols-12 gap-2 items-center">
+                <div key={item.id} className="grid grid-cols-12 gap-1 md:gap-2 items-center">
                   <input
                     type="text"
                     placeholder={idx === 0 ? "Ex: Pantalon" : "Description"}
-                    className="col-span-6 p-2 border rounded"
+                    className="col-span-6 p-1 md:p-2 border rounded text-sm md:text-base"
                     value={item.description}
                     onChange={e => updateInventoryItem(item.id, 'description', sanitize(e.target.value))}
                   />
                   <input
                     type="number"
                     placeholder="Qte"
-                    className="col-span-2 p-2 border rounded"
+                    className="col-span-2 p-1 md:p-2 border rounded text-sm md:text-base"
                     value={item.quantity}
-                    onChange={e => updateInventoryItem(item.id, 'quantity', Math.max(0, parseInt(e.target.value) || 0))}
+                    onChange={e => updateInventoryItem(item.id, 'quantity', e.target.value)}
                     min="0"
                     onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                   />
@@ -517,18 +517,16 @@ const EnvoiColisPage = () => {
                     <input
                       type="number"
                       placeholder="€"
-                      className="w-full p-2 pr-6 border rounded"
+                      className="w-full p-1 md:p-2 border rounded text-sm md:text-base"
                       value={item.value || ''}
-                      onChange={e => updateInventoryItem(item.id, 'value', Math.max(0, parseFloat(e.target.value) || 0))}
+                      onChange={e => updateInventoryItem(item.id, 'value', e.target.value)}
                       min="0"
                       onKeyDown={(e) => ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()}
                     />
-                    <span className="absolute right-2 top-2 text-gray-400">€</span>
                   </div>
                   <button
                     onClick={() => removeInventoryItem(item.id)}
-                    disabled={inventory.length === 1}
-                    className={`col-span-1 flex justify-center ${inventory.length === 1 ? 'text-gray-300' : 'text-red-500 hover:text-red-700'}`}
+                    className="col-span-1 flex justify-center text-red-500 hover:text-red-700"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -624,19 +622,19 @@ const EnvoiColisPage = () => {
               <Check size={20} /> Récapitulatif de la commande
             </h3>
             <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Transport ({quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'} - {quote.weight} kg)</span>
-                <span className="font-medium text-gray-900">{quote.price.toFixed(2)} €</span>
+              <div className="flex justify-between items-center text-xs md:text-sm">
+                <span className="text-gray-600">{quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'} - {quote.weight} kg</span>
+                <span className="font-medium text-gray-900 whitespace-nowrap">{quote.price.toFixed(2)} €</span>
               </div>
               {insurance && (
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between items-center text-xs md:text-sm">
                   <span className="text-gray-600">Garantie CSF (10% de {totalValue} €)</span>
-                  <span className="font-medium text-gray-900">{insuranceCost.toFixed(2)} €</span>
+                  <span className="font-medium text-gray-900 whitespace-nowrap">{insuranceCost.toFixed(2)} €</span>
                 </div>
               )}
               <div className="border-t border-green-200 pt-3 flex justify-between items-center mt-3">
                 <span className="font-bold text-green-900 text-lg">Total à payer</span>
-                <span className="font-bold text-green-900 text-xl">{finalTotal.toFixed(2)} €</span>
+                <span className="font-bold text-green-900 text-xl whitespace-nowrap">{finalTotal.toFixed(2)} €</span>
               </div>
             </div>
           </div>
@@ -670,7 +668,7 @@ const EnvoiColisPage = () => {
       >
         <div className="flex items-center gap-2">
           <Info size={24} className="text-blue-600" />
-          <h3 className="text-xl font-bold">Besoin d'aide ?</h3>
+          <h3 className="text-xl font-bold">Quel carton choisir ?</h3>
         </div>
         {showAdvice ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
       </button>
@@ -679,23 +677,18 @@ const EnvoiColisPage = () => {
         <div className="p-6 pt-0 space-y-4 border-t border-blue-100/50 animate-fade-in">
           <div className="mt-4 space-y-4">
             {[
-              { range: "25 - 30", dim: "80 × 40 × 40 cm", vol: "25,6 kg vol" },
-              { range: "20 - 25", dim: "70 × 40 × 40 cm", vol: "22,4 kg vol" },
-              { range: "15 - 20", dim: "60 × 40 × 40 cm", vol: "19,2 kg vol" },
-              { range: "10 - 15", dim: "60 × 40 × 30 cm", vol: "14,4 kg vol" },
-              { range: "5 - 10", dim: "40 × 30 × 30 cm", vol: "7,2 kg vol" },
+              { min: "25", max: "30", dim: "80 × 40 × 40 cm" },
+              { min: "20", max: "25", dim: "70 × 40 × 40 cm" },
+              { min: "15", max: "20", dim: "60 × 40 × 40 cm" },
+              { min: "10", max: "15", dim: "60 × 40 × 30 cm" },
             ].map((item, idx) => (
               <div key={idx} className="bg-white p-5 rounded-xl border border-blue-50 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md">
                 <p className="text-gray-700 font-medium mb-3">
-                  Pour vos colis entre <span className="font-bold text-gray-900">{item.range} kg</span>, optez pour ces dimensions :
+                  Pour expédier un colis entre <span className="font-bold text-gray-900">{item.min} kg</span> et <span className="font-bold text-gray-900">{item.max} kg</span>, nous vous recommandons ces dimensions de carton :
                 </p>
 
-                <div className="text-2xl sm:text-3xl font-bold text-blue-900 mb-2 font-mono tracking-tight">
+                <div className="text-xl sm:text-2xl font-bold text-blue-900 mb-2 tracking-tight">
                   {item.dim}
-                </div>
-
-                <div className="text-xs sm:text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                  ({item.vol})
                 </div>
               </div>
             ))}
@@ -706,42 +699,49 @@ const EnvoiColisPage = () => {
   );
 
   const renderSuccess = () => (
-    <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-fade-in text-center">
+    <div className="max-w-xl mx-auto animate-fade-in text-center">
+      {/* Header outside card */}
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
       </div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">Confirmation de votre expédition</h2>
-      <p className="text-gray-500 mb-8">N° de dossier : CSF-2026-0001</p>
+      <h2 className="text-3xl font-bold text-gray-900 mb-2">Félicitations !</h2>
+      <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
 
-      <div className="bg-gray-50 rounded-xl p-6 text-left mb-4 space-y-4">
-        <p className="font-medium text-gray-800">Bonjour {sender.firstName},</p>
-        <p className="text-gray-600">Merci pour votre confiance !</p>
-        <p className="text-gray-600">
-          Vos documents d'expédition (bordereau d'expédition et documents douaniers) vous seront envoyés par email sous <strong>24 à 48h</strong>.
+      {/* Card */}
+      <div className="bg-white rounded-2xl shadow-xl p-8 text-left">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">
+          Bonjour {sender.firstName},
+        </h3>
+
+        <p className="text-gray-600 mb-6 text-lg">
+          Merci pour votre confiance !
         </p>
-      </div>
 
-      <div className="p-4 border border-blue-100 rounded-xl bg-blue-50 text-left mb-8">
-        <div className="flex items-start gap-3">
-          <div className="mt-1"><AlertTriangle size={18} className="text-blue-500" /></div>
-          <div className="text-sm text-blue-800">
-            <p className="font-bold">Message important :</p>
-            <p>Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.</p>
+        <p className="text-gray-600 leading-relaxed mb-6">
+          Vos documents d'expédition (bordereau d'expédition et documents douaniers) vous seront envoyés par email sous <span className="font-bold text-gray-900">24 à 48h</span>.
+        </p>
+
+        {/* Info Box */}
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 text-left mb-8">
+          <div className="flex-shrink-0 mt-0.5 text-xl">
+            ⚠️
+          </div>
+          <div className="text-blue-900 text-sm">
+            <p className="font-bold mb-1">Message important :</p>
+            <p className="leading-relaxed">
+              Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.
+            </p>
           </div>
         </div>
-      </div>
 
-      <button
-        onClick={() => {
-          setStep(1);
-          setQuote({ ...quote, weight: 0 });
-          setWeightInputValue('0');
-          window.scrollTo(0, 0);
-        }}
-        className="text-blue-600 font-medium hover:underline"
-      >
-        Retour à l'accueil
-      </button>
+        {/* Button */}
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'accueil' }))}
+          className="w-full py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
+        >
+          Nouvelle demande
+        </button>
+      </div>
     </div>
   );
 
@@ -875,8 +875,8 @@ const EnvoiColisPage = () => {
           </div>
         )}
       </div>
-      {/* WhatsApp Button - Step 2 Only */}
-      {step === 2 && (
+      {/* WhatsApp Button - Step 2 & 3 (Success) */}
+      {(step === 2 || step === 'success') && (
         <a
           href="https://wa.me/33650683832"
           target="_blank"

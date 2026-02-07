@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Ship, Calendar, Box, MapPin, User, Check, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Ship, Calendar, Box, MapPin, User, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 import VideoPlaceholder from '../components/VideoPlaceholder';
 import bannerDemenagement from '../assets/banner-demenagement-final.png';
 import { wilayas } from '../data/wilayas';
 
-const commonCountries = [
-  "Afghanistan", "Afrique du Sud", "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", "Antigua-et-Barbuda", "Arabie saoudite", "Argentine", "Arménie", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Belgique", "Belize", "Bénin", "Bhoutan", "Biélorussie", "Birmanie", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", "Brunei", "Bulgarie", "Burkina Faso", "Burundi", "Cambodge", "Cameroun", "Canada", "Cap-Vert", "Chili", "Chine", "Chypre", "Colombie", "Comores", "Congo (Brazzaville)", "Congo (Kinshasa)", "Corée du Nord", "Corée du Sud", "Costa Rica", "Côte d’Ivoire", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "Égypte", "Émirats arabes unis", "Équateur", "Érythrée", "Espagne", "Estonie", "Eswatini", "États-Unis", "Éthiopie", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie", "Ghana", "Grèce", "Grenade", "Guatemala", "Guinée", "Guinée équatoriale", "Guinée-Bissau", "Guyana", "Haïti", "Honduras", "Hongrie", "Îles Marshall", "Inde", "Indonésie", "Irak", "Iran", "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jordanie", "Kazakhstan", "Kenya", "Kirghizistan", "Kiribati", "Kosovo", "Koweït", "Laos", "Lesotho", "Lettonie", "Liban", "Liberia", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Madagascar", "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Maroc", "Maurice", "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", "Mongolie", "Monténégro", "Mozambique", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger", "Nigeria", "Norvège", "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Palestine", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", "Pologne", "Portugal", "Qatar", "République centrafricaine", "République dominicaine", "République tchèque", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", "Saint-Christophe-et-Niévès", "Sainte-Lucie", "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Salomon", "Salvador", "Samoa", "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Syrie", "Tadjikistan", "Tanzanie", "Tchad", "Thaïlande", "Timor oriental", "Togo", "Tonga", "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican", "Venezuela", "Vietnam", "Yémen", "Zambie", "Zimbabwe"
-];
+
 
 const DemenagementPage = () => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -19,15 +17,14 @@ const DemenagementPage = () => {
 
   // Detailed Address State
   const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
-  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '', country: '' });
+  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '' });
 
   // Suggestions State
   const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
   const [showSenderSuggestions, setShowSenderSuggestions] = useState(false);
 
   // Country Suggestions State
-  const [countrySuggestions, setCountrySuggestions] = useState<string[]>([]);
-  const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
+
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -74,16 +71,13 @@ const DemenagementPage = () => {
     } else {
       setReceiver(prev => ({ ...prev, zip: value }));
 
-      // Only attempt auto-fill for Algérie
-      if (receiver.country === 'Algérie') {
-        // Check first 2 digits for Wilaya
-        if (value.length >= 2) {
-          const wilayaCode = value.substring(0, 2);
-          const wilaya = wilayas.find(w => w.code === wilayaCode);
+      // Check first 2 digits for Wilaya
+      if (value.length >= 2) {
+        const wilayaCode = value.substring(0, 2);
+        const wilaya = wilayas.find(w => w.code === wilayaCode);
 
-          if (wilaya) {
-            setReceiver(prev => ({ ...prev, city: wilaya.name }));
-          }
+        if (wilaya) {
+          setReceiver(prev => ({ ...prev, city: wilaya.name }));
         }
       }
     }
@@ -94,40 +88,7 @@ const DemenagementPage = () => {
     setShowSenderSuggestions(false);
   };
 
-  const handleCountryChange = (value: string) => {
-    const sanitizedVal = sanitize(value);
-    setReceiver(prev => ({ ...prev, country: sanitizedVal }));
 
-    if (sanitizedVal.length >= 2) {
-      // Normalize input: remove accents and convert to lowercase
-      const normalizedInput = sanitizedVal
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-
-      const filtered = commonCountries.filter(c => {
-        // Normalize country name: remove accents and convert to lowercase
-        const normalizedCountry = c
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
-
-        // Use startsWith for prefix matching
-        return normalizedCountry.startsWith(normalizedInput);
-      });
-
-      setCountrySuggestions(filtered);
-      setShowCountrySuggestions(filtered.length > 0);
-    } else {
-      setCountrySuggestions([]);
-      setShowCountrySuggestions(false);
-    }
-  };
-
-  const selectCountry = (country: string) => {
-    setReceiver(prev => ({ ...prev, country }));
-    setShowCountrySuggestions(false);
-  };
 
 
 
@@ -151,13 +112,13 @@ const DemenagementPage = () => {
 
   const renderStep1 = () => (
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
-      <div className="mb-8 border-b pb-8">
+      <div className="mb-0 border-b pb-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à déménager&nbsp;?</h2>
         <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessus pour en savoir plus.</p>
 
         <VideoPlaceholder className="mt-6 mb-8" title="Tout savoir sur le déménagement" />
 
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center gap-3">
           <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
             <Ship className="text-blue-600" size={24} />
           </div>
@@ -165,7 +126,7 @@ const DemenagementPage = () => {
         </div>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6 mt-2">
         {/* Question 1 */}
         <div>
           <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-3">
@@ -193,8 +154,10 @@ const DemenagementPage = () => {
         {/* Question 2 */}
         {formData.moveThisYear === 'Oui' && (
           <div className="animate-fade-in">
-            <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-2">
-              <Box className="text-blue-600" size={24} />
+            <label className="block text-lg font-medium text-gray-800 mb-4 flex items-center gap-3">
+              <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                <Box className="text-blue-600" size={24} />
+              </div>
               Connaissez-vous approximativement le volume total ?
             </label>
             <div className="space-y-4">
@@ -253,7 +216,7 @@ const DemenagementPage = () => {
   const renderStep2 = () => {
     // Validation for Step 2
     const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
-    const isReceiverValid = receiver.country && receiver.address && receiver.zip && receiver.city;
+    const isReceiverValid = receiver.address && receiver.zip && receiver.city;
 
     return (
       <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
@@ -264,7 +227,7 @@ const DemenagementPage = () => {
           {/* Sender Form */}
           <section>
             <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <User className="text-blue-600" /> Informations Départ (France)
+              <User className="text-blue-600" /> Informations de départ (France)
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -300,32 +263,9 @@ const DemenagementPage = () => {
           {/* Receiver Form */}
           <section>
             <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <MapPin className="text-blue-600" /> Informations Arrivée (Destination)
+              <MapPin className="text-blue-600" /> Informations d'arrivée
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2 relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pays de destination</label>
-                <input
-                  type="text"
-                  placeholder="Entrez le pays de destination"
-                  className="w-full p-3 border rounded-lg"
-                  value={receiver.country}
-                  onChange={(e) => handleCountryChange(e.target.value)}
-                />
-                {showCountrySuggestions && countrySuggestions.length > 0 && (
-                  <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
-                    {countrySuggestions.map((country, idx) => (
-                      <li
-                        key={idx}
-                        className="p-2 hover:bg-blue-50 cursor-pointer text-sm text-gray-700"
-                        onClick={() => selectCountry(country)}
-                      >
-                        {country}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
 
               <input type="text" placeholder="Adresse de destination*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
               <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={receiver.complement} onChange={e => setReceiver({ ...receiver, complement: sanitize(e.target.value) })} />
@@ -356,27 +296,38 @@ const DemenagementPage = () => {
   };
 
   const renderSuccess = () => (
-    <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-fade-in text-center">
+    <div className="max-w-xl mx-auto animate-fade-in text-center">
+      {/* Header outside card */}
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
       </div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">Bonjour {sender.firstName}, Félicitations !</h2>
-      <div className="bg-gray-50 rounded-xl p-6 text-center mb-8 space-y-4">
-        <p className="text-gray-600">
-          Vous vous rapprochez de votre nouvelle vie. Un commercial va vous contacter sous <strong>24 à 48h</strong> afin d’établir avec vous votre devis.
-        </p>
-      </div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Félicitations !</h2>
+      <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
 
-      <button
-        onClick={() => {
-          setStep(1);
-          setFormData({ ...formData, moveThisYear: '', knowsVolume: '', volume: '' });
-          window.scrollTo(0, 0);
-        }}
-        className="text-blue-600 font-medium hover:underline"
-      >
-        Retour à l'accueil
-      </button>
+      {/* Card */}
+      <div className="bg-white rounded-2xl shadow-xl p-8 text-left">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">
+          Bonjour {sender.firstName},
+        </h3>
+
+        <p className="text-gray-600 mb-6 text-lg">
+          Merci pour votre confiance !
+        </p>
+
+        <p className="text-gray-600 leading-relaxed mb-8">
+          Vous vous rapprochez de votre nouvelle vie. Un commercial va vous contacter sous <span className="font-bold text-gray-900">24 à 48h</span> afin d’établir avec vous votre devis.
+        </p>
+
+        {/* Back Link */}
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'accueil' }))}
+            className="w-full md:w-auto px-8 py-3 rounded-xl font-bold text-lg text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
+          >
+            Nouvelle demande
+          </button>
+        </div>
+      </div>
     </div>
   );
 

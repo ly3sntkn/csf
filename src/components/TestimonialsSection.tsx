@@ -6,6 +6,34 @@ const TestimonialsSection = () => {
 
     const testimonials = [
         {
+            id: 101,
+            name: 'Fatima Meziane',
+            time: 'il y a 2 mois',
+            rating: 5,
+            text: "Je recommande vivement CSF ! Ils ont géré mon déménagement avec un soin particulier. Tous mes biens sont arrivés intacts."
+        },
+        {
+            id: 102,
+            name: 'Ykrzorl',
+            time: 'il y a 1 mois',
+            rating: 5,
+            text: "J'ai fais appel à cette entreprise après être tombé sur leur vidéos sur tiktok pour envoyer un colis à ma famille, donc j'ai décidé de tester leur service et jai absolument rien a dire a part bravo, ça fait plaisir d'avoir un service comme ça vers l'Algerie. Le colis est arrivé au domicile de mes proches à Oran en moins d'une semaine, merci à vous, désormais tout mes envoi passeront par vous 🙏"
+        },
+        {
+            id: 103,
+            name: 'Lounis Benakli',
+            time: 'il y a 5 mois',
+            rating: 5,
+            text: "Service très professionnel et rapide ! Mon colis envoyé de France vers l'Algérie est arrivé sans problème et dans les délais. Je recommande vivement cette agence pour leur sérieux et leur efficacité."
+        },
+        {
+            id: 104,
+            name: 'J D',
+            time: 'il y a 11 mois',
+            rating: 5,
+            text: "Je me permet de mettre cet avis pour dire que je conseille fortement cet entreprise tres sérieuse. N'hesitez pas. je les recommande fortement c'est le number 1."
+        },
+        {
             id: 1,
             name: 'Wiss Quattro',
             time: 'il y a 3 mois',

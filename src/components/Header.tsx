@@ -82,19 +82,21 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 w-full bg-white border-t border-gray-100 xl:hidden flex flex-col items-center py-8 space-y-6 h-screen shadow-xl">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`text-lg font-bold transition-colors duration-300 uppercase tracking-wide ${currentPage === item.id
-                ? 'text-red-600'
-                : 'text-gray-800 hover:text-red-600'
-                }`}
-            >
-              {item.label}
-            </button>
-          ))}
+        <div className="absolute top-full left-0 w-full bg-white border-t border-gray-100 xl:hidden flex flex-col h-screen shadow-xl animate-fade-in">
+          <div className="flex flex-col">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`w-full text-left py-4 px-6 border-b border-gray-100 text-base font-bold transition-all duration-200 uppercase tracking-wide flex justify-between items-center ${currentPage === item.id
+                  ? 'text-red-600 bg-gray-50'
+                  : 'text-gray-800 hover:bg-gray-50 hover:text-red-600'
+                  }`}
+              >
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </header>

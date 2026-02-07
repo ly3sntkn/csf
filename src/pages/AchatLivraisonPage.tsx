@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { MapPin, User, ArrowRight, CheckCircle, Info, Check } from 'lucide-react';
+import { MapPin, ArrowRight, CheckCircle, Info, Check } from 'lucide-react';
 import bannerVoiture from '../assets/banner-voiture-final.jpg';
 
 const AchatLivraisonPage: React.FC = () => {
@@ -15,7 +15,7 @@ const AchatLivraisonPage: React.FC = () => {
   });
 
   // Detailed Address State
-  const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', zip: '', city: '', country: 'France' });
+  const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
 
   // Suggestions State
   const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
@@ -67,6 +67,16 @@ const AchatLivraisonPage: React.FC = () => {
     setShowSenderSuggestions(false);
   };
 
+  const handleSelection = (type: 'buy_export' | 'export_only') => {
+    setServiceType(type);
+    window.scrollTo(0, 0);
+    if (type === 'export_only') {
+      setStep(3); // Direct to Contact Form
+    } else {
+      setStep(2); // Vehicle Criteria
+    }
+  };
+
   const nextStep = () => {
     window.scrollTo(0, 0);
     setStep(prev => prev + 1);
@@ -79,132 +89,134 @@ const AchatLivraisonPage: React.FC = () => {
 
   const handleSubmit = () => {
     window.scrollTo(0, 0);
-    setStep(3); // Success state
+    setStep(4); // Success state
   };
 
   const renderStep1 = () => (
     <div className="space-y-8 animate-fade-in">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Que souhaitez-vous faire ?</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Option 1: Buy & Export */}
         <div
-          onClick={() => setServiceType('buy_export')}
-          className={`cursor-pointer p-6 rounded-2xl border-2 transition-all ${serviceType === 'buy_export'
-            ? 'border-blue-600 bg-blue-50 shadow-lg'
-            : 'border-gray-100 bg-white hover:border-blue-200 shadow-md'
-            }`}
+          onClick={() => handleSelection('buy_export')}
+          className={`cursor-pointer group p-8 rounded-2xl border-2 transition-all hover:border-blue-500 shadow-sm hover:shadow-xl bg-white border-gray-100 transform hover:-translate-y-1`}
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className={`p-3 rounded-full ${serviceType === 'buy_export' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500'}`}>
-              <CheckCircle size={24} />
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className={`p-4 rounded-full bg-gray-50 text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300`}>
+              <CheckCircle size={32} />
             </div>
-            <h3 className="text-xl font-bold text-gray-800">Acheter et exporter un véhicule</h3>
+            <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors">Acheter un véhicule</h3>
+            <p className="text-gray-500 group-hover:text-gray-600">Nous trouvons le véhicule de vos rêves pour vous.</p>
           </div>
-          <p className="text-gray-600">Nous trouvons et exportons le véhicule de vos rêves pour vous.</p>
         </div>
 
         {/* Option 2: Export Only */}
         <div
-          onClick={() => setServiceType('export_only')}
-          className={`cursor-pointer p-6 rounded-2xl border-2 transition-all ${serviceType === 'export_only'
-            ? 'border-blue-600 bg-blue-50 shadow-lg'
-            : 'border-gray-100 bg-white hover:border-blue-200 shadow-md'
-            }`}
+          onClick={() => handleSelection('export_only')}
+          className={`cursor-pointer group p-8 rounded-2xl border-2 transition-all hover:border-blue-500 shadow-sm hover:shadow-xl bg-white border-gray-100 transform hover:-translate-y-1`}
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className={`p-3 rounded-full ${serviceType === 'export_only' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500'}`}>
-              <ArrowRight size={24} />
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className={`p-4 rounded-full bg-gray-50 text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300`}>
+              <ArrowRight size={32} />
             </div>
-            <h3 className="text-xl font-bold text-gray-800">Exporter un véhicule</h3>
+            <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors">Exporter un véhicule</h3>
+            <p className="text-gray-500 group-hover:text-gray-600">Vous avez déjà le véhicule ? Nous nous occupons de l'export.</p>
           </div>
-          <p className="text-gray-600">Vous avez déjà le véhicule ? Nous nous occupons de l'export.</p>
         </div>
       </div>
-
-      {serviceType === 'buy_export' && (
-        <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-800 mb-6">Précisez votre recherche</h3>
-
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Que recherchez-vous ?</label>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {[
-                  { id: 'neuf', label: 'Véhicule neuf' },
-                  { id: 'less_3', label: '- de 3 ans' },
-                  { id: 'less_5', label: '- de 5 ans' }
-                ].map(opt => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setVehicleCriteria({ ...vehicleCriteria, age: opt.id })}
-                    className={`p-3 rounded-lg border text-center transition-all ${vehicleCriteria.age === opt.id
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'border-gray-200 hover:border-blue-300 text-gray-600'
-                      }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Avez-vous un modèle précis en tête ?</label>
-              <div className="flex gap-4 mb-4">
-                <button
-                  onClick={() => setVehicleCriteria({ ...vehicleCriteria, hasModel: 'oui' })}
-                  className={`px-6 py-2 rounded-lg border transition-all ${vehicleCriteria.hasModel === 'oui'
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'border-gray-200 hover:border-blue-300 text-gray-600'
-                    }`}
-                >
-                  Oui
-                </button>
-                <button
-                  onClick={() => setVehicleCriteria({ ...vehicleCriteria, hasModel: 'non' })}
-                  className={`px-6 py-2 rounded-lg border transition-all ${vehicleCriteria.hasModel === 'non'
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'border-gray-200 hover:border-blue-300 text-gray-600'
-                    }`}
-                >
-                  Non
-                </button>
-              </div>
-
-              {vehicleCriteria.hasModel === 'oui' && (
-                <div className="animate-fade-in">
-                  <input
-                    type="text"
-                    placeholder="Ex: Renault Clio 5 RS Line..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    value={vehicleCriteria.modelName}
-                    onChange={(e) => setVehicleCriteria({ ...vehicleCriteria, modelName: e.target.value })}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {serviceType && (
-        <div className="flex justify-end pt-4">
-          <button
-            onClick={nextStep}
-            disabled={serviceType === 'buy_export' && (!vehicleCriteria.age || !vehicleCriteria.hasModel || (vehicleCriteria.hasModel === 'oui' && !vehicleCriteria.modelName))}
-            className={`px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${serviceType === 'buy_export' && (!vehicleCriteria.age || !vehicleCriteria.hasModel || (vehicleCriteria.hasModel === 'oui' && !vehicleCriteria.modelName))
-                ? 'bg-gray-300 cursor-not-allowed text-gray-500'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
-              }`}
-          >
-            <span>Continuer</span>
-            <ArrowRight size={20} />
-          </button>
-        </div>
-      )}
     </div>
   );
 
-  const renderStep2 = () => {
+  const renderStep2 = () => (
+    <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in border border-gray-100">
+      <h3 className="text-xl font-bold text-gray-800 mb-6">
+        Que recherchez-vous ?
+      </h3>
+
+      <div className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">Type de véhicule</label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              { id: 'neuf', label: 'Véhicule neuf' },
+              { id: 'less_3', label: '- de 3 ans' },
+              { id: 'less_5', label: '- de 5 ans' }
+            ].map(opt => (
+              <button
+                key={opt.id}
+                onClick={() => setVehicleCriteria({ ...vehicleCriteria, age: opt.id })}
+                className={`p-3 rounded-lg border text-center transition-all ${vehicleCriteria.age === opt.id
+                  ? 'bg-blue-600 text-white border-blue-600'
+                  : 'border-gray-200 hover:border-blue-300 text-gray-600'
+                  }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">Avez-vous un modèle précis en tête ?</label>
+          <div className="flex gap-4 mb-4">
+            <button
+              onClick={() => setVehicleCriteria({ ...vehicleCriteria, hasModel: 'oui' })}
+              className={`px-6 py-2 rounded-lg border transition-all ${vehicleCriteria.hasModel === 'oui'
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'border-gray-200 hover:border-blue-300 text-gray-600'
+                }`}
+            >
+              Oui
+            </button>
+            <button
+              onClick={() => setVehicleCriteria({ ...vehicleCriteria, hasModel: 'non' })}
+              className={`px-6 py-2 rounded-lg border transition-all ${vehicleCriteria.hasModel === 'non'
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'border-gray-200 hover:border-blue-300 text-gray-600'
+                }`}
+            >
+              Non
+            </button>
+          </div>
+
+          {vehicleCriteria.hasModel === 'oui' && (
+            <div className="animate-fade-in">
+              <input
+                type="text"
+                placeholder="Ex: Renault Clio 5 RS Line..."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                value={vehicleCriteria.modelName}
+                onChange={(e) => setVehicleCriteria({ ...vehicleCriteria, modelName: e.target.value })}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-between pt-8 border-t mt-8">
+        <button
+          onClick={prevStep}
+          className="py-3 px-6 text-gray-500 font-medium flex items-center gap-2 hover:text-gray-800"
+        >
+          <ArrowRight size={18} className="rotate-180" /> Retour
+        </button>
+
+        <button
+          onClick={nextStep}
+          disabled={!vehicleCriteria.age || !vehicleCriteria.hasModel || (vehicleCriteria.hasModel === 'oui' && !vehicleCriteria.modelName)}
+          className={`px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${!vehicleCriteria.age || !vehicleCriteria.hasModel || (vehicleCriteria.hasModel === 'oui' && !vehicleCriteria.modelName)
+            ? 'bg-gray-300 cursor-not-allowed text-gray-500'
+            : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+        >
+          <span>Continuer</span>
+          <ArrowRight size={20} />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderStep3 = () => {
     const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
 
     return (
@@ -221,6 +233,7 @@ const AchatLivraisonPage: React.FC = () => {
               <input type="tel" placeholder="Téléphone (+33)*" className="p-3 border rounded-lg w-full" value={sender.phone} onChange={e => setSender({ ...sender, phone: sanitize(e.target.value) })} />
             </div>
             <input type="text" placeholder="Adresse complète*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: sanitize(e.target.value) })} />
+            <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={sender.complement} onChange={e => setSender({ ...sender, complement: sanitize(e.target.value) })} />
 
             <div className="relative">
               <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg w-full" value={sender.zip} onChange={e => handleZipChange(sanitize(e.target.value))} />
@@ -272,26 +285,24 @@ const AchatLivraisonPage: React.FC = () => {
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
       </div>
+
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Demande reçue !</h2>
+      <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
+
       <div className="bg-gray-50 rounded-xl p-6 text-center mb-8 space-y-4">
-        <p className="text-gray-600">
-          Merci <strong>{sender.firstName}</strong>. Notre équipe spécialisée dans l'export de véhicules a bien reçu votre demande.
+        <p className="text-gray-600 text-lg">
+          Merci <strong>{sender.firstName}</strong>. Notre équipe spécialisée a bien reçu votre demande.
         </p>
         <p className="text-gray-600">
-          Vous recevrez une estimation sous <strong>24h</strong>.
+          Vous recevrez une réponse sous <strong>24h</strong>.
         </p>
       </div>
 
       <button
-        onClick={() => {
-          setStep(1);
-          setServiceType(null);
-          setVehicleCriteria({ age: '', hasModel: '', modelName: '' });
-          window.scrollTo(0, 0);
-        }}
-        className="text-blue-600 font-medium hover:underline"
+        onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'accueil' }))}
+        className="w-full md:w-auto px-8 py-3 rounded-xl font-bold text-lg text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
       >
-        Retour à l'accueil
+        Nouvelle demande
       </button>
     </div>
   );
@@ -322,14 +333,14 @@ const AchatLivraisonPage: React.FC = () => {
             Achat & Export de Véhicules
           </h1>
           <p className="text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto drop-shadow-md">
-            Importez votre véhicule en toute sérénité
+            Votre projet automobile, clé en main
           </p>
         </div>
       </section>
 
       <div className="container mx-auto px-4 max-w-3xl pb-24">
         {/* Catalog Coming Soon Banner - Gray */}
-        {step !== 3 && (
+        {step !== 4 && (
           <div className="max-w-2xl mx-auto mb-10 animate-fade-in">
             <div className="p-4 border border-blue-100 rounded-xl bg-blue-50">
               <div className="flex flex-col items-center gap-2">
@@ -351,17 +362,20 @@ const AchatLivraisonPage: React.FC = () => {
         )}
 
         {/* Stepper */}
-        {step !== 3 && (
+        {step !== 4 && (
           <div className="flex items-center justify-center mb-10 space-x-4">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 1 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>1</div>
-            <div className={`w-16 h-1 rounded transition-all ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+            <div className={`w-12 h-1 rounded transition-all ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 2 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>2</div>
+            <div className={`w-12 h-1 rounded transition-all ${step >= 3 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 3 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>3</div>
           </div>
         )}
 
         {step === 1 && renderStep1()}
         {step === 2 && renderStep2()}
-        {step === 3 && renderSuccess()}
+        {step === 3 && renderStep3()}
+        {step === 4 && renderSuccess()}
       </div>
     </div>
   );

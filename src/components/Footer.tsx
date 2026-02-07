@@ -5,19 +5,41 @@ const Footer = () => {
   const [showContact, setShowContact] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
   const [showServices, setShowServices] = useState(false);
-  const [showSocials, setShowSocials] = useState(false);
 
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Company Info & Payments */}
-          <div className="flex flex-col items-start">
+          {/* Company Info */}
+          <div>
             <img
               src="/csf/logo-csf.webp"
               alt="CSF Logo"
-              className="h-12 w-auto mb-6 brightness-0 invert"
+              className="h-12 w-auto mb-4 brightness-0 invert"
             />
+            <div className="flex space-x-4">
+              <a href="https://www.facebook.com/csfgroupe/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors">
+                <Facebook size={20} />
+              </a>
+              <a href="https://www.instagram.com/csfgroupe/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-600 transition-colors">
+                <Instagram size={20} />
+              </a>
+              <a href="https://x.com/csfgroupe/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-black transition-colors">
+                {/* X (Twitter) Icon */}
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a href="https://www.linkedin.com/company/csfgroupe/?originalSubdomain=fr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-700 transition-colors">
+                <Linkedin size={20} />
+              </a>
+              <a href="https://www.tiktok.com/@csfgroupe/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-500 transition-colors">
+                {/* TikTok Icon */}
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           {/* Services */}
@@ -108,48 +130,6 @@ const Footer = () => {
             )}
           </div>
 
-          {/* Suivez-nous (New) */}
-          <div>
-            <button
-              onClick={() => setShowSocials(!showSocials)}
-              className="flex items-center justify-between w-full text-lg font-bold mb-4 hover:text-blue-400 transition-colors"
-            >
-              <span>Suivez-nous</span>
-              {showSocials ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-            </button>
-
-            {showSocials && (
-              <div className="flex flex-col space-y-3">
-                <a href="https://www.facebook.com/csfgroupe/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-300 hover:text-blue-500 transition-colors">
-                  <Facebook size={20} />
-                  <span>Facebook</span>
-                </a>
-                <a href="https://www.instagram.com/csfgroupe/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-300 hover:text-pink-600 transition-colors">
-                  <Instagram size={20} />
-                  <span>Instagram</span>
-                </a>
-                <a href="https://x.com/csfgroupe/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors">
-                  {/* X (Twitter) Icon */}
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                  <span>X (Twitter)</span>
-                </a>
-                <a href="https://www.linkedin.com/company/csfgroupe/?originalSubdomain=fr" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-300 hover:text-blue-700 transition-colors">
-                  <Linkedin size={20} />
-                  <span>LinkedIn</span>
-                </a>
-                <a href="https://www.tiktok.com/@csfgroupe/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 text-gray-300 hover:text-pink-500 transition-colors">
-                  {/* TikTok Icon */}
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-                  </svg>
-                  <span>TikTok</span>
-                </a>
-              </div>
-            )}
-          </div>
-
           {/* Legal */}
           <div>
             <button
@@ -223,7 +203,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
               © {new Date().getFullYear()} CSF. Tous droits réservés.
             </p>
