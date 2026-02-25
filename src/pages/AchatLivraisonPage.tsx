@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { MapPin, ArrowRight, CheckCircle, Info, Check } from 'lucide-react';
 import bannerVoiture from '../assets/banner-voiture-final.jpg';
+import { submitLeadToCRM } from '../services/apiService';
 
 const AchatLivraisonPage: React.FC = () => {
   const [step, setStep] = useState<number>(1);
@@ -67,9 +68,13 @@ const AchatLivraisonPage: React.FC = () => {
     setShowSenderSuggestions(false);
   };
 
+  const scrollToForm = () => {
+    document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handleSelection = (type: 'buy_export' | 'export_only') => {
     setServiceType(type);
-    window.scrollTo(0, 0);
+    scrollToForm();
     if (type === 'export_only') {
       setStep(3); // Direct to Contact Form
     } else {
@@ -78,17 +83,47 @@ const AchatLivraisonPage: React.FC = () => {
   };
 
   const nextStep = () => {
-    window.scrollTo(0, 0);
+    scrollToForm();
     setStep(prev => prev + 1);
+
+    // If moving to step 3 (Contact Form), we log it as a "wished" lead
+    // Note: We might not have all sender details yet, but we have the criteria
+    if (step === 2 || (step === 1 && serviceType === 'export_only')) {
+      submitLeadToCRM({
+        nom: 'Non renseigné',
+        prenom: 'Client Potentiel',
+        email: 'N/A',
+        numero: 'N/A',
+        service: 'auto',
+        details: {
+          type: serviceType,
+          criteres: vehicleCriteria
+        }
+      }, 'wished');
+    }
   };
 
   const prevStep = () => {
-    window.scrollTo(0, 0);
+    scrollToForm();
     setStep(prev => prev - 1);
   };
 
   const handleSubmit = () => {
-    window.scrollTo(0, 0);
+    // Log as validated since user has filled out contact info and confirmed
+    submitLeadToCRM({
+      nom: sender.lastName,
+      prenom: sender.firstName,
+      email: sender.email,
+      numero: sender.phone,
+      service: 'auto',
+      details: {
+        type: serviceType,
+        criteres: vehicleCriteria,
+        address: `${sender.address}, ${sender.zip} ${sender.city}`
+      }
+    }, 'validated');
+
+    scrollToForm();
     setStep(4); // Success state
   };
 
@@ -338,7 +373,7 @@ const AchatLivraisonPage: React.FC = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-3xl pb-24">
+      <div id="form-container" className="container mx-auto px-4 max-w-3xl pb-24 scroll-mt-24">
         {/* Catalog Coming Soon Banner - Gray */}
         {step !== 4 && (
           <div className="max-w-2xl mx-auto mb-10 animate-fade-in">

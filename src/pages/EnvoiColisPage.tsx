@@ -8,6 +8,7 @@ import {
 import VideoPlaceholder from '../components/VideoPlaceholder';
 import { wilayas } from '../data/wilayas';
 import bannerColis from '../assets/banner-colis-final.png';
+import { submitLeadToCRM } from '../services/apiService';
 
 // Types
 type ShippingType = 'personal' | 'parts';
@@ -34,7 +35,6 @@ const EnvoiColisPage = () => {
   const [showSwornStatement, setShowSwornStatement] = useState(false);
   const [showProhibitedPopup, setShowProhibitedPopup] = useState(false);
   const [showGuaranteeDetails, setShowGuaranteeDetails] = useState(false);
-  const [showAdvice, setShowAdvice] = useState(false);
 
   // Quote State
   const [quote, setQuote] = useState<QuoteData>({
@@ -52,6 +52,7 @@ const EnvoiColisPage = () => {
   const [inventory, setInventory] = useState<InventoryItem[]>([{ id: '1', description: '', quantity: '1', value: '' }]);
   const [insurance, setInsurance] = useState(false);
   const [swornChecks, setSwornChecks] = useState<Record<string, boolean>>({});
+  const [openProhibitedCategory, setOpenProhibitedCategory] = useState<number | null>(null);
 
   // Constants
   const MAX_WEIGHT = 30;
@@ -251,13 +252,216 @@ const EnvoiColisPage = () => {
   // Utility to sanitize text inputs against basic XSS
   const sanitize = (val: string) => val.replace(/[<>]/g, '');
 
+  const scrollToForm = () => {
+    document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handlePayment = () => {
     if (allSwornChecked) {
+      // VALIDATED: Customer has agreed to the terms and confirmed payment
+      submitLeadToCRM({
+        nom: sender.lastName,
+        prenom: sender.firstName,
+        email: sender.email,
+        numero: sender.phone,
+        service: 'env',
+        details: {
+          receiverName: `${receiver.firstName} ${receiver.lastName}`,
+          weight: quote.weight,
+          inventoryValue: totalValue,
+          insurance: insurance
+        }
+      }, 'validated');
+
       setShowSwornStatement(false);
       setStep('success');
-      window.scrollTo(0, 0);
+      scrollToForm();
     }
   };
+
+  const handleOpenSwornStatement = () => {
+    setShowSwornStatement(true);
+    // WISHED: Customer has reached the payment stage but hasn't confirmed yet
+    submitLeadToCRM({
+      nom: sender.lastName,
+      prenom: sender.firstName,
+      email: sender.email,
+      numero: sender.phone,
+      service: 'env',
+      details: {
+        receiverName: `${receiver.firstName} ${receiver.lastName}`,
+        weight: quote.weight,
+        inventoryValue: totalValue,
+      }
+    }, 'wished');
+  };
+
+  const prohibitedCategories = [
+    {
+      title: "Avertissement important – Nature du service",
+      content: "Notre service est strictement réservé aux particuliers et aux familles, pour l’envoi d’effets personnels courants, tels que ceux que l’on retrouve habituellement dans une habitation.\n\nSont formellement interdits :\n\n• Tous les envois à caractère commercial (grosses quantités d’un même produit, séries, stocks destinés à la revente, etc.)\n• Tous les produits à caractère professionnel ou destinés à une activité commerciale (exemples : machines à café pour bar ou restaurant, matériel professionnel, équipements commerciaux, outillage professionnel, etc.)\n• Toutes pièces détachées industrielles ou équipements destinés à un usage professionnel"
+    },
+    {
+      title: "Médicaments – Règles strictes",
+      content: "Les médicaments sont soumis à une réglementation spécifique.\n\nLes médicaments ne nécessitant pas d’ordonnance (exemples : doliprane, paracétamol, ibuprofène, etc.) sont autorisés uniquement en faible quantité, correspondant à un usage personnel et familial. Toute quantité jugée excessive pourra être refusée afin d’éviter toute assimilation à un envoi à caractère commercial.\n\nLes médicaments nécessitant une ordonnance médicale sont acceptés uniquement sur présentation obligatoire de l’ordonnance correspondante, laquelle devra être imprimée et scotchée à l’extérieur du colis, avec les documents douaniers que nous vous transmettrons après paiement, afin de permettre le dépôt du colis en point relais postal.\n\nTout envoi ne respectant pas ces conditions sera refusé."
+    },
+    {
+      title: "Drogues, substances illicites et produits strictement interdits",
+      items: [
+        "Drogues",
+        "Narcotiques",
+        "Stupéfiants",
+        "Substances psychotropes",
+        "Produits contenant du CBD, THC ou dérivés, quelle que soit la concentration"
+      ]
+    },
+    {
+      title: "Produits technologiques de valeur – Interdiction stricte",
+      content: "Pour des raisons de sécurité et de prévention des risques, les produits technologiques de valeur sont strictement interdits à l’envoi.\n\nSont notamment interdits :\n\n• Téléphones portables et smartphones\n• Ordinateurs portables\n• Tablettes\n• Consoles de jeux vidéo\n• Objets électroniques de valeur ou facilement revendables\n\nTout colis contenant un ou plusieurs de ces articles sera refusé, bloqué ou détruit, sans possibilité de réclamation ni d’indemnisation."
+    },
+    {
+      title: "Pièces détachées – Règles d’acceptation",
+      content: "Sont strictement interdites :\n• Toutes pièces détachées industrielles\n• Toutes pièces détachées destinées à un usage professionnel ou commercial\n\nSont autorisées uniquement :\nLes pièces détachées pour véhicules à usage personnel, qu’elles soient neuves ou d’occasion, notamment : (voitures, camionnettes, motos, scooters, quads, bateaux personnels, etc.)\n\nConditions obligatoires :\n• Les pièces doivent être parfaitement nettoyées\n• Aucun résidu d’essence, de carburant, d’huile, de graisse ou de liquide ne doit être présent\n• Les quantités doivent rester limitées et raisonnables, afin d’éviter toute requalification en envoi à caractère commercial\n\nTout envoi non conforme pourra être refusé."
+    },
+    {
+      title: "Aérosols, gaz, pression et produits dangereux",
+      items: [
+        "Aérosols de tout type (parfums, déodorants, sprays corporels, laques, mousse à raser, bombes cosmétiques, désodorisants, produits ménagers, etc.)",
+        "Articles contenant du gaz ou de l’air comprimé (cartouches, bonbonnes, extincteurs, etc.)",
+        "Combustibles",
+        "Alcool à 90°",
+        "Carboglace (glace carbonique)",
+        "Produits chimiques dangereux",
+        "Produits radioactifs",
+        "Marchandises / matières dangereuses"
+      ]
+    },
+    {
+      title: "Denrées alimentaires et produits agricoles",
+      items: [
+        "Denrées alimentaires périssables (viande fraîche, poisson, produits laitiers, fruits et légumes frais, plats cuisinés frais, etc.)",
+        "Œufs",
+        "Pommes de terre",
+        "Café vert",
+        "Café non torréfié",
+        "Végétaux sous toutes leurs formes (plantes, graines, boutures, etc.)"
+      ]
+    },
+    {
+      title: "Batteries, énergie et appareils à risque",
+      items: [
+        "Piles et batteries envoyées seules (batteries lithium, batteries de voiture, batteries externes, etc.)",
+        "Tout appareil contenant une batterie non conforme ou de forte capacité, intégrée ou non (trottinettes électriques, hoverboards, vélos électriques, drones, outils électroportatifs, etc.)",
+        "Imprimantes 3D (imprimantes 3D domestiques ou professionnelles, kits, machines avec alimentation puissante ou composants chauffants)"
+      ]
+    },
+    {
+      title: "Objets de surveillance, d’observation et de captation",
+      items: [
+        "Appareils photo et caméras de tout type (appareils photo, caméras numériques, caméras vidéo, caméras sport, webcams, caméras de surveillance, caméras espions, caméras cachées, etc.)",
+        "Drones, avec ou sans caméra",
+        "Appareils d’enregistrement audio ou vidéo",
+        "Jumelles et appareils optiques d’observation",
+        "Tout matériel de surveillance, d’espionnage ou de captation d’images ou de sons"
+      ]
+    },
+    {
+      title: "Armes, objets dangereux et assimilés",
+      items: [
+        "Couteaux de tout type (machettes, haches, poignards, etc.)",
+        "Armes à feu (réelles ou factices)",
+        "Armes à air comprimé",
+        "Armes de protection à choc électrique",
+        "Munitions de tout type",
+        "Pièces détachées d’armes à feu",
+        "Pistolets",
+        "Jouets en forme de pistolet",
+        "Explosifs"
+      ]
+    },
+    {
+      title: "Argent, valeurs, documents et titres",
+      items: [
+        "Billets de banque",
+        "Pièces de monnaie",
+        "Lingots",
+        "Métaux précieux",
+        "Pierres précieuses",
+        "Bijoux avec métaux précieux",
+        "Bijoux avec pierres précieuses",
+        "Chèques",
+        "Mandats",
+        "Bons au porteur",
+        "Chèques-vacances",
+        "Fausse monnaie",
+        "Factures vierges",
+        "Documents de valeur",
+        "Cartes bancaires (activées ou inactives)",
+        "Billets d’avion",
+        "Billets de loterie"
+      ]
+    },
+    {
+      title: "Jeux d’argent et paris",
+      items: [
+        "Jeux d’argent",
+        "Appareils de jeu d’argent",
+        "Jetons pour jeux d’argent"
+      ]
+    },
+    {
+      title: "Tabac, alcool et produits assimilés",
+      items: [
+        "Tabac à fumer",
+        "Tabac à chiquer",
+        "Tabac et produits à base de tabac",
+        "Produits dérivés du tabac",
+        "Cigarettes",
+        "Cigares",
+        "Vins et boissons alcoolisées"
+      ]
+    },
+    {
+      title: "Vapotage et cigarettes électroniques",
+      items: [
+        "Cigarettes électroniques",
+        "Chichas électroniques",
+        "Produits de vapotage",
+        "E-liquides pour cigarettes électroniques",
+        "Pièces détachées de cigarettes électroniques et chichas"
+      ]
+    },
+    {
+      title: "Animaux, restes humains et espèces protégées",
+      items: [
+        "Produits animaux",
+        "Parties d’animaux",
+        "Fourrures animales",
+        "Ivoires d’éléphant",
+        "Restes humains",
+        "Cendres funéraires",
+        "Espèces menacées et produits dérivés",
+        "Produits fabriqués à partir d’espèces menacées",
+        "Peaux d’animaux protégés par la Convention de Washington"
+      ]
+    },
+    {
+      title: "Art, antiquités et objets culturels",
+      items: [
+        "Antiquités",
+        "Œuvres d’art"
+      ]
+    },
+    {
+      title: "Contenus illicites, offensants ou contrefaits",
+      items: [
+        "Tout contenu offensant la culture ou la religion musulmane",
+        "Articles obscènes",
+        "Articles pornographiques",
+        "Articles de contrefaçon"
+      ]
+    }
+  ];
 
   // RENDER STEPS
   const renderStep1 = () => (
@@ -393,7 +597,7 @@ const EnvoiColisPage = () => {
         )}
 
         <button
-          onClick={() => { window.scrollTo(0, 0); setStep(2); }}
+          onClick={() => { scrollToForm(); setStep(2); }}
           disabled={!isQuoteValid || isOverweight}
           className={`w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 transition-all ${!isQuoteValid || isOverweight ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'}`}
         >
@@ -641,14 +845,14 @@ const EnvoiColisPage = () => {
 
           <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4 pt-6 border-t">
             <button
-              onClick={() => { window.scrollTo(0, 0); setStep(1); }}
+              onClick={() => { scrollToForm(); setStep(1); }}
               className="w-full md:w-auto py-3 text-gray-500 font-medium flex items-center justify-center gap-2 hover:text-gray-800"
             >
               <ArrowLeft size={18} /> Retour
             </button>
 
             <button
-              onClick={() => setShowSwornStatement(true)}
+              onClick={handleOpenSwornStatement}
               disabled={!isStep2Valid}
               className={`w-full md:w-auto px-8 py-3 rounded-xl font-bold custom-shadow transition-all whitespace-normal h-auto min-h-[48px] ${isStep2Valid ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 cursor-not-allowed text-gray-500'}`}
             >
@@ -661,40 +865,29 @@ const EnvoiColisPage = () => {
   };
 
   const renderAdviceSection = () => (
-    <div className="bg-blue-50 border border-blue-100 rounded-2xl overflow-hidden mt-8 animate-fade-in shadow-sm">
-      <button
-        onClick={() => setShowAdvice(!showAdvice)}
-        className="w-full flex items-center justify-between p-6 bg-blue-50 hover:bg-blue-100/50 transition-colors text-blue-800 focus:outline-none"
-      >
-        <div className="flex items-center gap-2">
-          <Info size={24} className="text-blue-600" />
-          <h3 className="text-xl font-bold">Quel carton choisir ?</h3>
-        </div>
-        {showAdvice ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-      </button>
+    <div className="bg-blue-50/50 rounded-2xl p-6 mt-8">
+      <div className="flex items-center gap-3 mb-6">
+        <Info className="text-blue-600" size={24} />
+        <h3 className="text-xl font-bold text-blue-900">Quel carton choisir ?</h3>
+      </div>
 
-      {showAdvice && (
-        <div className="p-6 pt-0 space-y-4 border-t border-blue-100/50 animate-fade-in">
-          <div className="mt-4 space-y-4">
-            {[
-              { min: "25", max: "30", dim: "80 × 40 × 40 cm" },
-              { min: "20", max: "25", dim: "70 × 40 × 40 cm" },
-              { min: "15", max: "20", dim: "60 × 40 × 40 cm" },
-              { min: "10", max: "15", dim: "60 × 40 × 30 cm" },
-            ].map((item, idx) => (
-              <div key={idx} className="bg-white p-5 rounded-xl border border-blue-50 shadow-sm flex flex-col items-center text-center transition-all hover:shadow-md">
-                <p className="text-gray-700 font-medium mb-3">
-                  Pour expédier un colis entre <span className="font-bold text-gray-900">{item.min} kg</span> et <span className="font-bold text-gray-900">{item.max} kg</span>, nous vous recommandons ces dimensions de carton :
-                </p>
-
-                <div className="text-xl sm:text-2xl font-bold text-blue-900 mb-2 tracking-tight">
-                  {item.dim}
-                </div>
-              </div>
-            ))}
+      <div className="space-y-4">
+        {[
+          { min: "25", max: "30", dim: "80 × 40 × 40 cm" },
+          { min: "20", max: "25", dim: "70 × 40 × 40 cm" },
+          { min: "15", max: "20", dim: "60 × 40 × 40 cm" },
+          { min: "10", max: "15", dim: "60 × 40 × 30 cm" },
+        ].map((item, idx) => (
+          <div key={idx} className="bg-white/60 p-4 rounded-xl flex flex-col items-center justify-center text-center">
+            <p className="text-gray-700 font-medium mb-1">
+              Pour expédier un colis entre <span className="font-bold text-gray-900">{item.min} kg</span> et <span className="font-bold text-gray-900">{item.max} kg</span>, nous vous recommandons ces dimensions de carton :
+            </p>
+            <div className="text-lg sm:text-xl font-bold text-blue-800">
+              {item.dim}
+            </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 
@@ -722,16 +915,10 @@ const EnvoiColisPage = () => {
         </p>
 
         {/* Info Box */}
-        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 text-left mb-8">
-          <div className="flex-shrink-0 mt-0.5 text-xl">
-            ⚠️
-          </div>
-          <div className="text-blue-900 text-sm">
-            <p className="font-bold mb-1">Message important :</p>
-            <p className="leading-relaxed">
-              Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.
-            </p>
-          </div>
+        <div className="bg-blue-600/5 rounded-lg p-4 mb-6 text-left border border-blue-600/10">
+          <p className="text-sm font-medium text-blue-900 m-0 leading-relaxed">
+            ⚠️ <strong>Message important :</strong> Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.
+          </p>
         </div>
 
         {/* Button */}
@@ -783,7 +970,7 @@ const EnvoiColisPage = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-3xl pb-24">
+      <div id="form-container" className="container mx-auto px-4 max-w-3xl pb-24 scroll-mt-24">
         {step !== 'success' && (
           <div className="flex items-center justify-center mb-10 space-x-4">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 1 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>1</div>
@@ -813,19 +1000,59 @@ const EnvoiColisPage = () => {
               >
                 <X size={24} />
               </button>
-              <h3 className="text-xl font-bold text-red-600 mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-red-600 mb-6 flex items-center justify-center gap-2">
                 <AlertTriangle /> Produits Interdits
               </h3>
-              <ul className="space-y-3 text-gray-700 list-disc pl-5">
-                <li>Armes à feu, munitions, explosifs</li>
-                <li>Stupéfiants et psychotropes</li>
-                <li>Contrefaçons</li>
-                <li>Produits inflammables, radioactifs ou corrosifs</li>
-                <li>Animaux vivants</li>
-                <li>Objets de valeur (Bijoux, Or, Argent, Devises)</li>
-                <li>Appareils électroniques neufs destinés à la revente (téléphones, PC, consoles en quantité commerciale)</li>
-                <li>Drones et équipements de surveillance</li>
-              </ul>
+
+              <div className="space-y-4">
+                {prohibitedCategories.map((category, idx) => (
+                  <div key={idx} className="border-b border-gray-100 last:border-0 pb-2">
+                    <button
+                      className="w-full flex items-center justify-between text-left py-2 hover:bg-gray-50 transition-colors rounded-lg px-2"
+                      onClick={() => setOpenProhibitedCategory(openProhibitedCategory === idx ? null : idx)}
+                    >
+                      <span className="text-gray-800 pr-4">{category.title}</span>
+                      {openProhibitedCategory === idx ? (
+                        <ChevronUp className="text-red-500 flex-shrink-0" size={20} />
+                      ) : (
+                        <ChevronDown className="text-gray-400 flex-shrink-0" size={20} />
+                      )}
+                    </button>
+
+                    {openProhibitedCategory === idx && (
+                      <div className="px-2 pb-3 pt-1 animate-fade-in text-gray-700 text-sm">
+                        {category.content ? (
+                          <div className="whitespace-pre-wrap leading-relaxed">
+                            {category.content}
+                          </div>
+                        ) : (
+                          <ul className="space-y-2">
+                            {category.items?.map((item, itemIdx) => (
+                              <li key={itemIdx} className="flex items-start gap-2">
+                                <span className="text-red-400 mt-0.5 flex-shrink-0">•</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-gray-100">
+                <h4 className="font-bold text-red-600 flex items-center gap-2 mb-2 text-sm">
+                  <Info size={16} />
+                  Important
+                </h4>
+                <ul className="space-y-1 text-sm text-gray-600">
+                  <li>• Aucune exception ne sera accordée</li>
+                  <li>• Le client est seul responsable du contenu de son colis</li>
+                  <li>• Tout colis non conforme pourra être refusé, bloqué ou détruit sans indemnisation</li>
+                </ul>
+              </div>
+
               <button
                 onClick={() => setShowProhibitedPopup(false)}
                 className="mt-8 w-full py-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl transition-colors"

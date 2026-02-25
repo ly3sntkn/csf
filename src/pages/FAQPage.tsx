@@ -89,8 +89,8 @@ const FAQPage = () => {
                         <div className="space-y-8">
                             {faqs.map((category, catIndex) => (
                                 <div key={catIndex}>
-                                    <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                        <div className="w-2 h-8 bg-blue-600 rounded"></div>
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-6 flex flex-col items-center justify-center gap-2 text-center">
+                                        <div className="w-12 h-1 bg-blue-600 rounded"></div>
                                         {category.category}
                                     </h2>
                                     <div className="space-y-4">
@@ -99,18 +99,20 @@ const FAQPage = () => {
                                             return (
                                                 <div key={itemIndex} className="border border-gray-200 rounded-lg overflow-hidden hover:border-blue-200 transition-colors">
                                                     <button
-                                                        className="w-full flex items-center justify-between p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors"
+                                                        className="w-full relative flex items-center justify-center p-4 text-center bg-gray-50 hover:bg-gray-100 transition-colors"
                                                         onClick={() => setOpenFaqIndex(openFaqIndex === globalIndex ? null : globalIndex)}
                                                     >
-                                                        <span className="font-medium text-gray-800 pr-4">{faq.question}</span>
-                                                        {openFaqIndex === globalIndex ? (
-                                                            <span className="text-blue-600 text-xl font-bold flex-shrink-0">-</span>
-                                                        ) : (
-                                                            <span className="text-gray-400 text-xl font-bold flex-shrink-0">+</span>
-                                                        )}
+                                                        <span className="font-medium text-gray-800 px-4 sm:px-8 text-[13px] sm:text-sm md:text-base whitespace-nowrap transition-all">{faq.question}</span>
+                                                        <div className="absolute right-4 flex items-center">
+                                                            {openFaqIndex === globalIndex ? (
+                                                                <span className="text-blue-600 text-xl font-bold">-</span>
+                                                            ) : (
+                                                                <span className="text-gray-400 text-xl font-bold">+</span>
+                                                            )}
+                                                        </div>
                                                     </button>
                                                     {openFaqIndex === globalIndex && (
-                                                        <div className="p-4 bg-white border-t border-gray-200 animate-fade-in">
+                                                        <div className="p-4 bg-white border-t border-gray-200 animate-fade-in text-center">
                                                             <p className="text-gray-600 text-sm leading-relaxed">{faq.answer}</p>
                                                         </div>
                                                     )}

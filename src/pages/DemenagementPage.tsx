@@ -4,6 +4,7 @@ import { Ship, Calendar, Box, MapPin, User, ArrowRight, ArrowLeft, Check } from 
 import VideoPlaceholder from '../components/VideoPlaceholder';
 import bannerDemenagement from '../assets/banner-demenagement-final.png';
 import { wilayas } from '../data/wilayas';
+import { submitLeadToCRM } from '../services/apiService';
 
 
 
@@ -88,22 +89,52 @@ const DemenagementPage = () => {
     setShowSenderSuggestions(false);
   };
 
+  const scrollToForm = () => {
+    document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
 
 
 
 
   const nextStep = () => {
-    window.scrollTo(0, 0);
+    scrollToForm();
     setStep(prev => (prev < 3 ? prev + 1 : prev) as 1 | 2 | 3);
+
+    // If moving to step 2 (Contact form), log as "wished"
+    if (step === 1) {
+      submitLeadToCRM({
+        nom: 'Non renseigné',
+        prenom: 'Client Potentiel',
+        email: 'N/A',
+        numero: 'N/A',
+        service: 'dem',
+        details: formData
+      }, 'wished');
+    }
   };
 
   const prevStep = () => {
-    window.scrollTo(0, 0);
+    scrollToForm();
     setStep(prev => (prev > 1 ? prev - 1 : prev) as 1 | 2 | 3);
   };
 
   const handleSubmit = () => {
-    window.scrollTo(0, 0);
+    // Log as validated since user has confirmed their contact details
+    submitLeadToCRM({
+      nom: sender.lastName,
+      prenom: sender.firstName,
+      email: sender.email,
+      numero: sender.phone,
+      service: 'dem',
+      details: {
+        ...formData,
+        senderAddress: `${sender.address}, ${sender.zip} ${sender.city}`,
+        receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}`
+      }
+    }, 'validated');
+
+    scrollToForm();
     setStep(3);
   };
 
@@ -364,7 +395,7 @@ const DemenagementPage = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-3xl pb-24">
+      <div id="form-container" className="container mx-auto px-4 max-w-3xl pb-24 scroll-mt-24">
         {/* Stepper */}
         {step !== 3 && (
           <div className="flex items-center justify-center mb-10 space-x-4">
