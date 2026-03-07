@@ -68,13 +68,16 @@ const AchatLivraisonPage: React.FC = () => {
     setShowSenderSuggestions(false);
   };
 
-  const scrollToForm = () => {
-    document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
+
+  const scrollToStepContent = () => {
+    setTimeout(() => {
+      document.getElementById('step-content')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const handleSelection = (type: 'buy_export' | 'export_only') => {
     setServiceType(type);
-    scrollToForm();
+    scrollToStepContent();
     if (type === 'export_only') {
       setStep(3); // Direct to Contact Form
     } else {
@@ -83,7 +86,7 @@ const AchatLivraisonPage: React.FC = () => {
   };
 
   const nextStep = () => {
-    scrollToForm();
+    scrollToStepContent();
     setStep(prev => prev + 1);
 
     // If moving to step 3 (Contact Form), we log it as a "wished" lead
@@ -104,7 +107,7 @@ const AchatLivraisonPage: React.FC = () => {
   };
 
   const prevStep = () => {
-    scrollToForm();
+    scrollToStepContent();
     setStep(prev => prev - 1);
   };
 
@@ -413,10 +416,12 @@ const AchatLivraisonPage: React.FC = () => {
           </div>
         )}
 
-        {step === 1 && renderStep1()}
-        {step === 2 && renderStep2()}
-        {step === 3 && renderStep3()}
-        {step === 4 && renderSuccess()}
+        <div id="step-content" className="scroll-mt-24">
+          {step === 1 && renderStep1()}
+          {step === 2 && renderStep2()}
+          {step === 3 && renderStep3()}
+          {step === 4 && renderSuccess()}
+        </div>
       </div>
     </div>
   );
