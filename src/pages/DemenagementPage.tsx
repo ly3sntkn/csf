@@ -43,9 +43,10 @@ const DemenagementPage = () => {
     const searchTerm = value.toLowerCase();
 
     if (searchTerm.length >= 2) {
-      const matches = destinationCountries.filter(country =>
-        country.toLowerCase().includes(searchTerm)
-      ).slice(0, 5); // Limit to 5 suggestions max
+      const matches = destinationCountries
+        .filter(country => country.toLowerCase().startsWith(searchTerm))
+        .sort((a, b) => a.localeCompare(b))
+        .slice(0, 5); // Limit to 5 suggestions max
       setCountrySuggestions(matches);
       setShowCountrySuggestions(matches.length > 0);
     } else {
@@ -312,11 +313,6 @@ const DemenagementPage = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-              <input type="text" placeholder="Adresse de destination*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
-              <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={receiver.complement} onChange={e => setReceiver({ ...receiver, complement: sanitize(e.target.value) })} />
-              <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={receiver.zip} onChange={e => handleZipChange('receiver', sanitize(e.target.value))} />
-              <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
-
               <div className="relative md:col-span-2">
                 <input type="text" placeholder="Pays d'arrivée*" className="p-3 border rounded-lg w-full" value={receiver.country} onChange={e => handleCountrySearch(sanitize(e.target.value))} />
                 {showCountrySuggestions && countrySuggestions.length > 0 && (
@@ -333,6 +329,11 @@ const DemenagementPage = () => {
                   </ul>
                 )}
               </div>
+
+              <input type="text" placeholder="Adresse de destination*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
+              <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={receiver.complement} onChange={e => setReceiver({ ...receiver, complement: sanitize(e.target.value) })} />
+              <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={receiver.zip} onChange={e => handleZipChange('receiver', sanitize(e.target.value))} />
+              <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
             </div>
           </section>
 
