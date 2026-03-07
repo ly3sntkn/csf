@@ -333,14 +333,9 @@ const AchatLivraisonPage: React.FC = () => {
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Demande reçue !</h2>
       <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
 
-      <div className="bg-gray-50 rounded-xl p-6 text-center mb-8 space-y-4">
-        <p className="text-gray-600 text-lg">
-          Merci <strong>{sender.firstName}</strong>. Notre équipe spécialisée a bien reçu votre demande.
-        </p>
-        <p className="text-gray-600">
-          Vous recevrez une réponse sous <strong>24h</strong>.
-        </p>
-      </div>
+      <p className="text-gray-600 leading-relaxed mb-8">
+        Vous vous rapprochez de votre nouvelle vie. Un commercial va vous contacter sous <span className="font-bold text-gray-900">24 à 48h</span> afin d'établir avec vous votre devis.
+      </p>
 
       <button
         onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'accueil' }))}
