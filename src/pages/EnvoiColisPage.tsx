@@ -468,7 +468,7 @@ const EnvoiColisPage = () => {
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à envoyer votre colis&nbsp;?</h2>
-        <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessus pour en savoir plus.</p>
+        <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessous pour en savoir plus.</p>
 
         <VideoPlaceholder className="mt-6 mb-8" title="Comment envoyer votre colis" />
 
@@ -500,19 +500,14 @@ const EnvoiColisPage = () => {
           </div>
         </div>
 
-        {quote.type === 'parts' && (
-          <p className="text-red-600 text-sm mb-6 flex items-center gap-2">
-            <AlertTriangle size={16} />
-            Seules les pièces pour voitures & motos sont acceptées (pneus interdits)
-          </p>
-        )}
+
 
         {/* Inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
             <label className="block text-gray-700 font-medium mb-2">Poids (kg)</label>
             <div className="relative">
-              <Scale className="absolute left-3 top-3 text-gray-400" size={20} />
+              <Scale className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="number"
                 value={weightInputValue}
@@ -586,7 +581,7 @@ const EnvoiColisPage = () => {
           <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8 flex justify-between items-center animate-fade-in">
             <div>
               <span className="text-gray-500 text-sm">Votre Tarif</span>
-              <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)}</div>
+              <div className="text-3xl font-bold text-gray-900">{quote.price.toFixed(2)} €</div>
               {(quote.length * quote.width * quote.height) / 5000 > quote.weight && (
                 <span className="text-xs text-blue-600 block mt-1">
                   Basé sur le poids volumétrique ({((quote.length * quote.width * quote.height) / 5000).toFixed(2)} Kg)
@@ -637,7 +632,7 @@ const EnvoiColisPage = () => {
               <input type="text" placeholder="Nom*" className="p-3 border rounded-lg" value={sender.lastName} onChange={e => setSender({ ...sender, lastName: sanitize(e.target.value) })} />
               <input type="email" placeholder="Email*" className="p-3 border rounded-lg" value={sender.email} onChange={e => setSender({ ...sender, email: sanitize(e.target.value) })} />
               <div className="relative">
-                <span className="absolute left-3 top-3 text-gray-500 text-sm"></span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></span>
                 <input type="tel" placeholder="Téléphone (+33)*" className="p-3 border rounded-lg w-full" value={sender.phone} onChange={e => setSender({ ...sender, phone: sanitize(e.target.value) })} />
               </div>
               <input type="text" placeholder="Adresse*" className="md:col-span-2 p-3 border rounded-lg" value={sender.address} onChange={e => setSender({ ...sender, address: sanitize(e.target.value) })} />
@@ -672,7 +667,7 @@ const EnvoiColisPage = () => {
               <input type="text" placeholder="Prénom*" className="p-3 border rounded-lg" value={receiver.firstName} onChange={e => setReceiver({ ...receiver, firstName: sanitize(e.target.value) })} />
               <input type="text" placeholder="Nom*" className="p-3 border rounded-lg" value={receiver.lastName} onChange={e => setReceiver({ ...receiver, lastName: sanitize(e.target.value) })} />
               <div className="relative">
-                <span className="absolute left-3 top-3 text-gray-500 text-sm"></span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></span>
                 <input type="tel" placeholder="Téléphone (+213)*" className="p-3 border rounded-lg w-full" value={receiver.phone} onChange={e => setReceiver({ ...receiver, phone: sanitize(e.target.value) })} />
               </div>
               <input type="text" placeholder="Adresse*" className="md:col-span-2 p-3 border rounded-lg" value={receiver.address} onChange={e => setReceiver({ ...receiver, address: sanitize(e.target.value) })} />
@@ -687,7 +682,7 @@ const EnvoiColisPage = () => {
           {/* Inventory */}
           <section>
             <h3 className="text-xl font-bold text-gray-800 mb-4">Inventaire du colis</h3>
-            <p className="text-sm text-gray-600 mb-2">Déclarez précisément le contenu de votre colis. Les envois à caractère commercial (produits similaires en grande quantité) ainsi que les produits destinés à un usage professionnel ne sont pas autorisés. Veuillez consulter la liste complète des articles interdits ci-dessous afin d’éviter tout risque.</p>
+            <p className="text-sm text-gray-600 mb-2">Veuillez consulter la liste complète des articles interdits ci-dessous afin d’éviter tout risque.</p>
 
             <div className="flex justify-center mb-4">
               <button
@@ -1030,13 +1025,13 @@ const EnvoiColisPage = () => {
         {showProhibitedPopup && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl relative animate-scale-in">
-              <div className="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-center rounded-t-2xl shrink-0">
+              <div className="p-4 sm:p-6 border-b border-gray-100 relative flex justify-center items-center rounded-t-2xl shrink-0">
                 <h3 className="text-xl font-bold text-red-600 flex items-center gap-2">
                   <AlertTriangle /> Produits Interdits
                 </h3>
                 <button
                   onClick={() => setShowProhibitedPopup(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 sm:right-6 p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
                 >
                   <X size={24} />
                 </button>
