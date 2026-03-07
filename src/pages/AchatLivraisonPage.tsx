@@ -325,24 +325,36 @@ const AchatLivraisonPage: React.FC = () => {
   };
 
   const renderSuccess = () => (
-    <div id="success-container" className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-slide-down text-center scroll-mt-24">
+    <div id="success-container" className="max-w-xl mx-auto animate-slide-down text-center scroll-mt-24">
+      {/* Header outside card */}
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
       </div>
-
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">Demande reçue !</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Félicitations !</h2>
       <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
 
-      <p className="text-gray-600 leading-relaxed mb-8">
-        Vous vous rapprochez de votre nouvelle vie. Un commercial va vous contacter sous <span className="font-bold text-gray-900">24 à 48h</span> afin d'établir avec vous votre devis.
-      </p>
+      {/* Card */}
+      <div className="bg-white rounded-2xl shadow-xl p-8 text-left">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">
+          Bonjour {sender.firstName},
+        </h3>
+        <p className="text-gray-600 mb-6 text-lg">
+          Merci pour votre confiance !
+        </p>
+        <p className="text-gray-600 leading-relaxed mb-8">
+          Un commercial va vous contacter sous <span className="font-bold text-gray-900">24 à 48h</span> afin d’établir avec vous votre devis.
+        </p>
 
-      <button
-        onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'accueil' }))}
-        className="w-full md:w-auto px-8 py-3 rounded-xl font-bold text-lg text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
-      >
-        Nouvelle demande
-      </button>
+        {/* Back Link */}
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'accueil' }))}
+            className="w-full md:w-auto px-8 py-3 rounded-xl font-bold text-lg text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
+          >
+            Nouvelle demande
+          </button>
+        </div>
+      </div>
     </div>
   );
 
