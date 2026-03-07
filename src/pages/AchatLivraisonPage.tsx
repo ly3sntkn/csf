@@ -13,7 +13,12 @@ const AchatLivraisonPage: React.FC = () => {
     age: '', // 'neuf', 'less_3', 'less_5'
     hasModel: '', // 'oui', 'non'
     modelName: '',
+    years: '2019',
+    fuel: 'diesel',
+    transmission: 'auto'
   });
+
+  const [dossierNumber, setDossierNumber] = useState('');
 
   // Detailed Address State
   const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
@@ -125,6 +130,12 @@ const AchatLivraisonPage: React.FC = () => {
         address: `${sender.address}, ${sender.zip} ${sender.city}`
       }
     }, 'validated');
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+    setDossierNumber(`CSF-${year}${month}-${randomPart}`);
 
     setStep(4); // Success state
     scrollToSuccess();
@@ -331,7 +342,7 @@ const AchatLivraisonPage: React.FC = () => {
         <Check size={40} className="text-green-600" />
       </div>
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Félicitations !</h2>
-      <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
+      <p className="text-gray-500 mb-8 font-medium">N° de dossier : {dossierNumber}</p>
 
       {/* Card */}
       <div className="bg-white rounded-2xl shadow-xl p-8 text-left">

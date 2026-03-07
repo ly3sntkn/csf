@@ -34,6 +34,8 @@ const DemenagementPage = () => {
   const [countrySuggestions, setCountrySuggestions] = useState<string[]>([]);
   const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
 
+  const [dossierNumber, setDossierNumber] = useState('');
+
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -152,6 +154,12 @@ const DemenagementPage = () => {
         receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}, ${receiver.country}`
       }
     }, 'validated');
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+    setDossierNumber(`CSF-${year}${month}-${randomPart}`);
 
     setStep(3);
     scrollToSuccess();
@@ -365,7 +373,7 @@ const DemenagementPage = () => {
         <Check size={40} className="text-green-600" />
       </div>
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Félicitations !</h2>
-      <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
+      <p className="text-gray-500 mb-8 font-medium">N° de dossier : {dossierNumber}</p>
 
       {/* Card */}
       <div className="bg-white rounded-2xl shadow-xl p-8 text-left">

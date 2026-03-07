@@ -46,6 +46,8 @@ const EnvoiColisPage = () => {
     price: 0
   });
 
+  const [dossierNumber, setDossierNumber] = useState('');
+
   // Details State
   const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
   const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '', country: 'Algérie' });
@@ -278,6 +280,12 @@ const EnvoiColisPage = () => {
           insurance: insurance
         }
       }, 'validated');
+
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+      setDossierNumber(`CSF-${year}${month}-${randomPart}`);
 
       setShowSwornStatement(false);
       setStep('success');
@@ -921,8 +929,8 @@ const EnvoiColisPage = () => {
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
       </div>
-      <h2 className="text-3xl font-bold text-gray-900 mb-2">Félicitations !</h2>
-      <p className="text-gray-500 mb-8 font-medium">N° de dossier : CSF-2026-0001</p>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Félicitations !</h2>
+      <p className="text-gray-500 mb-8 font-medium">N° de dossier : {dossierNumber}</p>
 
       {/* Card */}
       <div className="bg-white rounded-2xl shadow-xl p-8 text-left">
