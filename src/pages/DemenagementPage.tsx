@@ -151,7 +151,7 @@ const DemenagementPage = () => {
       }
     }, 'validated');
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToForm();
     setStep(3);
   };
 
@@ -357,7 +357,7 @@ const DemenagementPage = () => {
   };
 
   const renderSuccess = () => (
-    <div className="max-w-xl mx-auto animate-slide-down text-center">
+    <div className="max-w-xl mx-auto animate-fade-in text-center">
       {/* Header outside card */}
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />

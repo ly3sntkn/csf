@@ -123,7 +123,7 @@ const AchatLivraisonPage: React.FC = () => {
       }
     }, 'validated');
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToForm();
     setStep(4); // Success state
   };
 
@@ -316,7 +316,7 @@ const AchatLivraisonPage: React.FC = () => {
   };
 
   const renderSuccess = () => (
-    <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-slide-down text-center">
+    <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-slide-down text-center">
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
       </div>

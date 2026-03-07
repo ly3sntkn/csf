@@ -275,7 +275,7 @@ const EnvoiColisPage = () => {
 
       setShowSwornStatement(false);
       setStep('success');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToForm();
     }
   };
 
