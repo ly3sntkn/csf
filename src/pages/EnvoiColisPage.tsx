@@ -256,6 +256,12 @@ const EnvoiColisPage = () => {
     document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToSuccess = () => {
+    setTimeout(() => {
+      document.getElementById('success-container')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
   const handlePayment = () => {
     if (allSwornChecked) {
       // VALIDATED: Customer has agreed to the terms and confirmed payment
@@ -275,7 +281,7 @@ const EnvoiColisPage = () => {
 
       setShowSwornStatement(false);
       setStep('success');
-      scrollToForm();
+      scrollToSuccess();
     }
   };
 
@@ -910,7 +916,7 @@ const EnvoiColisPage = () => {
   );
 
   const renderSuccess = () => (
-    <div className="max-w-xl mx-auto animate-slide-down text-center">
+    <div id="success-container" className="max-w-xl mx-auto animate-slide-down text-center scroll-mt-24">
       {/* Header outside card */}
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
