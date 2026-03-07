@@ -110,10 +110,11 @@ const DemenagementPage = () => {
     document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-
-
-
-
+  const scrollToSuccess = () => {
+    setTimeout(() => {
+      document.getElementById('success-container')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
   const nextStep = () => {
     scrollToForm();
     setStep(prev => (prev < 3 ? prev + 1 : prev) as 1 | 2 | 3);
@@ -157,16 +158,6 @@ const DemenagementPage = () => {
 
   // Utility to sanitize text inputs
   const sanitize = (val: string) => val.replace(/[<>]/g, '');
-
-  const scrollToForm = () => {
-    document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollToSuccess = () => {
-    setTimeout(() => {
-      document.getElementById('success-container')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
 
   const renderStep1 = () => (
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
