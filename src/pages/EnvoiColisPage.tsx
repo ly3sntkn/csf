@@ -52,7 +52,7 @@ const EnvoiColisPage = () => {
   const [inventory, setInventory] = useState<InventoryItem[]>([{ id: '1', description: '', quantity: '1', value: '' }]);
   const [insurance, setInsurance] = useState(false);
   const [swornChecks, setSwornChecks] = useState<Record<string, boolean>>({});
-  const [openProhibitedCategory, setOpenProhibitedCategory] = useState<number | null>(null);
+  const [openProhibitedCategories, setOpenProhibitedCategories] = useState<number[]>([]);
   const [openAdviceCategory, setOpenAdviceCategory] = useState<number | null>(null);
 
   // Constants
@@ -826,16 +826,7 @@ const EnvoiColisPage = () => {
                   <span className="text-gray-600 font-medium">{quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'} - {quote.weight} kg</span>
                   <span className="font-medium text-gray-900 whitespace-nowrap">{quote.price.toFixed(2)} €</span>
                 </div>
-                {inventory.some(item => item.description.trim() !== '') && (
-                  <div className="pl-2 mt-1 space-y-1 text-xs text-gray-500 border-l-2 border-green-200 ml-1">
-                    {inventory.filter(item => item.description.trim() !== '').map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center">
-                        <span>• {item.quantity} × {item.description}</span>
-                        {item.value && <span>{item.value} €</span>}
-                      </div>
-                    ))}
-                  </div>
-                )}
+
               </div>
               {insurance && (
                 <div className="flex justify-between items-center text-xs md:text-sm">
@@ -1043,17 +1034,21 @@ const EnvoiColisPage = () => {
                     <div key={idx} className="border-b border-gray-100 last:border-0 pb-2">
                       <button
                         className="w-full flex items-center justify-between text-left py-2 hover:bg-gray-50 transition-colors rounded-lg px-2"
-                        onClick={() => setOpenProhibitedCategory(openProhibitedCategory === idx ? null : idx)}
+                        onClick={() => {
+                          setOpenProhibitedCategories(prev =>
+                            prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
+                          );
+                        }}
                       >
                         <span className="text-gray-800 pr-4">{category.title}</span>
-                        {openProhibitedCategory === idx ? (
+                        {openProhibitedCategories.includes(idx) ? (
                           <ChevronUp className="text-red-500 flex-shrink-0" size={20} />
                         ) : (
                           <ChevronDown className="text-gray-400 flex-shrink-0" size={20} />
                         )}
                       </button>
 
-                      {openProhibitedCategory === idx && (
+                      {openProhibitedCategories.includes(idx) && (
                         <div className="px-2 pb-3 pt-1 animate-fade-in text-gray-700 text-sm">
                           {category.content ? (
                             <div className="whitespace-pre-wrap leading-relaxed">
