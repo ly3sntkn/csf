@@ -275,7 +275,7 @@ const EnvoiColisPage = () => {
 
       setShowSwornStatement(false);
       setStep('success');
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -830,7 +830,7 @@ const EnvoiColisPage = () => {
               </div>
               {insurance && (
                 <div className="flex justify-between items-center text-xs md:text-sm">
-                  <span className="text-gray-600">Garantie CSF (10% de {totalValue} €)</span>
+                  <span className="text-gray-600 font-medium">Garantie CSF</span>
                   <span className="font-medium text-gray-900 whitespace-nowrap">{insuranceCost.toFixed(2)} €</span>
                 </div>
               )}
@@ -910,7 +910,7 @@ const EnvoiColisPage = () => {
   );
 
   const renderSuccess = () => (
-    <div className="max-w-xl mx-auto animate-fade-in text-center">
+    <div className="max-w-xl mx-auto animate-slide-down text-center">
       {/* Header outside card */}
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <Check size={40} className="text-green-600" />
