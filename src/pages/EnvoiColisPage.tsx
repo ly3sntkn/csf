@@ -9,6 +9,10 @@ import VideoPlaceholder from '../components/VideoPlaceholder';
 import { wilayas } from '../data/wilayas';
 import bannerColis from '../assets/banner-colis-final.png';
 import { submitLeadToCRM } from '../services/apiService';
+import { loadStripe } from '@stripe/stripe-js';
+
+// Initialize Stripe (Replace with the client's public key)
+const stripePromise = loadStripe('pk_live_51T8J3l01LAX5ml7DKOKvh4ePiNHALSCEQl7LIK20QdHDBCAn02kvfv55RdsrtF5L9LFWGmbR8elv5AiXwZBiPfnX008hUrvMs6');
 
 // Types
 type ShippingType = 'personal' | 'parts';
@@ -35,6 +39,23 @@ const EnvoiColisPage = () => {
   const [showSwornStatement, setShowSwornStatement] = useState(false);
   const [showProhibitedPopup, setShowProhibitedPopup] = useState(false);
   const [showGuaranteeDetails, setShowGuaranteeDetails] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
+  // Check for Stripe Checkout success return
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('session_id')) {
+      // Create local dossier number since the CRM backend logic doesn't return one directly
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+      setDossierNumber(`CSF-${year}${month}-${randomPart}`);
+
+      setStep('success');
+      scrollToSuccess();
+    }
+  }, []);
 
   // Quote State
   const [quote, setQuote] = useState<QuoteData>({
@@ -264,32 +285,68 @@ const EnvoiColisPage = () => {
     }, 100);
   };
 
-  const handlePayment = () => {
-    if (allSwornChecked) {
-      // VALIDATED: Customer has agreed to the terms and confirmed payment
-      submitLeadToCRM({
-        nom: sender.lastName,
-        prenom: sender.firstName,
-        email: sender.email,
-        numero: sender.phone,
-        service: 'env',
-        details: {
-          receiverName: `${receiver.firstName} ${receiver.lastName}`,
-          weight: quote.weight,
-          inventoryValue: totalValue,
-          insurance: insurance
+  const handlePayment = async () => {
+    if (allSwornChecked && !isProcessingPayment) {
+      setIsProcessingPayment(true);
+
+      try {
+        // 1. Log WISHED / Processing Lead
+        submitLeadToCRM({
+          nom: sender.lastName,
+          prenom: sender.firstName,
+          email: sender.email,
+          numero: sender.phone,
+          service: 'env',
+          details: {
+            receiverName: `${receiver.firstName} ${receiver.lastName}`,
+            weight: quote.weight,
+            inventoryValue: totalValue,
+            insurance: insurance
+          }
+        }, 'wished'); // We send 'wished' here; 'validated' ideally comes via Webhook or returning url verification
+
+        // 2. Call our PHP Backend to generate Stripe session ID
+        const response = await fetch('https://csf-transport.com/backend/stripe_checkout.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: quote.type,
+            weight: quote.weight,
+            length: quote.length,
+            width: quote.width,
+            height: quote.height,
+            insurance: insurance
+          })
+        });
+
+        const sessionResponse = await response.json();
+
+        if (sessionResponse.error) {
+          console.error('Erreur du backend:', sessionResponse.error);
+          alert("Erreur lors de l'initialisation du paiement. " + sessionResponse.error);
+          setIsProcessingPayment(false);
+          return;
         }
-      }, 'validated');
 
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
-      setDossierNumber(`CSF-${year}${month}-${randomPart}`);
+        // 3. Redirect to Stripe Checkout
+        const stripe = await stripePromise;
+        if (stripe) {
+          const { error } = await (stripe as any).redirectToCheckout({
+            sessionId: sessionResponse.id
+          });
 
-      setShowSwornStatement(false);
-      setStep('success');
-      scrollToSuccess();
+          if (error) {
+            console.error('Stripe redirect error:', error.message);
+            alert("Erreur lors de la redirection vers Stripe.");
+          }
+        }
+      } catch (e) {
+        console.error(e);
+        alert("Une erreur de connexion est survenue. Veuillez réessayer.");
+      }
+      setIsProcessingPayment(false);
     }
   };
 
