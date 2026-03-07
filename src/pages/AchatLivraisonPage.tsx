@@ -123,7 +123,7 @@ const AchatLivraisonPage: React.FC = () => {
       }
     }, 'validated');
 
-    scrollToForm();
+    window.scrollTo({ top: 0, behavior: 'instant' });
     setStep(4); // Success state
   };
 
@@ -137,7 +137,7 @@ const AchatLivraisonPage: React.FC = () => {
           className={`cursor-pointer group p-8 rounded-2xl border-2 transition-all hover:border-blue-500 shadow-sm hover:shadow-xl bg-white border-gray-100 transform hover:-translate-y-1`}
         >
           <div className="flex flex-col items-center text-center gap-4">
-            <div className={`p-4 rounded-full bg-gray-50 text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300`}>
+            <div className={`p-4 rounded-full bg-blue-50 text-blue-600 transition-colors duration-300`}>
               <CheckCircle size={32} />
             </div>
             <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors">Acheter un véhicule</h3>
@@ -151,7 +151,7 @@ const AchatLivraisonPage: React.FC = () => {
           className={`cursor-pointer group p-8 rounded-2xl border-2 transition-all hover:border-blue-500 shadow-sm hover:shadow-xl bg-white border-gray-100 transform hover:-translate-y-1`}
         >
           <div className="flex flex-col items-center text-center gap-4">
-            <div className={`p-4 rounded-full bg-gray-50 text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors duration-300`}>
+            <div className={`p-4 rounded-full bg-blue-50 text-blue-600 transition-colors duration-300`}>
               <ArrowRight size={32} />
             </div>
             <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors">Exporter un véhicule</h3>

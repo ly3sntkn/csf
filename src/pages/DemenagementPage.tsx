@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Ship, Calendar, Box, MapPin, User, ArrowRight, ArrowLeft, Check } from 'lucide-react';
-import VideoPlaceholder from '../components/VideoPlaceholder';
+
 import bannerDemenagement from '../assets/banner-demenagement-final.png';
-import { wilayas } from '../data/wilayas';
 import { submitLeadToCRM } from '../services/apiService';
 
+const destinationCountries = [
+  "Afrique du Sud", "Algérie", "Angola", "Bénin", "Botswana", "Burkina Faso", "Burundi", "Cameroun", "Cap-Vert", "Comores", "Congo (Brazzaville)", "Congo (Kinshasa)", "Côte d’Ivoire", "Djibouti", "Égypte", "Érythrée", "Eswatini", "Éthiopie", "Gabon", "Gambie", "Ghana", "Guinée", "Guinée-Bissau", "Guinée équatoriale", "Kenya", "Lesotho", "Liberia", "Libye", "Madagascar", "Malawi", "Mali", "Maroc", "Maurice", "Mauritanie", "Mozambique", "Namibie", "Niger", "Nigeria", "Ouganda", "Rwanda", "République centrafricaine", "Sao Tomé-et-Principe", "Sénégal", "Seychelles", "Sierra Leone", "Somalie", "Soudan", "Soudan du Sud", "Tanzanie", "Tchad", "Togo", "Tunisie", "Zambie", "Zimbabwe",
+  "Antigua-et-Barbuda", "Argentine", "Bahamas", "Barbade", "Belize", "Bolivie", "Brésil", "Canada", "Chili", "Colombie", "Costa Rica", "Cuba", "Dominique", "Équateur", "États-Unis", "Grenade", "Guatemala", "Guyana", "Haïti", "Honduras", "Jamaïque", "Mexique", "Nicaragua", "Panama", "Paraguay", "Pérou", "République dominicaine", "Saint-Christophe-et-Niévès", "Sainte-Lucie", "Saint-Vincent-et-les-Grenadines", "Salvador", "Suriname", "Trinité-et-Tobago", "Uruguay", "Venezuela",
+  "Afghanistan", "Arabie saoudite", "Arménie", "Azerbaïdjan", "Bahreïn", "Bangladesh", "Bhoutan", "Birmanie", "Brunei", "Cambodge", "Chine", "Chypre", "Corée du Nord", "Corée du Sud", "Émirats arabes unis", "Géorgie", "Inde", "Indonésie", "Irak", "Iran", "Israël", "Japon", "Jordanie", "Kazakhstan", "Kirghizistan", "Koweït", "Laos", "Liban", "Malaisie", "Maldives", "Mongolie", "Népal", "Oman", "Ouzbékistan", "Pakistan", "Palestine", "Philippines", "Qatar", "Singapour", "Sri Lanka", "Syrie", "Tadjikistan", "Thaïlande", "Timor oriental", "Turkménistan", "Turquie", "Vietnam", "Yémen",
+  "Albanie", "Allemagne", "Andorre", "Autriche", "Belgique", "Biélorussie", "Bosnie-Herzégovine", "Bulgarie", "Croatie", "Danemark", "Espagne", "Estonie", "Finlande", "France", "Grèce", "Hongrie", "Irlande", "Islande", "Italie", "Kosovo", "Lettonie", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Malte", "Moldavie", "Monaco", "Monténégro", "Norvège", "Pays-Bas", "Pologne", "Portugal", "République tchèque", "Roumanie", "Royaume-Uni", "Russie", "Saint-Marin", "Serbie", "Slovaquie", "Slovénie", "Suède", "Suisse", "Ukraine", "Vatican",
+  "Australie", "Fidji", "Kiribati", "Marshall", "Micronésie", "Nauru", "Nouvelle-Zélande", "Palaos", "Papouasie-Nouvelle-Guinée", "Salomon", "Samoa", "Tonga", "Tuvalu", "Vanuatu"
+];
 
 
 const DemenagementPage = () => {
@@ -18,17 +24,39 @@ const DemenagementPage = () => {
 
   // Detailed Address State
   const [sender, setSender] = useState({ firstName: '', lastName: '', email: '', phone: '+33', address: '', complement: '', zip: '', city: '', country: 'France' });
-  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '' });
+  const [receiver, setReceiver] = useState({ firstName: '', lastName: '', phone: '+213', address: '', complement: '', zip: '', city: '', country: '' });
 
   // Suggestions State
   const [senderSuggestions, setSenderSuggestions] = useState<string[]>([]);
   const [showSenderSuggestions, setShowSenderSuggestions] = useState(false);
 
   // Country Suggestions State
-
+  const [countrySuggestions, setCountrySuggestions] = useState<string[]>([]);
+  const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCountrySearch = (value: string) => {
+    setReceiver(prev => ({ ...prev, country: value }));
+    const searchTerm = value.toLowerCase();
+
+    if (searchTerm.length >= 2) {
+      const matches = destinationCountries.filter(country =>
+        country.toLowerCase().includes(searchTerm)
+      ).slice(0, 5); // Limit to 5 suggestions max
+      setCountrySuggestions(matches);
+      setShowCountrySuggestions(matches.length > 0);
+    } else {
+      setCountrySuggestions([]);
+      setShowCountrySuggestions(false);
+    }
+  };
+
+  const selectCountry = (country: string) => {
+    setReceiver(prev => ({ ...prev, country }));
+    setShowCountrySuggestions(false);
   };
 
   // Auto-fill City Logic
@@ -68,19 +96,8 @@ const DemenagementPage = () => {
         setSenderSuggestions([]);
         setShowSenderSuggestions(false);
       }
-
     } else {
       setReceiver(prev => ({ ...prev, zip: value }));
-
-      // Check first 2 digits for Wilaya
-      if (value.length >= 2) {
-        const wilayaCode = value.substring(0, 2);
-        const wilaya = wilayas.find(w => w.code === wilayaCode);
-
-        if (wilaya) {
-          setReceiver(prev => ({ ...prev, city: wilaya.name }));
-        }
-      }
     }
   };
 
@@ -130,11 +147,11 @@ const DemenagementPage = () => {
       details: {
         ...formData,
         senderAddress: `${sender.address}, ${sender.zip} ${sender.city}`,
-        receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}`
+        receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}, ${receiver.country}`
       }
     }, 'validated');
 
-    scrollToForm();
+    window.scrollTo({ top: 0, behavior: 'instant' });
     setStep(3);
   };
 
@@ -144,10 +161,6 @@ const DemenagementPage = () => {
   const renderStep1 = () => (
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
       <div className="mb-0 border-b pb-4">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à déménager&nbsp;?</h2>
-        <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessus pour en savoir plus.</p>
-
-        <VideoPlaceholder className="mt-6 mb-8" title="Tout savoir sur le déménagement" />
 
         <div className="flex items-center gap-3">
           <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center">
@@ -247,7 +260,7 @@ const DemenagementPage = () => {
   const renderStep2 = () => {
     // Validation for Step 2
     const isSenderValid = sender.firstName && sender.lastName && sender.email && sender.phone && sender.address && sender.zip && sender.city;
-    const isReceiverValid = receiver.address && receiver.zip && receiver.city;
+    const isReceiverValid = receiver.address && receiver.zip && receiver.city && receiver.country;
 
     return (
       <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
@@ -302,6 +315,23 @@ const DemenagementPage = () => {
               <input type="text" placeholder="Complément d'adresse" className="md:col-span-2 p-3 border rounded-lg" value={receiver.complement} onChange={e => setReceiver({ ...receiver, complement: sanitize(e.target.value) })} />
               <input type="text" placeholder="Code postal*" className="p-3 border rounded-lg" value={receiver.zip} onChange={e => handleZipChange('receiver', sanitize(e.target.value))} />
               <input type="text" placeholder="Ville*" className="p-3 border rounded-lg" value={receiver.city} onChange={e => setReceiver({ ...receiver, city: sanitize(e.target.value) })} />
+
+              <div className="relative md:col-span-2">
+                <input type="text" placeholder="Pays d'arrivée*" className="p-3 border rounded-lg w-full" value={receiver.country} onChange={e => handleCountrySearch(sanitize(e.target.value))} />
+                {showCountrySuggestions && countrySuggestions.length > 0 && (
+                  <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
+                    {countrySuggestions.map((country, idx) => (
+                      <li
+                        key={idx}
+                        className="p-2 hover:bg-blue-50 cursor-pointer text-sm text-gray-700"
+                        onClick={() => selectCountry(country)}
+                      >
+                        {country}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </section>
 
@@ -316,7 +346,7 @@ const DemenagementPage = () => {
             <button
               onClick={handleSubmit}
               disabled={!isSenderValid || !isReceiverValid}
-              className={`w-full md:w-auto px-8 py-3 rounded-xl font-bold custom-shadow transition-all whitespace-normal h-auto min-h-[48px] ${isSenderValid && isReceiverValid ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 cursor-not-allowed text-gray-500'}`}
+              className={`w-full md:w-auto px-8 py-3 rounded-xl font-bold custom-shadow transition-all whitespace-normal h-auto min-h-[48px] ${isSenderValid && isReceiverValid ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-300 cursor-not-allowed text-gray-500'}`}
             >
               Confirmer ma demande
             </button>

@@ -53,6 +53,7 @@ const EnvoiColisPage = () => {
   const [insurance, setInsurance] = useState(false);
   const [swornChecks, setSwornChecks] = useState<Record<string, boolean>>({});
   const [openProhibitedCategory, setOpenProhibitedCategory] = useState<number | null>(null);
+  const [openAdviceCategory, setOpenAdviceCategory] = useState<number | null>(null);
 
   // Constants
   const MAX_WEIGHT = 30;
@@ -244,10 +245,9 @@ const EnvoiColisPage = () => {
     "En cas d'écart constaté (poids, dimensions, contenu), j'accepte que des frais supplémentaires, des ajustements tarifaires ou le refus d'expédition puissent être appliqués sans possibilité de remboursement.",
     "Je reconnais que les délais de livraison sont donnés à titre indicatif et peuvent être impactés par des facteurs indépendants de CSF (douanes, contrôles, grèves, météo, décisions administratives, sécurité aérienne).",
     "Je reconnais que CSF ne pourra être tenu responsable des retards, saisies ou dommages résultant de ces facteurs externes.",
-    "J'ai pris connaissance et j'accepte les Conditions Générales de Vente."
   ];
 
-  const allSwornChecked = fullSwornStatements.every((_: string, idx: number) => swornChecks[idx]);
+  const allSwornChecked = !!swornChecks['all'];
 
   // Utility to sanitize text inputs against basic XSS
   const sanitize = (val: string) => val.replace(/[<>]/g, '');
@@ -275,7 +275,7 @@ const EnvoiColisPage = () => {
 
       setShowSwornStatement(false);
       setStep('success');
-      scrollToForm();
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   };
 
@@ -826,9 +826,21 @@ const EnvoiColisPage = () => {
               <Check size={20} /> Récapitulatif de la commande
             </h3>
             <div className="space-y-3">
-              <div className="flex justify-between items-center text-xs md:text-sm">
-                <span className="text-gray-600">{quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'} - {quote.weight} kg</span>
-                <span className="font-medium text-gray-900 whitespace-nowrap">{quote.price.toFixed(2)} €</span>
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between items-center text-xs md:text-sm">
+                  <span className="text-gray-600 font-medium">{quote.type === 'personal' ? 'Effets personnels' : 'Pièces auto'} - {quote.weight} kg</span>
+                  <span className="font-medium text-gray-900 whitespace-nowrap">{quote.price.toFixed(2)} €</span>
+                </div>
+                {inventory.some(item => item.description.trim() !== '') && (
+                  <div className="pl-2 mt-1 space-y-1 text-xs text-gray-500 border-l-2 border-green-200 ml-1">
+                    {inventory.filter(item => item.description.trim() !== '').map((item, idx) => (
+                      <div key={idx} className="flex justify-between items-center">
+                        <span>• {item.quantity} × {item.description}</span>
+                        {item.value && <span>{item.value} €</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               {insurance && (
                 <div className="flex justify-between items-center text-xs md:text-sm">
@@ -864,27 +876,47 @@ const EnvoiColisPage = () => {
     );
   };
 
+  const ADVICE_CATEGORIES = [
+    { label: "25 kg et 30 kg", dim: "80 × 40 × 40 cm" },
+    { label: "20 kg et 25 kg", dim: "70 × 40 × 40 cm" },
+    { label: "15 kg et 20 kg", dim: "60 × 40 × 40 cm" },
+    { label: "10 kg et 15 kg", dim: "60 × 40 × 30 cm" },
+  ];
+
   const renderAdviceSection = () => (
-    <div className="bg-blue-50/50 rounded-2xl p-6 mt-8">
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-blue-50/50 rounded-2xl p-6 mt-8 animate-fade-in">
+      <div className="flex items-center justify-center gap-3 mb-6">
         <Info className="text-blue-600" size={24} />
         <h3 className="text-xl font-bold text-blue-900">Quel carton choisir ?</h3>
       </div>
 
-      <div className="space-y-4">
-        {[
-          { min: "25", max: "30", dim: "80 × 40 × 40 cm" },
-          { min: "20", max: "25", dim: "70 × 40 × 40 cm" },
-          { min: "15", max: "20", dim: "60 × 40 × 40 cm" },
-          { min: "10", max: "15", dim: "60 × 40 × 30 cm" },
-        ].map((item, idx) => (
-          <div key={idx} className="bg-white/60 p-4 rounded-xl flex flex-col items-center justify-center text-center">
-            <p className="text-gray-700 font-medium mb-1">
-              Pour expédier un colis entre <span className="font-bold text-gray-900">{item.min} kg</span> et <span className="font-bold text-gray-900">{item.max} kg</span>, nous vous recommandons ces dimensions de carton :
-            </p>
-            <div className="text-lg sm:text-xl font-bold text-blue-800">
-              {item.dim}
-            </div>
+      <div className="space-y-3">
+        {ADVICE_CATEGORIES.map((item, idx) => (
+          <div key={idx} className="bg-white rounded-xl shadow-sm border border-blue-50 overflow-hidden transition-all duration-300">
+            <button
+              id={`advice-category-${idx}`}
+              onClick={() => setOpenAdviceCategory(openAdviceCategory === idx ? null : idx)}
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+              aria-expanded={openAdviceCategory === idx}
+            >
+              <span className="font-bold text-gray-800 text-lg">Colis entre {item.label}</span>
+              {openAdviceCategory === idx ? (
+                <ChevronUp className="text-blue-500 flex-shrink-0" size={20} />
+              ) : (
+                <ChevronDown className="text-gray-400 flex-shrink-0" size={20} />
+              )}
+            </button>
+
+            {openAdviceCategory === idx && (
+              <div className="p-4 pt-1 bg-white animate-fade-in text-center border-t border-gray-50">
+                <p className="text-gray-600 font-medium mb-3 text-lg">
+                  Nous vous recommandons ces dimensions de carton :
+                </p>
+                <div className="text-2xl font-bold text-blue-700">
+                  {item.dim}
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -911,14 +943,18 @@ const EnvoiColisPage = () => {
         </p>
 
         <p className="text-gray-600 leading-relaxed mb-6">
-          Vos documents d'expédition (bordereau d'expédition et documents douaniers) vous seront envoyés par email sous <span className="font-bold text-gray-900">24 à 48h</span>.
+          Vos documents d'expédition vous seront envoyés par email sous <span className="font-bold text-gray-900">24 à 48h</span>.
         </p>
 
         {/* Info Box */}
-        <div className="bg-blue-600/5 rounded-lg p-4 mb-6 text-left border border-blue-600/10">
-          <p className="text-sm font-medium text-blue-900 m-0 leading-relaxed">
-            ⚠️ <strong>Message important :</strong> Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.
-          </p>
+        <div className="mt-4 mb-6 p-4 border border-blue-100 rounded-xl bg-blue-50 text-left">
+          <div className="flex items-start gap-3">
+            <div className="mt-1"><AlertTriangle size={18} className="text-blue-500 flex-shrink-0" /></div>
+            <div className="text-sm text-blue-800">
+              <p className="font-bold">Message important :</p>
+              <p className="mt-1">Une fois reçus, scotchez les documents sur votre colis et déposez-le dans n'importe quel bureau de Poste en France.</p>
+            </div>
+          </div>
         </div>
 
         {/* Button */}
@@ -993,72 +1029,80 @@ const EnvoiColisPage = () => {
         {/* Prohibited Items Modal */}
         {showProhibitedPopup && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-6 shadow-2xl relative animate-scale-in">
-              <button
-                onClick={() => setShowProhibitedPopup(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-              >
-                <X size={24} />
-              </button>
-              <h3 className="text-xl font-bold text-red-600 mb-6 flex items-center justify-center gap-2">
-                <AlertTriangle /> Produits Interdits
-              </h3>
+            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl relative animate-scale-in">
+              <div className="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-center rounded-t-2xl shrink-0">
+                <h3 className="text-xl font-bold text-red-600 flex items-center gap-2">
+                  <AlertTriangle /> Produits Interdits
+                </h3>
+                <button
+                  onClick={() => setShowProhibitedPopup(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+                >
+                  <X size={24} />
+                </button>
+              </div>
 
-              <div className="space-y-4">
-                {prohibitedCategories.map((category, idx) => (
-                  <div key={idx} className="border-b border-gray-100 last:border-0 pb-2">
-                    <button
-                      className="w-full flex items-center justify-between text-left py-2 hover:bg-gray-50 transition-colors rounded-lg px-2"
-                      onClick={() => setOpenProhibitedCategory(openProhibitedCategory === idx ? null : idx)}
-                    >
-                      <span className="text-gray-800 pr-4">{category.title}</span>
-                      {openProhibitedCategory === idx ? (
-                        <ChevronUp className="text-red-500 flex-shrink-0" size={20} />
-                      ) : (
-                        <ChevronDown className="text-gray-400 flex-shrink-0" size={20} />
-                      )}
-                    </button>
-
-                    {openProhibitedCategory === idx && (
-                      <div className="px-2 pb-3 pt-1 animate-fade-in text-gray-700 text-sm">
-                        {category.content ? (
-                          <div className="whitespace-pre-wrap leading-relaxed">
-                            {category.content}
-                          </div>
+              <div className="p-4 sm:p-6 overflow-y-auto flex-1">
+                <div className="space-y-4">
+                  {prohibitedCategories.map((category, idx) => (
+                    <div key={idx} className="border-b border-gray-100 last:border-0 pb-2">
+                      <button
+                        className="w-full flex items-center justify-between text-left py-2 hover:bg-gray-50 transition-colors rounded-lg px-2"
+                        onClick={() => setOpenProhibitedCategory(openProhibitedCategory === idx ? null : idx)}
+                      >
+                        <span className="text-gray-800 pr-4">{category.title}</span>
+                        {openProhibitedCategory === idx ? (
+                          <ChevronUp className="text-red-500 flex-shrink-0" size={20} />
                         ) : (
-                          <ul className="space-y-2">
-                            {category.items?.map((item, itemIdx) => (
-                              <li key={itemIdx} className="flex items-start gap-2">
-                                <span className="text-red-400 mt-0.5 flex-shrink-0">•</span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <ChevronDown className="text-gray-400 flex-shrink-0" size={20} />
                         )}
-                      </div>
-                    )}
+                      </button>
+
+                      {openProhibitedCategory === idx && (
+                        <div className="px-2 pb-3 pt-1 animate-fade-in text-gray-700 text-sm">
+                          {category.content ? (
+                            <div className="whitespace-pre-wrap leading-relaxed">
+                              {category.content}
+                            </div>
+                          ) : (
+                            <ul className="space-y-2">
+                              {category.items?.map((item, itemIdx) => (
+                                <li key={itemIdx} className="flex items-start gap-2">
+                                  <span className="text-red-400 mt-0.5 flex-shrink-0">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 p-4 border border-blue-100 rounded-xl bg-blue-50 text-left">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1"><AlertTriangle size={18} className="text-blue-500 flex-shrink-0" /></div>
+                    <div className="text-sm text-blue-800">
+                      <p className="font-bold mb-1">Important :</p>
+                      <ul className="space-y-1">
+                        <li>• Aucune exception ne sera accordée</li>
+                        <li>• Le client est seul responsable du contenu de son colis</li>
+                        <li>• Tout colis non conforme pourra être refusé, bloqué ou détruit sans indemnisation</li>
+                      </ul>
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-gray-100">
-                <h4 className="font-bold text-red-600 flex items-center gap-2 mb-2 text-sm">
-                  <Info size={16} />
-                  Important
-                </h4>
-                <ul className="space-y-1 text-sm text-gray-600">
-                  <li>• Aucune exception ne sera accordée</li>
-                  <li>• Le client est seul responsable du contenu de son colis</li>
-                  <li>• Tout colis non conforme pourra être refusé, bloqué ou détruit sans indemnisation</li>
-                </ul>
+              <div className="p-4 sm:p-6 border-t border-gray-100 rounded-b-2xl shrink-0">
+                <button
+                  onClick={() => setShowProhibitedPopup(false)}
+                  className="w-full py-3.5 sm:py-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl transition-colors"
+                >
+                  J'ai compris
+                </button>
               </div>
-
-              <button
-                onClick={() => setShowProhibitedPopup(false)}
-                className="mt-8 w-full py-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl transition-colors"
-              >
-                J'ai compris
-              </button>
             </div>
           </div>
         )}
@@ -1070,17 +1114,23 @@ const EnvoiColisPage = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Attestation sur l'honneur</h3>
 
               <div className="space-y-4 mb-8">
-                {fullSwornStatements.map((statement: string, idx: number) => (
-                  <label key={idx} className="flex items-start gap-3 cursor-pointer p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                    <input
-                      type="checkbox"
-                      className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={!!swornChecks[idx]}
-                      onChange={(e) => setSwornChecks({ ...swornChecks, [idx]: e.target.checked })}
-                    />
-                    <span className="text-sm text-gray-700 leading-relaxed text-left">{statement}</span>
-                  </label>
-                ))}
+                <ul className="space-y-3 text-sm text-gray-700 leading-relaxed list-disc pl-5">
+                  {fullSwornStatements.map((statement: string, idx: number) => (
+                    <li key={idx}>{statement}</li>
+                  ))}
+                </ul>
+
+                <label className="flex items-start gap-3 cursor-pointer p-4 mt-6 bg-blue-50/50 rounded-xl border border-blue-100 hover:bg-blue-50 transition-colors">
+                  <input
+                    type="checkbox"
+                    className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 flex-shrink-0"
+                    checked={!!swornChecks['all']}
+                    onChange={(e) => setSwornChecks({ all: e.target.checked })}
+                  />
+                  <span className="text-sm font-bold text-blue-900 leading-relaxed">
+                    J'ai pris connaissance et j'accepte les Conditions Générales de Vente
+                  </span>
+                </label>
               </div>
 
               <div className="flex gap-4">
@@ -1093,7 +1143,7 @@ const EnvoiColisPage = () => {
                 <button
                   onClick={handlePayment}
                   disabled={!allSwornChecked}
-                  className={`w-2/3 py-3 rounded-xl font-bold text-white transition-all ${allSwornChecked ? 'bg-blue-600 hover:bg-blue-700 shadow-lg' : 'bg-gray-300 cursor-not-allowed'}`}
+                  className={`w-2/3 py-3 rounded-xl font-bold text-white transition-all ${allSwornChecked ? 'bg-green-600 hover:bg-green-700 shadow-lg' : 'bg-gray-300 cursor-not-allowed'}`}
                 >
                   Confirmer et payer
                 </button>
@@ -1102,8 +1152,8 @@ const EnvoiColisPage = () => {
           </div>
         )}
       </div>
-      {/* WhatsApp Button - Step 2 & 3 (Success) */}
-      {(step === 2 || step === 'success') && (
+      {/* WhatsApp Button - Step 2 only */}
+      {step === 2 && !showSwornStatement && !showProhibitedPopup && (
         <a
           href="https://wa.me/33650683832"
           target="_blank"
