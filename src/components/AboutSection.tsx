@@ -65,7 +65,7 @@ const AboutSection = () => {
             {/* Image */}
             <div className="rounded-2xl overflow-hidden shadow-lg h-64 flex items-center justify-center">
               <img
-                src="/csf/livreurcontent.webp"
+                src="/livreurcontent.webp"
                 alt="Service CSF"
                 className="w-full h-full object-cover object-center"
               />

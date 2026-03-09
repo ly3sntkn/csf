@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           onClick={handleLogoClick}
         >
           <img
-            src="/csf/logo-csf.webp"
+            src="/logo-csf.webp"
             alt="CSF Transport"
             className="h-12 w-auto object-contain"
           />

@@ -2,10 +2,10 @@ import React from 'react';
 
 const PartnersSection = () => {
   const partners = [
-    { name: 'Air Algérie', logo: '/csf/logo-air-algerie.webp' },
-    { name: 'Fédération Algérienne de Football', logo: '/csf/logo-faf.webp', className: 'scale-75' },
-    { name: 'La Poste', logo: '/csf/logo-la-poste.webp' },
-    { name: 'EMS Algérie', logo: '/csf/logo-ems.webp', className: 'mix-blend-multiply' },
+    { name: 'Air Algérie', logo: '/logo-air-algerie.webp' },
+    { name: 'Fédération Algérienne de Football', logo: '/logo-faf.webp', className: 'scale-75' },
+    { name: 'La Poste', logo: '/logo-la-poste.webp' },
+    { name: 'EMS Algérie', logo: '/logo-ems.webp', className: 'mix-blend-multiply' },
   ];
 
   return (

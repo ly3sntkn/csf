@@ -12,7 +12,7 @@ const HeroBanner = () => {
       <div className="absolute inset-0">
         {/* Desktop Image */}
         <img
-          src="/csf/hero-desktop.webp"
+          src="/hero-desktop.webp"
           alt="Transport CSF"
           fetchPriority="high"
           loading="eager"
@@ -20,7 +20,7 @@ const HeroBanner = () => {
         />
         {/* Mobile Image */}
         <img
-          src="/csf/hero-mobile.webp"
+          src="/hero-mobile.webp"
           alt="Transport CSF Mobile"
           fetchPriority="high"
           loading="eager"

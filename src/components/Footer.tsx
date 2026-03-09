@@ -13,7 +13,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img
-              src="/csf/logo-csf.webp"
+              src="/logo-csf.webp"
               alt="CSF Logo"
               className="h-12 w-auto mb-4 brightness-0 invert"
             />
