@@ -20,11 +20,25 @@ const PageLoader = () => (
 );
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('accueil');
+  const [currentPage, setCurrentPage] = useState(() => {
+    // Basic router logic to handle direct links and Stripe redirects
+    const path = window.location.pathname.replace(/^\/+/, '');
+    const validPages = ['accueil', 'envoi-colis', 'demenagement', 'achat-livraison', 'contact', 'faq'];
+    if (validPages.includes(path)) {
+      return path;
+    }
+    return 'accueil';
+  });
 
   React.useEffect(() => {
     const handleNavigate = (event: CustomEvent) => {
-      setCurrentPage(event.detail);
+      const newPage = event.detail;
+      setCurrentPage(newPage);
+
+      // Update the browser URL without reloading so Stripe redirects return correctly
+      const newPath = newPage === 'accueil' ? '/' : `/${newPage}`;
+      window.history.pushState({}, '', newPath);
+
       // Scroll to top when navigating to a new page
       window.scrollTo(0, 0);
     };
