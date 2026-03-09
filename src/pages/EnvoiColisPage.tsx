@@ -60,6 +60,11 @@ const EnvoiColisPage = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
           }).catch(err => console.error("Erreur d'envoi d'email backend:", err));
+
+          // Retain sender first name for the success message UI
+          if (orderData.firstName) {
+            setSender(prev => ({ ...prev, firstName: orderData.firstName }));
+          }
         } catch (e) {
           console.error("Impossible de parser les données localStorage", e);
         }
