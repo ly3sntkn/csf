@@ -124,7 +124,7 @@ export const handler: Handler = async (event) => {
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ id: session.id })
+            body: JSON.stringify({ id: session.id, url: session.url })
         };
     } catch (error) {
         console.error('Stripe Checkout Error:', error);

@@ -9,10 +9,6 @@ import VideoPlaceholder from '../components/VideoPlaceholder';
 import { wilayas } from '../data/wilayas';
 import bannerColis from '../assets/banner-colis-final.png';
 import { submitLeadToCRM } from '../services/apiService';
-import { loadStripe } from '@stripe/stripe-js';
-
-// Initialize Stripe (Replace with the client's public key)
-const stripePromise = loadStripe('pk_live_51T8J3l01LAX5ml7DKOKvh4ePiNHALSCEQl7LIK20QdHDBCAn02kvfv55RdsrtF5L9LFWGmbR8elv5AiXwZBiPfnX008hUrvMs6');
 
 // Types
 type ShippingType = 'personal' | 'parts';
@@ -373,17 +369,11 @@ const EnvoiColisPage = () => {
           return;
         }
 
-        // 3. Redirect to Stripe Checkout
-        const stripe = await stripePromise;
-        if (stripe) {
-          const { error } = await (stripe as any).redirectToCheckout({
-            sessionId: sessionResponse.id
-          });
-
-          if (error) {
-            console.error('Stripe redirect error:', error.message);
-            alert("Erreur lors de la redirection vers Stripe.");
-          }
+        // 4. Redirect to Stripe Checkout URL provided by Server
+        if (sessionResponse.url) {
+          window.location.href = sessionResponse.url;
+        } else {
+          throw new Error("Aucune URL de redirection Stripe trouvée.");
         }
       } catch (e: any) {
         console.error("Fetch Exception:", e);
