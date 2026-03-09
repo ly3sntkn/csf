@@ -59,7 +59,7 @@ const EnvoiColisPage = () => {
           const orderData = JSON.parse(orderDataString);
           orderData.dossierNumber = `CSF-${year}${month}-${randomPart}`;
 
-          fetch('https://csf-transport.com/backend/send_confirmation_email.php', {
+          fetch('/.netlify/functions/send-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
@@ -338,8 +338,8 @@ const EnvoiColisPage = () => {
           receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}, ${receiver.country}`
         }));
 
-        // 3. Call our PHP Backend to generate Stripe session ID
-        const response = await fetch('https://csf-transport.com/backend/stripe_checkout.php', {
+        // 3. Call our Netlify Backend Function to generate Stripe session ID
+        const response = await fetch('/.netlify/functions/stripe-checkout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
