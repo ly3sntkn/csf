@@ -354,11 +354,21 @@ const EnvoiColisPage = () => {
           })
         });
 
-        const sessionResponse = await response.json();
+        const textResponse = await response.text();
 
-        if (sessionResponse.error) {
-          console.error('Erreur du backend:', sessionResponse.error);
-          alert("Erreur lors de l'initialisation du paiement. " + sessionResponse.error);
+        let sessionResponse;
+        try {
+          sessionResponse = JSON.parse(textResponse);
+        } catch (err) {
+          console.error('Réponse non-JSON du serveur:', textResponse);
+          setIsProcessingPayment(false);
+          alert("Erreur serveur : format de réponse invalide. Vérifiez la console réseau.");
+          return;
+        }
+
+        if (!response.ok || sessionResponse.error) {
+          console.error('Erreur du backend:', sessionResponse?.error || textResponse);
+          alert("Erreur lors de l'initialisation du paiement. " + (sessionResponse?.error || "Erreur réseau"));
           setIsProcessingPayment(false);
           return;
         }
@@ -375,9 +385,10 @@ const EnvoiColisPage = () => {
             alert("Erreur lors de la redirection vers Stripe.");
           }
         }
-      } catch (e) {
-        console.error(e);
-        alert("Une erreur de connexion est survenue. Veuillez réessayer.");
+      } catch (e: any) {
+        console.error("Fetch Exception:", e);
+        setIsProcessingPayment(false);
+        alert(`Une erreur de connexion est survenue : ${e.message}`);
       }
       setIsProcessingPayment(false);
     }
