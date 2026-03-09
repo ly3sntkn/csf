@@ -52,6 +52,24 @@ const EnvoiColisPage = () => {
       const randomPart = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
       setDossierNumber(`CSF-${year}${month}-${randomPart}`);
 
+      // Parse and call the backend to send email if data exists
+      const orderDataString = localStorage.getItem('csf_order_data');
+      if (orderDataString) {
+        try {
+          const orderData = JSON.parse(orderDataString);
+          orderData.dossierNumber = `CSF-${year}${month}-${randomPart}`;
+
+          fetch('https://csf-transport.com/backend/send_confirmation_email.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+          }).catch(err => console.error("Erreur d'envoi d'email backend:", err));
+        } catch (e) {
+          console.error("Impossible de parser les données localStorage", e);
+        }
+        localStorage.removeItem('csf_order_data');
+      }
+
       setStep('success');
       scrollToSuccess();
     }
@@ -305,7 +323,22 @@ const EnvoiColisPage = () => {
           }
         }, 'wished'); // We send 'wished' here; 'validated' ideally comes via Webhook or returning url verification
 
-        // 2. Call our PHP Backend to generate Stripe session ID
+        // 2. Save Data for Email Confirmation upon Return
+        localStorage.setItem('csf_order_data', JSON.stringify({
+          firstName: sender.firstName,
+          lastName: sender.lastName,
+          email: sender.email,
+          weight: quote.weight,
+          length: quote.length,
+          width: quote.width,
+          height: quote.height,
+          type: quote.type,
+          insurance: insurance,
+          receiverName: `${receiver.firstName} ${receiver.lastName}`,
+          receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}, ${receiver.country}`
+        }));
+
+        // 3. Call our PHP Backend to generate Stripe session ID
         const response = await fetch('https://csf-transport.com/backend/stripe_checkout.php', {
           method: 'POST',
           headers: {
