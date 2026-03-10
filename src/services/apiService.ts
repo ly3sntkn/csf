@@ -11,8 +11,8 @@ export interface LeadData {
 }
 
 // The final user URLs with correct "Anyone" permissions and openById logic
-const SCRIPT_URL_VALIDATED = 'https://script.google.com/macros/s/AKfycbwwE3VgILvKZjLD0rGxN4w13MEc3vXuieq0r_JQOob25PfIgrIQKSG3aKuG4WMkBG3LJw/exec';
-const SCRIPT_URL_WISHED = 'https://script.google.com/macros/s/AKfycbwwE3VgILvKZjLD0rGxN4w13MEc3vXuieq0r_JQOob25PfIgrIQKSG3aKuG4WMkBG3LJw/exec';
+const SCRIPT_URL_VALIDATED = 'https://script.google.com/macros/s/AKfycbzlgF_WIKYYTaxYylp-ltGHsoYYPmu-YHYEahZEkEhVjiLVRphkqvtl-kZzLX48ECK6/exec';
+const SCRIPT_URL_WISHED = 'https://script.google.com/macros/s/AKfycbzFui4Z5Px9IX1mXKThvvH0VcbXcsCx4rF4t4Th3cJftfYsFLymH2G-1H-ZLBfcsB8U7w/exec';
 const SECRET_TOKEN = 'CSF_CRM_LEAD_SECRET_2026';
 
 /**
@@ -34,6 +34,8 @@ export const submitLeadToCRM = async (data: LeadData, status: LeadStatus): Promi
 
         let categoryParams = data.service === 'env' ? 'Colis' : data.service === 'dem' ? 'Déménagement' : 'Achat voiture';
 
+        const isOui = (val: any) => (val === true || String(val).toUpperCase() === 'OUI' || val === 'OUI') ? 'OUI' : 'NON';
+
         const payload = {
             token: SECRET_TOKEN,
             status: status,
@@ -53,15 +55,15 @@ export const submitLeadToCRM = async (data: LeadData, status: LeadStatus): Promi
             "E-mail": data.email,
             "Adresse de départ": d.departureAddress || d.address || "",
             "Nb colis": d.quantity || (d.weight ? "1" : ""),
-            "Dimensions (cm)": d.dimensions || (d.length ? `${d.length}x${d.width}x${d.height}` : ""),
+            "Dimensions (cm)": d.dimensions || (d.length ? `${d.length} X ${d.width} X ${d.height}` : ""),
             "Poids (kg)": d.weight || d.poids || "",
             "Valeur (€)": d.inventoryValue || d.valeur || "",
-            "Garantie CSF": d.insurance || "NON",
+            "Garantie CSF": isOui(d.insurance),
             "10% (€)": d.insuranceCost || "",
             "Nom du destinataire": d.receiverName || d.nomDestinataire || "",
             "Téléphone DZ": d.receiverPhone || d.telephoneDZ || "",
             "Ville de destination": d.destinationCity || d.villeDestination || "",
-            "Documents envoyés ": "NON",
+            "Documents envoyés ": isOui(d.documentsEnvoyes),
             "Statut du colis": rawStatut,
             "Date de livraison": "",
             "Délais ": "",

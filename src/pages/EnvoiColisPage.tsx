@@ -331,6 +331,9 @@ const EnvoiColisPage = () => {
           details: {
             receiverName: `${receiver.firstName} ${receiver.lastName}`,
             weight: quote.weight,
+            length: quote.length,
+            width: quote.width,
+            height: quote.height,
             inventoryValue: totalValue,
             insurance: insurance
           }
@@ -421,7 +424,11 @@ const EnvoiColisPage = () => {
       details: {
         receiverName: `${receiver.firstName} ${receiver.lastName}`,
         weight: quote.weight,
+        length: quote.length,
+        width: quote.width,
+        height: quote.height,
         inventoryValue: totalValue,
+        insurance: insurance
       }
     }, 'wished');
   };
