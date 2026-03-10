@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import {
   Package, Scale, User, MapPin, Plus, Trash2,
   Check, AlertTriangle, ArrowRight, ArrowLeft, X,
-  ChevronDown, ChevronUp, ShieldCheck, Info
+  ChevronDown, ChevronUp, ShieldCheck, Info,
+  ClipboardList, Lightbulb, Ruler, Home, CheckCircle2, Ban, Shuffle
 } from 'lucide-react';
-import VideoPlaceholder from '../components/VideoPlaceholder';
 import { wilayas } from '../data/wilayas';
 import bannerColis from '../assets/banner-colis-final.png';
 import { submitLeadToCRM } from '../services/apiService';
@@ -36,6 +36,7 @@ const EnvoiColisPage = () => {
   const [showProhibitedPopup, setShowProhibitedPopup] = useState(false);
   const [showGuaranteeDetails, setShowGuaranteeDetails] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [isRulesOpen, setIsRulesOpen] = useState(false);
 
   // Check for Stripe Checkout success return
   useEffect(() => {
@@ -578,9 +579,88 @@ const EnvoiColisPage = () => {
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à envoyer votre colis&nbsp;?</h2>
-        <p className="text-gray-600">Regardez notre courte vidéo explicative ci-dessous pour en savoir plus.</p>
+        <p className="text-gray-600 mb-6">Avant de commencer prenez le temps de lire les règles d'envoi ci-dessous.</p>
 
-        <VideoPlaceholder className="mt-6 mb-8" title="Comment envoyer votre colis" />
+        {/* Rules Accordion */}
+        <div className="mb-8 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+          <button
+            onClick={() => setIsRulesOpen(!isRulesOpen)}
+            className="w-full bg-white p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center space-x-3">
+              <ClipboardList className="text-yellow-600" size={24} />
+              <span className="font-bold text-gray-500 uppercase tracking-widest text-sm">À lire avant de commander</span>
+            </div>
+            {isRulesOpen ? <ChevronUp size={20} className="text-gray-500" /> : <ChevronDown size={20} className="text-gray-500" />}
+          </button>
+
+          {isRulesOpen && (
+            <div className="bg-white divide-y divide-gray-100 border-t border-gray-100 animate-in slide-in-from-top-2 duration-200">
+
+              {/* Item 1 */}
+              <div className="p-5 flex gap-4">
+                <Package className="text-amber-700 shrink-0 mt-1" size={24} />
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Cartons uniquement</h4>
+                  <p className="text-gray-600 text-sm">Par mesure de sécurité, <span className="font-bold text-gray-900">seuls les cartons sont acceptés</span>. Les sacs, valises et cabas sont refusés sans exception.</p>
+                </div>
+              </div>
+
+              {/* Item 2 */}
+              <div className="p-5 flex gap-4">
+                <Scale className="text-gray-400 shrink-0 mt-1" size={24} />
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Maximum 30 kg par carton</h4>
+                  <p className="text-gray-600 text-sm mb-4">Chaque carton ne doit pas dépasser <span className="font-bold text-gray-900">30 kg</span>, en poids réel ou volumétrique. Vous pouvez envoyer autant de cartons que vous souhaitez.</p>
+
+                  <div className="space-y-3">
+                    <div className="flex gap-2 pl-3 border-l-2 border-blue-600">
+                      <Lightbulb className="text-yellow-500 shrink-0 mt-0.5" size={16} />
+                      <p className="text-gray-500 text-sm leading-relaxed">Nos tarifs sont dégressifs : plus vous vous rapprochez des 30 kg (en poids ou en volume), plus le prix au kilo baisse et le tarif devient avantageux.</p>
+                    </div>
+                    <div className="flex gap-2 pl-3 border-l-2 border-blue-600">
+                      <Ruler className="text-blue-400 shrink-0 mt-0.5" size={16} />
+                      <p className="text-gray-500 text-sm leading-relaxed">Vous ne savez pas quel carton choisir ? Retrouvez nos recommandations en bas du formulaire dans « Quel carton choisir ? »</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Item 3 */}
+              <div className="p-5 flex gap-4">
+                <Home className="text-red-400 shrink-0 mt-1" size={24} />
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Service réservé aux particuliers</h4>
+                  <p className="text-gray-600 text-sm mb-4">Service réservé aux particuliers et aux familles pour des effets personnels du quotidien.</p>
+
+                  <div className="space-y-3">
+                    <div className="flex gap-2 pl-3 border-l-2 border-blue-600">
+                      <CheckCircle2 className="text-green-500 shrink-0 mt-0.5" size={16} />
+                      <p className="text-gray-500 text-sm leading-relaxed">Les pièces détachées pour votre véhicule personnel sont acceptées.</p>
+                    </div>
+                    <div className="flex gap-2 pl-3 border-l-2 border-blue-600">
+                      <Ban className="text-red-500 shrink-0 mt-0.5" size={16} />
+                      <p className="text-gray-500 text-sm leading-relaxed">Interdit : envois commerciaux, matériel professionnel, pièces industrielles ou en grande quantité.</p>
+                    </div>
+                    <div className="flex gap-2 pl-3 border-l-2 border-blue-600">
+                      <ClipboardList className="text-gray-400 shrink-0 mt-0.5" size={16} />
+                      <p className="text-gray-500 text-sm leading-relaxed">Cette liste n'est pas exhaustive — vous retrouverez la liste complète des produits interdits dans le formulaire, à l'étape suivante après validation du devis, dans la section « Inventaire du colis ».</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Item 4 */}
+              <div className="p-5 flex gap-4">
+                <Shuffle className="text-blue-500 shrink-0 mt-1" size={24} />
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">Cartons séparés obligatoires</h4>
+                  <p className="text-gray-600 text-sm">Les <span className="font-bold text-gray-900">effets personnels</span> et les <span className="font-bold text-gray-900">pièces détachées</span> doivent être placés dans des cartons distincts — ne pas mélanger les deux.</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
         <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <Package className="text-blue-600" />
@@ -973,10 +1053,10 @@ const EnvoiColisPage = () => {
   };
 
   const ADVICE_CATEGORIES = [
-    { label: "25 kg et 30 kg", dim: "80 × 40 × 40 cm" },
-    { label: "20 kg et 25 kg", dim: "70 × 40 × 40 cm" },
-    { label: "15 kg et 20 kg", dim: "60 × 40 × 40 cm" },
-    { label: "10 kg et 15 kg", dim: "60 × 40 × 30 cm" },
+    { label: "25 kg et 30 kg", dim: "70 × 40 × 40 cm" },
+    { label: "20 kg et 25 kg", dim: "60 × 40 × 40 cm" },
+    { label: "15 kg et 20 kg", dim: "60 × 40 × 30 cm" },
+    { label: "10 kg et 15 kg", dim: "60 × 30 × 30 cm" },
   ];
 
   const renderAdviceSection = () => (
