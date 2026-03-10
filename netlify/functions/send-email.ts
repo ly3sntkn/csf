@@ -51,13 +51,16 @@ export const handler: Handler = async (event) => {
     <html>
     <head>
     <style>
-      body { font-family: Arial, sans-serif; color: #333; line-height: 1.6; }
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #333; line-height: 1.6; }
       .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-      .header { color: #cc0000; font-weight: bold; font-size: 20px; margin-bottom: 20px; }
-      .box { background-color: #f9f9f9; padding: 15px; border-left: 4px solid #cc0000; margin-bottom: 20px; }
-      .footer { margin-top: 30px; font-size: 13px; color: #555; border-top: 1px solid #ddd; padding-top: 15px; }
+      .header { color: #2563eb; font-weight: bold; font-size: 20px; margin-bottom: 20px; }
+      h3 { color: #2563eb; }
+      .box { background-color: #f9f9f9; padding: 15px; border-left: 4px solid #cc0000; margin-bottom: 20px; color: #cc0000; }
+      .box strong { color: #cc0000; }
+      .footer { margin-top: 30px; font-size: 13px; color: #555; border-top: 1px solid #ddd; padding-top: 15px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
       .alert { color: #d9534f; font-weight: bold; }
       .logo { max-width: 150px; margin-top: 15px; }
+      a { color: #2563eb; text-decoration: none; }
     </style>
     </head>
     <body>
@@ -85,7 +88,7 @@ export const handler: Handler = async (event) => {
         • Adresse de livraison : ${receiverAddress}
       </div>
 
-      <p class='alert'>⚠️ Une erreur dans ce récapitulatif ?</p>
+      <p class='alert'>Une erreur dans ce récapitulatif ?</p>
       <p>Contactez-nous sans attendre à <a href='mailto:contact@csfgroupe.fr'>contact@csfgroupe.fr</a> afin que nous puissions corriger votre dossier avant traitement.</p>
 
       <p>Merci de votre confiance. Nous traitons votre expédition avec le plus grand soin.</p>
