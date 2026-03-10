@@ -76,7 +76,7 @@ const AchatLivraisonPage: React.FC = () => {
 
   const scrollToStepContent = () => {
     setTimeout(() => {
-      document.getElementById('step-content')?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('form-container')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
 
@@ -425,12 +425,14 @@ const AchatLivraisonPage: React.FC = () => {
 
         {/* Stepper */}
         {step !== 4 && (
-          <div className="flex items-center justify-center mb-10 space-x-4">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 1 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>1</div>
-            <div className={`w-12 h-1 rounded transition-all ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 2 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>2</div>
-            <div className={`w-12 h-1 rounded transition-all ${step >= 3 ? 'bg-blue-600' : 'bg-gray-200'}`} />
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 3 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>3</div>
+          <div className="sticky top-20 z-30 bg-gray-50/95 backdrop-blur-sm py-4 ml-[-1rem] mr-[-1rem] px-4 sm:mx-0 sm:px-0 sm:sticky sm:top-24 sm:bg-transparent">
+            <div className="flex items-center justify-center space-x-4">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 1 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>1</div>
+              <div className={`w-12 h-1 rounded transition-all ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 2 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>2</div>
+              <div className={`w-12 h-1 rounded transition-all ${step >= 3 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= 3 ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-500'}`}>3</div>
+            </div>
           </div>
         )}
 
