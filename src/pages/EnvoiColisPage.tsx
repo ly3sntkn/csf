@@ -1039,7 +1039,7 @@ const EnvoiColisPage = () => {
         </p>
 
         <p className="text-gray-600 leading-relaxed mb-6">
-          Vos documents d'expédition vous seront envoyés par email sous <span className="font-bold text-gray-900">24 à 48h</span>.
+          Un email de confirmation vient de vous être envoyé, si vous ne le trouvez pas pensez à verifier vos spams ou courriers indésirables. Vos documents d'expéditions vous seront transmis sous <span className="font-bold text-gray-900">24 à 48h</span>.
         </p>
 
         {/* Info Box */}
