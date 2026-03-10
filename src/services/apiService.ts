@@ -71,7 +71,12 @@ export const submitLeadToCRM = async (data: LeadData, status: LeadStatus): Promi
             "Frais la Poste (€)": "",
             "Marge CSF": "",
 
-            details: data.details,
+            details: {
+                ...d,
+                dimensions: d.dimensions || (d.length ? `${d.length} X ${d.width} X ${d.height}` : ""),
+                insurance: isOui(d.insurance),
+                documentsEnvoyes: isOui(d.documentsEnvoyes)
+            },
         };
 
         // Use fetch with no-cors to make it entirely silent and avoid CORS errors in console
