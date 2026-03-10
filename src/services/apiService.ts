@@ -34,7 +34,7 @@ export const submitLeadToCRM = async (data: LeadData, status: LeadStatus): Promi
 
         let categoryParams = data.service === 'env' ? 'Colis' : data.service === 'dem' ? 'Déménagement' : 'Achat voiture';
 
-        const isOui = (val: any) => (val === true || String(val).toUpperCase() === 'OUI' || val === 'OUI') ? 'OUI' : 'NON';
+        const isOui = (val: any) => (val === true || String(val).toUpperCase() === 'OUI' || val === 'OUI') ? 'Oui' : 'Non';
 
         const payload = {
             token: SECRET_TOKEN,
