@@ -11,8 +11,8 @@ export interface LeadData {
 }
 
 // The final user URLs with correct "Anyone" permissions and openById logic
-const SCRIPT_URL_VALIDATED = 'https://script.google.com/macros/s/AKfycbzlgF_WIKYYTaxYylp-ltGHsoYYPmu-YHYEahZEkEhVjiLVRphkqvtl-kZzLX48ECK6/exec';
-const SCRIPT_URL_WISHED = 'https://script.google.com/macros/s/AKfycbzFui4Z5Px9IX1mXKThvvH0VcbXcsCx4rF4t4Th3cJftfYsFLymH2G-1H-ZLBfcsB8U7w/exec';
+const SCRIPT_URL_VALIDATED = 'https://script.google.com/macros/s/AKfycbwwE3VgILvKZjLD0rGxN4w13MEc3vXuieq0r_JQOob25PfIgrIQKSG3aKuG4WMkBG3LJw/exec';
+const SCRIPT_URL_WISHED = 'https://script.google.com/macros/s/AKfycbwwE3VgILvKZjLD0rGxN4w13MEc3vXuieq0r_JQOob25PfIgrIQKSG3aKuG4WMkBG3LJw/exec';
 const SECRET_TOKEN = 'CSF_CRM_LEAD_SECRET_2026';
 
 /**
