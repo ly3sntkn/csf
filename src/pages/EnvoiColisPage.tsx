@@ -55,11 +55,8 @@ const EnvoiColisPage = () => {
           const orderData = JSON.parse(orderDataString);
           orderData.dossierNumber = `CSF-${year}${month}-${randomPart}`;
 
-          fetch('/.netlify/functions/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(orderData)
-          }).catch(err => console.error("Erreur d'envoi d'email backend:", err));
+          // L'envoi de l'email est désormais géré par le Webhook Stripe (stripe-webhook.ts)
+          // au lieu de l'appel frontend non sécurisé.
 
           // Retain sender first name for the success message UI
           if (orderData.firstName) {
