@@ -66,6 +66,17 @@ const EnvoiColisPage = () => {
           if (orderData.firstName) {
             setSender(prev => ({ ...prev, firstName: orderData.firstName }));
           }
+
+          // Submit the validated CRM lead
+          submitLeadToCRM({
+            nom: orderData.lastName || '',
+            prenom: orderData.firstName || '',
+            email: orderData.email || '',
+            numero: orderData.senderPhone || '',
+            service: 'env',
+            details: orderData
+          }, 'validated');
+
         } catch (e) {
           console.error("Impossible de parser les données localStorage", e);
         }
@@ -325,18 +336,26 @@ const EnvoiColisPage = () => {
           }
         }, 'wished'); // We send 'wished' here; 'validated' ideally comes via Webhook or returning url verification
 
-        // 2. Save Data for Email Confirmation upon Return
+        // 2. Save Data for Email Confirmation and CRM upon Return
         localStorage.setItem('csf_order_data', JSON.stringify({
           firstName: sender.firstName,
           lastName: sender.lastName,
           email: sender.email,
+          senderPhone: sender.phone,
+          departureAddress: `${sender.address} - ${sender.zip} - ${sender.city}`,
           weight: quote.weight,
           length: quote.length,
           width: quote.width,
           height: quote.height,
           type: quote.type,
-          insurance: insurance,
+          category: quote.type === 'parts' ? 'Pièce détachée' : 'Effets personnels',
+          insurance: insurance ? 'OUI' : 'NON',
+          insuranceCost: insurance ? totalValue * 0.10 : 0,
+          inventoryValue: totalValue,
+          price: quote.price + (insurance ? totalValue * 0.10 : 0),
           receiverName: `${receiver.firstName} ${receiver.lastName}`,
+          receiverPhone: receiver.phone,
+          destinationCity: receiver.city,
           receiverAddress: `${receiver.address}, ${receiver.zip} ${receiver.city}, ${receiver.country}`
         }));
 
@@ -579,7 +598,7 @@ const EnvoiColisPage = () => {
     <div className="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Prêt à envoyer votre colis&nbsp;?</h2>
-        <p className="text-gray-600 mb-6">Avant de commencer prenez le temps de lire les règles d'envoi ci-dessous.</p>
+        <p className="text-gray-600 mb-6">Avant de commencer, prenez le temps de lire les règles d'envoi ci-dessous.</p>
 
         {/* Rules Accordion */}
         <div className="mb-8 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
@@ -589,7 +608,7 @@ const EnvoiColisPage = () => {
           >
             <div className="flex items-center space-x-3">
               <ClipboardList className="text-yellow-600" size={24} />
-              <span className="font-bold text-gray-500 uppercase tracking-widest text-sm">À lire avant de commander</span>
+              <span className="font-bold text-gray-500 uppercase tracking-widest text-sm">Règles d'envoi</span>
             </div>
             {isRulesOpen ? <ChevronUp size={20} className="text-gray-500" /> : <ChevronDown size={20} className="text-gray-500" />}
           </button>
