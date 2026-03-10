@@ -24,6 +24,16 @@ export const submitLeadToCRM = async (data: LeadData, status: LeadStatus): Promi
     const targetUrl = status === 'validated' ? SCRIPT_URL_VALIDATED : SCRIPT_URL_WISHED;
 
     try {
+        const date = new Date();
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yy = String(date.getFullYear()).slice(-2);
+        const dateStr = `${dd}/${mm}/${yy}`;
+        const rawStatut = status === 'validated' ? "Validé" : "En attente";
+        const d = data.details || {};
+
+        let categoryParams = data.service === 'env' ? 'Colis' : data.service === 'dem' ? 'Déménagement' : 'Achat voiture';
+
         const payload = {
             token: SECRET_TOKEN,
             status: status,
@@ -32,6 +42,33 @@ export const submitLeadToCRM = async (data: LeadData, status: LeadStatus): Promi
             email: data.email,
             numero: data.numero,
             service: data.service,
+
+            // EXACT COLUMNS EXPECTED BY NEW CRM (Automapping)
+            "Date de commande": dateStr,
+            "Référence client": d.dossierNumber || "",
+            "Catégorie": d.category || categoryParams,
+            "Nb d'envoi": d.nbEnvoi || "",
+            "Nom & Prénom": `${data.nom} ${data.prenom}`,
+            "Téléphone": data.numero,
+            "E-mail": data.email,
+            "Adresse de départ": d.departureAddress || d.address || "",
+            "Nb colis": d.quantity || (d.weight ? "1" : ""),
+            "Dimensions (cm)": d.dimensions || (d.length ? `${d.length}x${d.width}x${d.height}` : ""),
+            "Poids (kg)": d.weight || d.poids || "",
+            "Valeur (€)": d.inventoryValue || d.valeur || "",
+            "Garantie CSF": d.insurance || "NON",
+            "10% (€)": d.insuranceCost || "",
+            "Nom du destinataire": d.receiverName || d.nomDestinataire || "",
+            "Téléphone DZ": d.receiverPhone || d.telephoneDZ || "",
+            "Ville de destination": d.destinationCity || d.villeDestination || "",
+            "Documents envoyés ": "NON",
+            "Statut du colis": rawStatut,
+            "Date de livraison": "",
+            "Délais ": "",
+            "Prix payé (€)": d.price || d.prix || "",
+            "Frais la Poste (€)": "",
+            "Marge CSF": "",
+
             details: data.details,
         };
 
