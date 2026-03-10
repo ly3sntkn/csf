@@ -34,7 +34,7 @@ const HeroBanner = () => {
           TRANSPORT INTERNATIONAL
         </h1>
         <div className="h-16 md:h-20 mb-12 flex items-center justify-center">
-          <p className="text-xl md:text-2xl font-light max-w-3xl text-white">
+          <p className="text-xl md:text-2xl font-light max-w-3xl text-[#F3F4F6]">
             Ce qui compte pour vous, voyage avec nous
           </p>
         </div>
